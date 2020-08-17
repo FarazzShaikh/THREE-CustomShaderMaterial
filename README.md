@@ -6,6 +6,11 @@ CustomShaderMaterial is an extension of the Three.js standard material library. 
 
 ![](https://media.giphy.com/media/gjTseZtNbw2FLUcbgv/giphy.gif)
 
+### Installation 
+``` lang-bash
+	npm i three-custom-shader-material
+```
+
 ## Usage
 ### Import Class 
 ``` lang-js
