@@ -26,8 +26,7 @@ const global = `
 	//GLSL code to be injected outside main.
 `;
 const CSM =  new  CustomShaderMaterial({
-
-	base: TYPES.NORMAL,
+	baseMaterial: TYPES.NORMAL,
 	vShader: [main, global],
 	uniforms: [],
 	options: {}
@@ -40,7 +39,7 @@ const geometry =  new  THREE.SphereGeometry(0.2, 64, 64);
 const material =  CSM.getMaterial(); //Get Three.js Compatible Material.
 const mesh =  new  THREE.Mesh(geometry, material);
 ```
-#### [Wiki]([https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/wiki](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/wiki)) 
+#### [Wiki](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/wiki) 
 
 ## Dependancies
 ### Three.js
