@@ -1,0 +1,24 @@
+{
+  "name": "three-new-shader-material",
+  "version": "1.0.0",
+  "description": "* Build with [webpack 4](https://webpack.js.org/) and [babel 7](https://babeljs.io/) * Test with [jest](https://jestjs.io) * Lint with [eslint](http://eslint.org/) (Using [\"Standard JS\" config](https://github.com/standard/eslint-config-standard) as default) * Hot reloading with [webpack-dev-server](https://webpack.js.org/configuration/dev-server/)",
+  "main": "src.index.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "npm:patch": "npm run prod && npm version patch && npm publish",
+    "npm:minor": "npm run prod && npm version minor && npm publish"
+  },
+  "author": "Faraz Shaikh",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.5",
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "three": "^0.119.1"
+  }
+}
