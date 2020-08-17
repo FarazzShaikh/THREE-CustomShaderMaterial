@@ -1,7 +1,7 @@
 import {
   CustomShaderMaterial as lib_CustomShaderMaterial, 
   TYPES as lib_TYPES
-} from 'src/CustomShaderMaterial.js'
+} from './CustomShaderMaterial.js'
 // import { main } from '../example/boilerplate'
 
 // Library export
