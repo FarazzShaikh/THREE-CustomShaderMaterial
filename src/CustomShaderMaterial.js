@@ -11,9 +11,9 @@ export const TYPES = {
 }
 
 export class CustomShaderMaterial {
-    constructor({ base, vShader, uniforms, options }) {
+    constructor({ baseMaterial, vShader, uniforms, options }) {
 
-        const shaderLib = THREE.ShaderLib[base] 
+        const shaderLib = THREE.ShaderLib[baseMaterial] 
         if(shaderLib) {
             let customUniforms = THREE.UniformsUtils.merge([
                 shaderLib.uniforms,

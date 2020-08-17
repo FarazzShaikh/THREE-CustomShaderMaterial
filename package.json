@@ -1,8 +1,13 @@
 {
-  "name": "three-new-shader-material",
-  "version": "1.0.0",
-  "description": "* Build with [webpack 4](https://webpack.js.org/) and [babel 7](https://babeljs.io/) * Test with [jest](https://jestjs.io) * Lint with [eslint](http://eslint.org/) (Using [\"Standard JS\" config](https://github.com/standard/eslint-config-standard) as default) * Hot reloading with [webpack-dev-server](https://webpack.js.org/configuration/dev-server/)",
-  "main": "src.index.js",
+  "name": "three-custom-shader-material",
+  "version": "1.0.1",
+  "description": "Extend Three.js standard materials with your own vertex shaders!",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial"
+  },
+  "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "scripts": {
     "dev": "webpack-dev-server",
     "npm:patch": "npm run prod && npm version patch && npm publish",

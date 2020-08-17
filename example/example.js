@@ -5,7 +5,7 @@ import main from './shaders/main';
 
 export default function initMaterial(type) {
     const test = new CustomShaderMaterial({
-        base: type,
+        baseMaterial: type,
         vShader: [main, global],
         uniforms: [
             {time: {value: 0.0}},
