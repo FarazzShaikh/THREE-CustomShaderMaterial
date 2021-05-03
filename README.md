@@ -17,6 +17,9 @@
   </p>
 </p>
 
+## BREAKING
+
+Version 2.0.0 introduces potentially breaking changes. Please read the API and adjust your code accordingly.
 
 ## Installation
 
