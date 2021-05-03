@@ -25,7 +25,9 @@ export class CustomShaderMaterial extends THREE.ShaderMaterial {
    * @param {Object} options.passthrough    Any custom options to be passed to the underlying base material.
    */
   constructor(options) {
-    const { baseMaterial, vShader, uniforms, passthrough } = options;
+    const { baseMaterial, vShader } = options;
+    const uniforms = options.uniforms ?? [];
+    const passthrough = options.passthrough ?? {};
     const baseShader = THREE.ShaderLib[baseMaterial];
 
     if (baseShader === undefined) throw "Invalid Base Material Type";
