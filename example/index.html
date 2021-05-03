@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>THREE-CustomShaderMaterial | Demo</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <h2
+      style="
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        color: white;
+        font-family: sans-serif;
+        text-align: center;
+      "
+    >
+      Perlin Noise + Displacement<br />On Spheres modulated by Sine of Time.
+    </h2>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
+    <script src="../build/three-csm.js"></script>
+    <script src="./main.js" defer type="module"></script>
+  </body>
+</html>

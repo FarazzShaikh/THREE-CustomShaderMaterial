@@ -1,29 +1,26 @@
 {
   "name": "three-custom-shader-material",
   "version": "1.0.5",
-  "description": "Extend Three.js standard materials with your own vertex shaders!",
+  "description": "Extend Three.js standard materials with your vertex shaders!",
   "main": "src/index.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial"
   },
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "scripts": {
-    "dev": "webpack-dev-server",
-    "npm:patch": "npm run prod && npm version patch && npm publish",
-    "npm:minor": "npm run prod && npm version minor && npm publish"
+    "build": "rollup -c",
+    "doc": "jsdoc --configure jsdoc.json --verbose && chmod +x scripts/doc.sh && scripts/doc.sh"
   },
   "author": "Faraz Shaikh",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "babel-loader": "^8.0.5",
-    "webpack": "^4.38.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.7.2"
+    "jsdoc": "^3.6.6",
+    "loke-jsdoc-theme": "^2.1.0",
+    "rollup": "^2.46.0"
   },
   "dependencies": {
-    "three": "^0.119.1"
+    "three": "^0.128.0"
   }
 }

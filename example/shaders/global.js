@@ -1,21 +1,20 @@
-import displace from "./utils/displace";
+import noise from "./utils/noise.js";
 
 export default `
-uniform float time;
 
-float scale = 0.2;
-float zscale = 0.3;
+uniform float dt;
+uniform float fac;
 
-float seed = 1.0;
-float persistance = 0.5;
-float lacunarity = 2.0;
-float redistribution = 1.0;
+${noise}
 
-float xoff = 0.0;
-float yoff = 0.0;
-int octaves = 1;
+// the function which defines the displacement
+float displace(vec3 point) {
+ return perlin(vec2(point.xy + dt) * 0.7) * fac;
+}
 
+vec3 orthogonal(vec3 v) {
+    return normalize(abs(v.x) > abs(v.z) ? vec3(-v.y, v.x, 0.0)
+        : vec3(0.0, -v.z, v.y));
+}
 
-${displace}
-
-`
+`;

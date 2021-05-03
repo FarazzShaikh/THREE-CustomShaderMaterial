@@ -1,0 +1,36 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Install and Build 🔨
+        run: |
+          npm install
+          mkdir docs
+          npm run doc
+
+      - name: Deploy 📖
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: docs
+
+      - name: Publish 📝
+        uses: JS-DevTools/npm-publish@v1
+        id: publish
+        if: ${{ env.deployment_status == 'success' }}
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Release 🚀
+        uses: softprops/action-gh-release@v1
+        if: ${{ steps.publish.outputs.type == 'none' }}
+        with:
+          files: src/*
+          tag_name: ${{steps.publish.outputs.version}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}

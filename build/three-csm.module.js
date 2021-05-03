@@ -1,12 +1,20 @@
-import * as THREE from "three";
-import { TYPES } from "./Types";
+import * as THREE from 'three';
+
+const TYPES = {
+  NORMAL: "normal",
+  BASIC: "basic",
+  PHONG: "phong",
+  MATCAP: "matcap",
+  TOON: "toon",
+  PHYSICAL: "physical",
+};
 
 /**
  * This class lets you use your own custom Vertex Shaders along with
  * predefined ThreeJS Fragmet Shaders. This takes away the hastle of
  * writing code for lighting and shaing.
  */
-export class CustomShaderMaterial extends THREE.ShaderMaterial {
+class CustomShaderMaterial extends THREE.ShaderMaterial {
   /**
    * Creates an instance of the <code>CustomShaderMaterial</code> class.
    *
@@ -97,3 +105,5 @@ function _patchShader(shader, { defines = "", header = "", main = "" }) {
       ${patchedShader}
     `;
 }
+
+export { CustomShaderMaterial, TYPES };

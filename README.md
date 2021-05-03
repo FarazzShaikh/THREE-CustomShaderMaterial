@@ -1,51 +1,86 @@
 
-# THREE-CustomShaderMaterial
+<br />
+<p align="center">
+  <h1 align="center">THREE-CustomShaderMaterial</h1>
+
+  <p align="center">
+    Extend Three.js standard materials with your own vertex shaders!
+    <br />
+    <a href="">View Demo</a>
+    ·
+    <a href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/issues/new">Report Bug</a>
+    ·
+    <a href="">API Docs</a>
+  </p>
+  <p align="center">
+    <a href="https://www.npmjs.com/package/three-custom-shader-material"><img align="center" src="https://img.shields.io/npm/v/three-custom-shader-material?color=cc3534&style=for-the-badge" /></a>
+  </p>
+</p>
 
 
-CustomShaderMaterial is an extension of the Three.js standard material library. It offers a way to add a **custom vertex shader** to the already existing materials in Three.js.
+## Installation
 
-![](https://media.giphy.com/media/gjTseZtNbw2FLUcbgv/giphy.gif)
+Make sure to have ThreeJS installed.
+```bash
+$ npm i three
+```
 
-## Installation 
-``` lang-bash
-npm i three-custom-shader-material --save
+Install through NPM
+```bash
+$ npm i three-custom-shader-material
+```
+
+For Browsers, download `build/three-csm.js`.
+
+## Importing
+
+### Browser
+
+In your HTML
+```html
+<script src="lib/three-csm.js"></script>
+<script src="./main.js" defer></script>
+```
+
+Then, in your JavaScript you can use the `THREE_Noise` object.
+```js
+const { CustomShaderMaterial, TYPES } = THREE_CustomShaderMaterial;
+```
+
+### NodeJS
+In NodeJS, you can import it like you normally do.
+```js
+import {CustomShaderMaterial, TYPES} from "three-custom-shader-material"
 ```
 
 ## Usage
-### Import Class 
-``` lang-js
-import { CustomShaderMaterial, TYPES } from  'three-custom-shader-material';
-```
 
-### Create Material Instance
-``` lang-js
-const main = `
-	//GLSL code to be injected into main.
-`;
-const global = `
-	//GLSL code to be injected outside main.
-`;
-const CSM =  new  CustomShaderMaterial({
-	baseMaterial: TYPES.NORMAL,
-	vShader: [main, global],
-	uniforms: [],
-	options: {}
+```js
+// Import shader chunks
+import global from "example/shaders/global.js";
+import main from "example/shaders/main.js";
+import defines from "example/shaders/defines.js";
+
+// ...
+
+const material = new CustomShaderMaterial({
+    baseMaterial: TYPES.PHYSICAL,       // Material to extend
+    vShader: {
+        defines: defines,           
+        header: global,                 // Custom Vertex Shader
+        main: main,
+    },
+    uniforms: [{ 
+        three_noise_seed: { value: 2 } // Custom uniforms
+    }], 
+    passthrough: {
+        wireframe: false,
+        lights: true,                   // Options passthrough to unerlying material.
+  },
 });
+
+const plane = new THREE.Mesh(geometry, material); // Use like a regular material
 ```
+## Note
 
-### Assign Material To Mesh 
-``` lang-js
-const geometry =  new  THREE.SphereGeometry(0.2, 64, 64);
-const material =  CSM.getMaterial(); //Get Three.js Compatible Material.
-const mesh =  new  THREE.Mesh(geometry, material);
-```
-#### [Wiki](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/wiki) 
-
-## Dependancies
-### Three.js
-``` lang-bash
-npm i three --save
-```
-
-
-
+The variables `newPos` and `newNormal` must be defined in the `main` section of the injected shader. See the example shaders for how to format shaders for use with CSM.

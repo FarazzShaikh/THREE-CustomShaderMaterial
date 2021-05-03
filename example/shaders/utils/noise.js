@@ -1,74 +1,85 @@
 export default `
 
-//
-// Description : Array and textureless GLSL 2D simplex noise function.
-//      Author : Ian McEwan, Ashima Arts.
-//  Maintainer : stegu
-//     Lastmod : 20110822 (ijm)
-//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
-//               Distributed under the MIT License. See LICENSE file.
-//               https://github.com/ashima/webgl-noise
-//               https://github.com/stegu/webgl-noise
-// 
+uniform int three_noise_seed;
 
-vec3 mod289(vec3 x) {
-  return x - floor(x * (1.0 / 289.0)) * 289.0;
+vec3 three_noise_gradientVecs[12] = vec3[](
+    // 2D Vecs
+    vec3(1, 1, 0),
+    vec3(-1, 1, 0),
+    vec3(1, -1, 0),
+    vec3(-1, -1, 0),
+    // + 3D Vecs
+    vec3(1, 0, 1),
+    vec3(-1, 0, 1),
+    vec3(1, 0, -1),
+    vec3(-1, 0, -1),
+    vec3(0, 1, 1),
+    vec3(0, -1, 1),
+    vec3(0, 1, -1),
+    vec3(0, -1, -1)
+);
+
+vec3 three_noise_offsetMatrix[8] = vec3[](
+    // 2D Vecs
+    vec3(0, 0, 0),
+    vec3(0, 1, 0),
+    vec3(1, 0, 0),
+    vec3(1, 1, 0),
+    // + 3D Vecs
+    vec3(0, 0, 1),
+    vec3(0, 1, 1),
+    vec3(1, 0, 1),
+    vec3(1, 1, 1)
+);
+
+int three_noise_hash(int a) {
+    a = a ^ 61 ^ (a >> 16);
+    a = a + (a << 3);
+    a = a ^ (a >> 4);
+    a = a * 0x27d4eb2d;
+    a = a ^ (a >> 15);
+    return a;
 }
 
-vec2 mod289(vec2 x) {
-  return x - floor(x * (1.0 / 289.0)) * 289.0;
+int three_noise_gradient(vec2 posInCell) {
+    int x = three_noise_hash(three_noise_seed + int(posInCell.x));
+    int y = three_noise_hash(three_noise_seed + x + int(posInCell.y));
+    return y % 4;
 }
 
-vec3 permute(vec3 x) {
-  return mod289(((x*34.0)+1.0)*x);
+float three_noise_fade(float t) {
+    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
 }
 
-float snoise(vec2 v)
-  {
-  const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
-                      0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
-                     -0.577350269189626,  // -1.0 + 2.0 * C.x
-                      0.024390243902439); // 1.0 / 41.0
-// First corner
-  vec2 i  = floor(v + dot(v, C.yy) );
-  vec2 x0 = v -   i + dot(i, C.xx);
 
-// Other corners
-  vec2 i1;
-  //i1.x = step( x0.y, x0.x ); // x0.x > x0.y ? 1.0 : 0.0
-  //i1.y = 1.0 - i1.x;
-  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-  // x0 = x0 - 0.0 + 0.0 * C.xx ;
-  // x1 = x0 - i1 + 1.0 * C.xx ;
-  // x2 = x0 - 1.0 + 2.0 * C.xx ;
-  vec4 x12 = x0.xyxy + C.xxzz;
-  x12.xy -= i1;
+float perlin(vec2 pos) {
+    vec2 cell = floor(pos);
+    vec2 posInCell = pos - cell;
 
-// Permutations
-  i = mod289(i); // Avoid truncation effects in permutation
-  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
-		+ i.x + vec3(0.0, i1.x, 1.0 ));
+    float gradiantDot[4];
+    for (int i = 0; i < 4; i++) {
+        vec3 s3 = three_noise_offsetMatrix[i];
+        vec2 s = s3.xy;
 
-  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-  m = m*m ;
-  m = m*m ;
+        vec3 grad3 = three_noise_gradientVecs[
+            three_noise_gradient(cell + s)
+        ];
+        vec2 grad2 = grad3.xy;
+        vec2 dist2 = posInCell - s;
+    
+        gradiantDot[i] = dot(grad2, dist2);
+    }
 
-// Gradients: 41 points uniformly over a line, mapped onto a diamond.
-// The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
+    // Compute the this.fade curve value for x, y, z
+    float u = three_noise_fade(posInCell.x);
+    float v = three_noise_fade(posInCell.y);
 
-  vec3 x = 2.0 * fract(p * C.www) - 1.0;
-  vec3 h = abs(x) - 0.5;
-  vec3 ox = floor(x + 0.5);
-  vec3 a0 = x - ox;
+    float value = mix(
+        mix(gradiantDot[0], gradiantDot[2], u),
+        mix(gradiantDot[1], gradiantDot[3], u),
+        v
+    );
 
-// Normalise gradients implicitly by scaling m
-// Approximation of: m *= inversesqrt( a0*a0 + h*h );
-  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-
-// Compute final noise value at P
-  vec3 g;
-  g.x  = a0.x  * x0.x  + h.x  * x0.y;
-  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-  return 130.0 * dot(m, g);
+    return value;
 }
-`
+`;
