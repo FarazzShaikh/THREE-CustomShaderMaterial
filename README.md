@@ -6,11 +6,11 @@
   <p align="center">
     Extend Three.js standard materials with your own vertex shaders!
     <br />
-    <a href="">View Demo</a>
+    <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/example/index.html">View Demo</a>
     ·
     <a href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/issues/new">Report Bug</a>
     ·
-    <a href="">API Docs</a>
+    <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/">API Docs</a>
   </p>
   <p align="center">
     <a href="https://www.npmjs.com/package/three-custom-shader-material"><img align="center" src="https://img.shields.io/npm/v/three-custom-shader-material?color=cc3534&style=for-the-badge" /></a>
