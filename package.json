@@ -1,6 +1,6 @@
 {
   "name": "three-custom-shader-material",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Extend Three.js standard materials with your vertex shaders!",
   "main": "src/index.js",
   "type": "module",
