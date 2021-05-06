@@ -59,10 +59,15 @@ import {CustomShaderMaterial, TYPES} from "three-custom-shader-material"
 ## Usage
 
 ```js
-// Import shader chunks
-import global from "example/shaders/global.js";
+// Import GLSL vertex shaders as strings
+import header from "example/shaders/header.js";
 import main from "example/shaders/main.js";
 import defines from "example/shaders/defines.js";
+
+// Import GLSL fragment shaders as strings
+import fheader from "example/shaders/fheader.js";
+import fmain from "example/shaders/fmain.js";
+import fdefines from "example/shaders/fdefines.js";
 
 // ...
 
@@ -70,8 +75,13 @@ const material = new CustomShaderMaterial({
     baseMaterial: TYPES.PHYSICAL,       // Material to extend
     vShader: {
         defines: defines,           
-        header: global,                 // Custom Vertex Shader
+        header: header,                 // Custom Vertex Shader
         main: main,
+    },
+    fShader: {
+        defines: fdefines,           
+        header: fheader,               // Optional Custom Fragment Shader
+        main: fmain,
     },
     uniforms: [{ 
         three_noise_seed: { value: 2 } // Custom uniforms
@@ -87,3 +97,5 @@ const plane = new THREE.Mesh(geometry, material); // Use like a regular material
 ## Note
 
 The variables `newPos` and `newNormal` must be defined in the `main` section of the injected shader. See the example shaders for how to format shaders for use with CSM.
+
+Variable `gl_FragColor` must be assigned a value in the `main` section of the fragment shader.
