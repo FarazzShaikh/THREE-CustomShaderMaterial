@@ -26,10 +26,15 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
 
+      - name: Pre Release 👷
+        run: |
+          cat CHANGELOG.md > CHANGELOG.txt
+
       - name: Release 🚀
         uses: softprops/action-gh-release@v1
         if: ${{ steps.publish.outputs.type != 'none' }}
         with:
+          body_path: CHANGELOG.txt
           files: src/*
           tag_name: ${{steps.publish.outputs.version}}
         env:
