@@ -39,7 +39,6 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
    */
   class CustomShaderMaterial extends THREE__namespace.ShaderMaterial {
     /**
-     *
      * @typedef {Object} CustomShader
      * @property {string} defines        Constant definitions like - "#define PI = 3.14;"
      * @property {string} header         Code to be injected above main. Place function definitions here.
