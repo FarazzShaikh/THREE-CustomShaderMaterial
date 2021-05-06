@@ -29,7 +29,7 @@ jobs:
       - name: Pre Release 👷
         run: |
           chmod +x scripts/getChange.sh
-          ./scripts/getChange.sh > CHANGELOG.txt
+          ./scripts/getChange.sh ${{steps.publish.outputs.version}} CHANGELOG.md > CHANGELOG.txt
 
       - name: Release 🚀
         uses: softprops/action-gh-release@v1
