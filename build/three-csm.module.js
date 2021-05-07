@@ -40,10 +40,8 @@ class CustomShaderMaterial extends THREE.ShaderMaterial {
     if (options.vShader === undefined)
       throw new Error("Vertex Shader must be provided.");
 
-    if (options.baseMaterial === undefined && options.fShader === undefined)
-      throw new Error(
-        "Fragment Shader must be provided when base mateiral is absent."
-      );
+    if (options.baseMaterial === undefined)
+      throw new Error("Base material must be defined.");
 
     const baseMaterial = options.baseMaterial || TYPES.BASIC;
     const vShader = options.vShader || {};

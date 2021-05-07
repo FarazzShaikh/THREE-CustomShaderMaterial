@@ -78,11 +78,6 @@ const material = new CustomShaderMaterial({
         header: header,                 // Custom Vertex Shader
         main: main,
     },
-    fShader: {
-        defines: fdefines,           
-        header: fheader,               // Optional Custom Fragment Shader
-        main: fmain,
-    },
     uniforms: [{ 
         three_noise_seed: { value: 2 } // Custom uniforms
     }], 
