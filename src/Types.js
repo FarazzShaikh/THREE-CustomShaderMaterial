@@ -1,8 +1,9 @@
 export const TYPES = {
-  NORMAL: "normal",
-  BASIC: "basic",
-  PHONG: "phong",
-  MATCAP: "matcap",
-  TOON: "toon",
-  PHYSICAL: "physical",
+  NORMAL: "MeshNormalMaterial",
+  BASIC: "MeshBasicMaterial",
+  PHONG: "MeshPhongMaterial",
+  MATCAP: "MeshMatcapMaterial",
+  TOON: "MeshToonMaterial",
+  PHYSICAL: "MeshPhysicalMaterial",
+  LAMBERT: "MeshLambertMaterial",
 };

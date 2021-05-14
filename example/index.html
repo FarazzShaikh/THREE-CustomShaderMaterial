@@ -15,21 +15,15 @@
     </style>
   </head>
   <body>
-    <h2
-      style="
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        color: white;
-        font-family: sans-serif;
-        text-align: center;
-      "
-    >
-      Perlin Noise + Displacement<br />On Spheres modulated by Sine of Time.
-    </h2>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
-    <script src="../build/three-csm.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/node_modules/three/build/three.module.js",
+          "OrbitControls": "/node_modules/three/examples/jsm/controls/OrbitControls.js",
+          "ESRLoader": "/node_modules/three/examples/jsm/loaders/EXRLoader.js"
+        }
+      }
+    </script>
     <script src="./main.js" defer type="module"></script>
   </body>
 </html>

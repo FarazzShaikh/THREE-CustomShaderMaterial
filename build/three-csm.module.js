@@ -1,20 +1,11 @@
 import * as THREE from 'three';
 
-const TYPES = {
-  NORMAL: "normal",
-  BASIC: "basic",
-  PHONG: "phong",
-  MATCAP: "matcap",
-  TOON: "toon",
-  PHYSICAL: "physical",
-};
-
 /**
  * This class lets you use your own custom Vertex Shaders along with
  * predefined ThreeJS Fragmet Shaders. This takes away the hastle of
  * writing code for lighting and shaing.
  */
-class CustomShaderMaterial extends THREE.ShaderMaterial {
+class CustomShaderMaterial extends THREE.Material {
   /**
    * @typedef {Object} CustomShader
    * @property {string} defines        Constant definitions like - "#define PI = 3.14;"
@@ -37,65 +28,30 @@ class CustomShaderMaterial extends THREE.ShaderMaterial {
    * @param {Object} options.passthrough        Any custom options to be passed to the underlying base material.
    */
   constructor(options) {
-    if (options.vShader === undefined)
-      throw new Error("Vertex Shader must be provided.");
+    const base = new THREE[options.baseMaterial](options.passthrough);
+    super();
 
-    if (options.baseMaterial === undefined)
-      throw new Error("Base material must be defined.");
+    for (const key in base) {
+      if (this[key] === undefined) this[key] = 0;
+    }
 
-    const baseMaterial = options.baseMaterial || TYPES.BASIC;
-    const vShader = options.vShader || {};
-    const fShader = options.fShader || {};
-    const uniforms = options.uniforms || [];
-    const passthrough = options.passthrough || {};
-    const baseShader = THREE.ShaderLib[baseMaterial];
+    this.setValues(base);
 
-    super({
-      uniforms: THREE.UniformsUtils.merge([baseShader.uniforms, ...uniforms]),
+    this.onBeforeCompile = (shader) => {
+      shader.vertexShader = _patchvShader(shader.vertexShader, {
+        defines: options.vShader.defines,
+        header: options.vShader.header,
+        main: options.vShader.main,
+      });
 
-      extensions: {
-        derivatives: true,
-      },
+      Object.keys(options.uniforms).forEach((k) => {
+        shader.uniforms[k] = options.uniforms[k];
+      });
 
-      vertexShader: _patchvShader(THREE.ShaderChunk.meshphysical_vert, vShader),
-      fragmentShader: _patchfShader(baseShader.fragmentShader, fShader),
-      lights:
-        baseMaterial === TYPES.PHYSICAL ||
-        baseMaterial === TYPES.TOON ||
-        baseMaterial === TYPES.PHONG,
-      ...passthrough,
-    });
-
-    this._baseMaterial = baseMaterial;
+      this.uniforms = shader.uniforms;
+      this.needsUpdate = true;
+    };
   }
-
-  /**
-   * This funciton lets you update a custom uniform you have set.
-   * Make sure to address the uniform by the name of its key.
-   *
-   * @param {string} unifrom Name of the Unifrom to update
-   * @param {any} value      Value to set.
-   */
-  updateUniform(unifrom, value) {
-    this.uniforms[unifrom].value = value;
-  }
-}
-
-function _patchfShader(shader, { defines = "", header = "", main = "" }) {
-  const patchedShader = shader.replace(
-    "void main() {",
-    `
-    ${header}
-    void main() {
-      ${main}
-      ${main === "" ? "" : "return;"}
-    `
-  );
-
-  return `
-    ${defines}
-    ${patchedShader}
-    `;
 }
 
 /**
@@ -105,10 +61,11 @@ function _patchvShader(shader, { defines = "", header = "", main = "" }) {
   let patchedShader = shader;
 
   const replaces = {
-    "#include <defaultnormal_vertex>": THREE.ShaderChunk.defaultnormal_vertex.replace(
-      "vec3 transformedNormal = objectNormal;",
-      `vec3 transformedNormal = newNormal;`
-    ),
+    "#include <defaultnormal_vertex>":
+      THREE.ShaderChunk.defaultnormal_vertex.replace(
+        "vec3 transformedNormal = objectNormal;",
+        `vec3 transformedNormal = newNormal;`
+      ),
 
     "#include <displacementmap_vertex>": `
           transformed = newPos;
@@ -134,5 +91,15 @@ function _patchvShader(shader, { defines = "", header = "", main = "" }) {
       ${patchedShader}
     `;
 }
+
+const TYPES = {
+  NORMAL: "MeshNormalMaterial",
+  BASIC: "MeshBasicMaterial",
+  PHONG: "MeshPhongMaterial",
+  MATCAP: "MeshMatcapMaterial",
+  TOON: "MeshToonMaterial",
+  PHYSICAL: "MeshPhysicalMaterial",
+  LAMBERT: "MeshLambertMaterial",
+};
 
 export { CustomShaderMaterial, TYPES };
