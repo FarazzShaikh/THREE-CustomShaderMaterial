@@ -78,9 +78,9 @@ const material = new CustomShaderMaterial({
         header: header,                 // Custom Vertex Shader
         main: main,
     },
-    uniforms: [{ 
+    uniforms: { 
         three_noise_seed: { value: 2 } // Custom uniforms
-    }], 
+    }, 
     passthrough: {
         wireframe: false,
         lights: true,                   // Options passthrough to unerlying material.
