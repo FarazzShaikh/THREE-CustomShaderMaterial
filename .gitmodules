@@ -1,0 +1,3 @@
+[submodule "example/lib/glNoise"]
+	path = example/lib/glNoise
+	url = https://github.com/FarazzShaikh/glNoise.git
