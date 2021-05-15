@@ -11,6 +11,8 @@ const paths = {
   main: "./shaders/main.glsl",
 };
 
+document.body.style.cursor = "wait";
+
 loadShadersCSM(paths).then((vertex) => {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -24,6 +26,7 @@ loadShadersCSM(paths).then((vertex) => {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
+  renderer.domElement.style.cursor = "wait";
 
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -34,14 +37,13 @@ loadShadersCSM(paths).then((vertex) => {
 
   const geometry = new THREE.SphereGeometry(5, 64, 64);
   const material = new CustomShaderMaterial({
-    baseMaterial: TYPES.BASIC,
+    baseMaterial: TYPES.PHYSICAL,
     vShader: {
       defines: vertex.defines,
       header: vertex.header,
       main: vertex.main,
     },
     uniforms: {
-      three_noise_seed: { value: 2 },
       uTime: { value: 1.0 },
       uColor: { value: new THREE.Color(1, 1, 1) },
       uResolution: { value: new THREE.Vector3() },
@@ -50,6 +52,8 @@ loadShadersCSM(paths).then((vertex) => {
     },
     passthrough: {
       wireframe: false,
+      metalness: 1,
+      roughness: false,
     },
   });
 
@@ -74,6 +78,8 @@ loadShadersCSM(paths).then((vertex) => {
       texture.dispose();
       scene.background = exrBackground;
       material.envMap = exrBackground;
+      renderer.domElement.style.cursor = "default";
+      document.body.style.cursor = "default";
       animate();
     });
 

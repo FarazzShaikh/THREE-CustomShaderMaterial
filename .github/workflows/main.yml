@@ -9,11 +9,12 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
+        with:
+          submodules: "true"
 
       - name: Install and Build 🔨
         run: |
           npm install
-          mkdir docs
           npm run doc
 
       - name: Deploy 📖

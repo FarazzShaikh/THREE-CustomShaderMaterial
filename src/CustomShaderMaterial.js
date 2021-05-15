@@ -1,18 +1,18 @@
 import * as THREE from "three";
 
 /**
+ * @typedef {Object} CustomShader
+ * @property {string} defines        Constant definitions like - "#define PI = 3.14;"
+ * @property {string} header         Code to be injected above main. Place function definitions here.
+ * @property {string} main           Code to be injected above main. Put main shader code here.
+ */
+
+/**
  * This class lets you use your own custom Vertex Shaders along with
  * predefined ThreeJS Fragmet Shaders. This takes away the hastle of
  * writing code for lighting and shaing.
  */
 export class CustomShaderMaterial extends THREE.Material {
-  /**
-   * @typedef {Object} CustomShader
-   * @property {string} defines        Constant definitions like - "#define PI = 3.14;"
-   * @property {string} header         Code to be injected above main. Place function definitions here.
-   * @property {string} main           Code to be injected above main. Put main shader code here.
-   */
-
   /**
    * Creates an instance of the <code>CustomShaderMaterial</code> class.
    *
@@ -22,10 +22,28 @@ export class CustomShaderMaterial extends THREE.Material {
    *
    * @param {Object} options                    Options for material.
    * @param {string} options.baseMaterial       Base Material. The material whos fragment shader is used. Any type from the exported <code>TYPES</code> object
-   * @param {...CustomShader} options.vShader   Custom Vertex Shader
-   * @param {...CustomShader} options.fShader   Custom Fragment Shader
+   * @param {CustomShader} options.vShader   Custom Vertex Shader
+   * @param {CustomShader} options.fShader   Custom Fragment Shader
    * @param {Object} options.uniforms           Custom Uniforms to be passed to the shader.
    * @param {Object} options.passthrough        Any custom options to be passed to the underlying base material.
+   *
+   * @example
+   * const material = new CustomShaderMaterial({
+   *     baseMaterial: TYPES.PHYSICAL,
+   *     vShader: {
+   *         defines: vertex.defines,
+   *         header: vertex.header,
+   *         main: vertex.main,
+   *     },
+   *     uniforms: {
+   *         uTime: { value: 1.0 },
+   *         uResolution: { value: new THREE.Vector3() },
+   *     },
+   *     passthrough: {
+   *         wireframe: true,
+   *     },
+   * });
+   * material.uniforms.uResolution.set(1920, 1080, 0);
    */
   constructor(options) {
     const base = new THREE[options.baseMaterial](options.passthrough);
@@ -54,25 +72,9 @@ export class CustomShaderMaterial extends THREE.Material {
   }
 }
 
-function _patchfShader(shader, { defines = "", header = "", main = "" }) {
-  const patchedShader = shader.replace(
-    "void main() {",
-    `
-    ${header}
-    void main() {
-      ${main}
-      ${main === "" ? "" : "return;"}
-    `
-  );
-
-  return `
-    ${defines}
-    ${patchedShader}
-    `;
-}
-
 /**
  * From https://codepen.io/marco_fugaro/pen/xxZWPWJ?editors=0010
+ * @private
  */
 function _patchvShader(shader, { defines = "", header = "", main = "" }) {
   let patchedShader = shader;
