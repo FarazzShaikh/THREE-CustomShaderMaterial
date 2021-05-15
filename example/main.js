@@ -1,4 +1,4 @@
-import * as THREE from "https://cdn.skypack.dev/three";
+import * as THREE from "three";
 import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 import { EXRLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/EXRLoader.js";
 
