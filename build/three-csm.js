@@ -23,6 +23,16 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
 
   var THREE__namespace = /*#__PURE__*/_interopNamespace(THREE);
 
+  const TYPES$1 = {
+    NORMAL: "MeshNormalMaterial",
+    BASIC: "MeshBasicMaterial",
+    PHONG: "MeshPhongMaterial",
+    MATCAP: "MeshMatcapMaterial",
+    TOON: "MeshToonMaterial",
+    PHYSICAL: "MeshPhysicalMaterial",
+    LAMBERT: "MeshLambertMaterial",
+  };
+
   /**
    * @typedef {Object} CustomShader
    * @property {string} defines        Constant definitions like - "#define PI = 3.14;"
@@ -71,6 +81,19 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
     constructor(options) {
       const base = new THREE__namespace[options.baseMaterial](options.passthrough);
       super();
+
+      if (options.baseMaterial == TYPES$1.BASIC)
+        console.warn(
+          "TYPES.BASIC does not support displacement in a Vertex Shader. Use TYPES.PHYSICAL instead."
+        );
+
+      if (
+        options.baseMaterial == TYPES$1.NORMAL ||
+        options.baseMaterial == TYPES$1.LAMBERT
+      )
+        console.warn(
+          "TYPES.NORMAL and TYPES.LAMBERT do not support envornment maps."
+        );
 
       for (const key in base) {
         if (this[key] === undefined) this[key] = 0;

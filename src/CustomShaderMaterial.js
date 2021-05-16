@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { TYPES } from "../build/three-csm.module";
 
 /**
  * @typedef {Object} CustomShader
@@ -48,6 +49,19 @@ export class CustomShaderMaterial extends THREE.Material {
   constructor(options) {
     const base = new THREE[options.baseMaterial](options.passthrough);
     super();
+
+    if (options.baseMaterial == TYPES.BASIC)
+      console.warn(
+        "TYPES.BASIC does not support displacement in a Vertex Shader. Use TYPES.PHYSICAL instead."
+      );
+
+    if (
+      options.baseMaterial == TYPES.NORMAL ||
+      options.baseMaterial == TYPES.LAMBERT
+    )
+      console.warn(
+        "TYPES.NORMAL and TYPES.LAMBERT do not support envornment maps."
+      );
 
     for (const key in base) {
       if (this[key] === undefined) this[key] = 0;
