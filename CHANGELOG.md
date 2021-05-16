@@ -7,13 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version 2.2.0
 
-### Chnaged
+### Changed
+
+- Added warnings for unsupported features.
+
+## Version 2.2.0
+
+### Changed
 
 - Fixes #3. Big thanks to Steve Trettel (@stevejtrettel)
 
 ## Version 2.1.1
 
-### Chnaged
+### Changed
 
 - Fix for [CVE-2021-23358](https://github.com/advisories/GHSA-cf4h-3jhx-xvhq)
 
