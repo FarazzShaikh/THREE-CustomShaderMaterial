@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 import { EXRLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/EXRLoader.js";
 
-import { CustomShaderMaterial, TYPES } from "../build/three-csm.module.js";
-import { loadShadersCSM } from "./lib/glNoise/build/glNoise.m.js";
+import { CustomShaderMaterial, TYPES } from "../../build/three-csm.module.js";
+import { loadShadersCSM } from "../lib/glNoise/build/glNoise.m.js";
 
 const paths = {
   defines: "./shaders/defines.glsl",
@@ -71,7 +71,7 @@ loadShadersCSM(paths).then((vertex) => {
 
   new EXRLoader()
     .setDataType(THREE.UnsignedByteType)
-    .load("Assets/env.exr", function (texture) {
+    .load("./textures/env.exr", function (texture) {
       exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
       exrBackground = exrCubeRenderTarget.texture;
 

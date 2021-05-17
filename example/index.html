@@ -2,26 +2,83 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THREE-CustomShaderMaterial | Demo</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        height: 100vh;
-      }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimal-ui, viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <title>Three-Noise | Examples</title>
+    <link href="main.css" rel="stylesheet" />
   </head>
   <body>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://cdn.skypack.dev/three"
+    <div class="Side">
+      <a
+        class="Title"
+        href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial"
+        >CustomShaderMaterial</a
+      >
+      <div class="SubTitle">Examples</div>
+      <a class="Example" href="Grapher/index.html">Grapher</a>
+      <a class="Example" href="EnvMap/index.html">Environment Map</a>
+    </div>
+
+    <iframe class="Iframe" allow="autoplay" src=""></iframe>
+
+    <a class="SideIcon">&lt;</a>
+    <a class="CodeIcon" href="" target="_blank">&lt;&#47;&gt;</a>
+
+    <script>
+      const sourceLink = document.querySelector(".CodeIcon");
+      const toggleLink = document.querySelector(".SideIcon");
+      const exampleLinks = document.querySelectorAll("a.Example");
+      const iFrame = document.querySelector(".Iframe");
+      const sourcePath =
+        "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/tree/master/example/";
+
+      toggleLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.body.toggleAttribute("data-hideSidebar");
+      });
+
+      // Load query example in iFrame if linked
+      let loadQuery = location.search.split("src=");
+      if (loadQuery[1]) {
+        iFrame.src = loadQuery[1];
+        sourceLink.href = sourcePath + loadQuery[1];
+      } else {
+        // choose random example to show if none linked
+        let target =
+          exampleLinks[Math.floor(Math.random() * exampleLinks.length)];
+        updateExample({ target });
+      }
+
+      exampleLinks.forEach((link) => {
+        link.addEventListener("click", updateExample, false);
+      });
+
+      function updateExample(e) {
+        let src = e.target.href.split("example/")[1];
+
+        // Allow user to cmd/ctrl + click to open in new tab
+        if (e.metaKey) {
+          window.open(
+            `${location.origin}${location.pathname}?src=${src}`,
+            "_blank"
+          );
+          return;
         }
+
+        iFrame.src = e.target.href;
+        sourceLink.href = sourcePath + src;
+
+        // Update search query
+        history.pushState(
+          null,
+          null,
+          `${location.origin}${location.pathname}?src=${src}`
+        );
+        e.preventDefault && e.preventDefault();
       }
     </script>
-    <script src="./main.js" defer type="module"></script>
   </body>
 </html>
