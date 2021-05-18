@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <title>Complex Powers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../about.css">
+
+</head>
+
+
+
+
+<body>
+<h1>About This Example: Graphing Complex Functions</h1>
+<p> Complex numbers are an extension of the real number system to include a square root of -1
+    (see <a href="https://en.wikipedia.org/wiki/Complex_number">Wikipdeia</a>).
+    Visualizing the graphs of complex functions in a way that does not obscure any important information is a challenge,
+    and this program represents one approach.
+</p>
+<p>
+   Just like the graph of a real valued function is drawn in two dimensions (one for the domain and one for the range)
+    the graph of a complex function naturally lives in four dimensions (two for the domain and two for the range).
+    For us to be able to see such an object, it is necessary to project off one or more of these directions.
+    One common approach is to project off either the magnitude or the angle of the range, giving either a
+    <a href="https://en.wikipedia.org/wiki/Domain_coloring">Domain Coloring</a>, or a magnitude-only plot (like this
+    <a href="https://external-preview.redd.it/V_692JhtrWUU6r9jX4yBvlDuCGUzmz3iDpycqKwiF9k.png?auto=webp&s=fb48bc796ac297837f30c9785ca16aee11a25262">hand-drawn example</a>
+    for the Gamma function from the 1800s).
+</p>
+<p>This program attempts to delay making this choice by computing the entire graph in C2: that is, constructing
+    the surface traced out by the points (z,z^n) as z ranges over the domain, and then projecting to R3 along a time-varying axis,
+    so that no particular direction is permanently obscured.
+    As this projection necessarily drops a dimension at each point in time, the surface is colored (via controls below) in a way
+    that at all times preserves all the 4-dimensional information from the domain (drawn as a grid) and the range
+    (drawn as in domain coloring: with hue and saturation).
+
+</p>
+
+<h2>Main Controls</h2>
+<p>The main controls concern the choice of function f(z)=z^n, as well as the portion of the domain over
+    which to draw its graph.
+<ul>
+
+    <li><strong>Degree:</strong>
+        This chooses the integer value of n in f(z)=z^n.  Positive powers show complex monomials and
+        negative powers their reciprocals: the simplest rational functions.</li>
+
+    <li><strong>Domain Size:</strong> The complex monomials are smooth everywhere and plotted over a disk in C of radius given by Domain Size.
+    Their reciprocals have a pole at the origin, and are plotted on an annulus with radii between 1/DomainSize and
+        DomainSize, cutting out this singularity so the behavior near it is visible.</li>
+
+</ul>
+
+
+<h2>Shading Controls</h2>
+<p> These controls allow you to adjust coloring of the surface.
+<ul>
+
+    <li><strong>Grid</strong>
+        Determines the thickness of grid lines drawn on the graph.  These grid lines come from the domain variable x+iy,
+        where they are standard polar coordinates..</li>
+
+    <li><strong>Hue</strong> This determines if the surface is colored by hue or monochromatically.
+    The color comes from the codomain variable u+iv, where hue is set by the argument and saturation by the magnitude
+        (high saturation = high magnitude, low saturation=near 0)</li>
+
+    <li><strong>Transmission</strong>Determines the opacity of the surface by setting the fraction of light which transmits through.</li>
+</ul>
+
+
+
+<h2>View Controls</h2>
+<p> The coordinates of S3 are inherited from (x+iy, u+iv) on C2.  The default projection is orthographic projection along the v axis.
+    These controls determine the projection of C2 to R3 for viewing.
+
+
+<ul>
+
+    <li><strong>rotx,roty,rotu:</strong>
+        Real values from 0 to 1, determining the fraction of Pi in which to rotate the x,y, or u axis into the v axis
+        (where the default projection occurs) respectively.
+        Setting any given parameter to 1 and leaving the others at 0 will orthographically project from that axis instead.
+    </li>
+
+    <li><strong>Tumble:</strong>This animates a path of rotations in SO(4) varying the projection axis, and controls the speed.</li>
+
+    <li><strong>Proj:</strong> This allows you to change the projection type: from orthographic to perspective in R4, to stereographic.</li>
+</ul>
+
+
+
+<p>© Steve J. Trettel - 2021</p>
+</body>
+
+</html>
+
+

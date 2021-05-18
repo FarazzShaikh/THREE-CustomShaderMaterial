@@ -1,0 +1,98 @@
+<html lang="en">
+
+<head>
+    <title>Hopf Tori</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../about.css">
+
+</head>
+
+
+
+
+
+<body>
+    <h1>About This Example: Flat Tori in 4-Dimensions</h1>
+    <p> The Hopf map (see <a href="https://en.wikipedia.org/wiki/Hopf_fibration">Wikipdeia</a>) is a function
+        from the 3-dimensional sphere (the surface of the 4-dimensional ball, cut
+        out by the equation x2+y2+z2+w2=1 in 4-dimensional space) to the 2-dimensional sphere (the familiar
+        sphere in 3-dimensional space).  This map collapses one dimension, and sends an entire circle of points
+        in S3 to each point of S2 - making a common way to visualize this as a fibration of S3 by circles.
+        This Hopf fibration shows up all over in mathematics, to learn more see these wonderful notes by Zachary Treisman, written for a
+        high school mathematics summer program.
+        <a href="https://arxiv.org/pdf/0908.1205.pdf">https://arxiv.org/pdf/0908.1205.pdf</a>.
+    </p>
+    <p>
+        This example visualizes the work of Ulrich Pinkall, who used the Hopf map to construct an embedding
+        of each Euclidean structure on the torus into S3.  Pinkall's paper describing the construction is available
+        here:  <a href="https://www.researchgate.net/publication/234368025_Hopf_tori_in_S3">https://www.researchgate.net/publication/234368025_Hopf_tori_in_S3</a>.
+        Just as a cylinder can be made in 3-dimensional space by rolling up a sheet of paper without tearing or stretching,
+        tori which are isometric to the flat plane can be made in 4-dimensions.
+        (This is not possible in 3D, as is easy to believe experimentally: roll a sheet of paper into a cylinder
+        and then try to bend it into a torus without crinkling!).
+        In fact, abstractly there is a 2-parameter family of distinct ways to roll a plane into a torus, and Pinkall
+        showed that all such ways can actually be achieved in R4, by drawing a cricle on the 2-sphere and taking
+        its preimage under the Hopf map.
+    </p>
+    <p>This program excecutes this construction: starting with a family of curves on the 2-sphere (the family chosen
+        is rather arbitrary for now)
+        it draws the corresponding flat torus as the preimage under the Hopf map in the 3-sphere.
+
+    </p>
+    
+    <h2>Main Controls</h2>
+    <p>The main controls concern the choice of initial curve on the 2-sphere.  This curve lies in a family given
+        in spherical coordinates by φ(θ)=1+a*(1+0.3sin(t))*sin(n*θ+0.3*(1+cos(t))) with t being time.
+        <ul>
+            
+          <li><strong>Amplitude:</strong>
+            This slider determines a in the formula above.</li>
+            
+          <li><strong>Folds:</strong> This slider determines n in the formula.</li>
+            
+        </ul>
+
+    
+    <h2>Shading Controls</h2>
+    <p> These controls allow you to adjust coloring of the surface.
+        <ul>
+            
+          <li><strong>Grid</strong>
+            Determines the thickness of grid lines drawn on the torus surface.  With respect to a pair of orthogonal
+              circles in S3, there are two associated hopf fibrations (related to left and right quaternion multiplication).
+          These grid lines are with respect to the complementary hopf fibration which is used to take the preimage.</li>
+            
+          <li><strong>Hue</strong> This determines if the surface is colored by hue (mapped to θ on the 2-sphere) or monochromatically.</li>
+            
+        <li><strong>Transmission</strong>Determines the opacity of the surface by setting the fraction of light which transmits through.</li>
+        </ul>
+    
+    
+    
+    <h2>View Controls</h2>
+    <p> The coordinates of S3 are inherited from (x,y,u,v) on R4.  The default projection is stereographic projection from the point v=1.
+        These controls determine the projection of R4 to R3 for viewing.
+    
+    
+    <ul>
+    
+    <li><strong>rotx,roty,rotu:</strong>
+        Real values from 0 to 1, determining the fraction of Pi in which to rotate the x,y, or u axis into the v axis
+        (where the default projection occurs) respectively.
+        Setting any given parameter to 1 and leaving the others at 0 will stereographically project from that axis instead.
+        </li>
+        
+        <li><strong>Tumble:</strong>This animates a path of rotations in SO(4) varying the projection axis, and controls the speed.</li>
+        
+        <li><strong>Proj:</strong> This allows you to change the projection type: from stereographic to perspective in R4, to orthographic.</li>
+    </ul>
+
+
+    
+    <p>© Steve J. Trettel - 2021</p>
+    </body>
+    
+</html>
+
+
