@@ -25,6 +25,7 @@
     "better-docs": "^2.3.2",
     "jsdoc": "^3.6.6",
     "loke-jsdoc-theme": "^2.1.0",
+    "postprocessing": "^6.21.5",
     "rollup": "^2.47.0"
   },
   "dependencies": {
