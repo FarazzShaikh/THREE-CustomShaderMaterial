@@ -35,14 +35,12 @@ loadShadersCSM(paths).then((vertex) => {
   const controls = new OrbitControls(camera, renderer.domElement);
   camera.position.set(0.8, 2, 0.8);
 
-  // create a texture loader.
   const textureLoader = new THREE.TextureLoader();
 
-  // load a texture
-  const height = textureLoader.load("./textures/height.png");
-  const color = textureLoader.load("./textures/color.png");
-  const normal = textureLoader.load("./textures/normal.png");
-  const roughness_ao = textureLoader.load("./textures/roughness-ao.png");
+  const height = textureLoader.load("../textures/PBR/height.png");
+  const color = textureLoader.load("../textures/PBR/color.png");
+  const normal = textureLoader.load("../textures/PBR/normal.png");
+  const roughness_ao = textureLoader.load("../textures/PBR/roughness-ao.png");
 
   const geometry = new THREE.PlaneGeometry(5, 5, 512, 512);
   const material = new CustomShaderMaterial({
