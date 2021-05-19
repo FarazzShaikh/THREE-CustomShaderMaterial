@@ -12,10 +12,6 @@ jobs:
         with:
           submodules: "true"
 
-      - name: Install and Build submodule 🔨
-        run: |
-          cd example/lib/postprocessing && npm i && npm run build:js
-
       - name: Install and Build 🔨
         run: |
           npm install
