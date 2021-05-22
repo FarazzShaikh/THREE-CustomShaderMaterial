@@ -15,7 +15,6 @@
   },
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "build": "rollup -c",
     "doc": "chmod +x scripts/doc.sh && scripts/doc.sh"
   },
@@ -30,8 +29,5 @@
   },
   "dependencies": {
     "three": "^0.128.0"
-  },
-  "resolutions": {
-    "underscore": "1.13.1"
   }
 }
