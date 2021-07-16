@@ -1,5 +1,14 @@
-import * as THREE from "three";
-import { TYPES } from "./Types";
+import * as THREE from 'three';
+
+const TYPES = {
+  NORMAL: "MeshNormalMaterial",
+  BASIC: "MeshBasicMaterial",
+  PHONG: "MeshPhongMaterial",
+  MATCAP: "MeshMatcapMaterial",
+  TOON: "MeshToonMaterial",
+  PHYSICAL: "MeshPhysicalMaterial",
+  LAMBERT: "MeshLambertMaterial",
+};
 
 /**
  * @typedef {Object} CustomShader
@@ -13,7 +22,7 @@ import { TYPES } from "./Types";
  * predefined ThreeJS Fragmet Shaders. This takes away the hastle of
  * writing code for lighting and shaing.
  */
-export class CustomShaderMaterial extends THREE.Material {
+class CustomShaderMaterial extends THREE.Material {
   /**
    * Creates an instance of the <code>CustomShaderMaterial</code> class.
    *
@@ -24,9 +33,9 @@ export class CustomShaderMaterial extends THREE.Material {
    * @param {Object} options                    Options for material.
    * @param {string} options.baseMaterial       Base Material. The material whos fragment shader is used. Any type from the exported <code>TYPES</code> object
    * @param {CustomShader} options.vShader   Custom Vertex Shader
-   * @param {CustomShader} [options.fShader]   Custom Fragment Shader
-   * @param {Object} [options.uniforms]           Custom Uniforms to be passed to the shader.
-   * @param {Object} [options.passthrough]        Any custom options to be passed to the underlying base material.
+   * @param {CustomShader} options.fShader   Custom Fragment Shader
+   * @param {Object} options.uniforms           Custom Uniforms to be passed to the shader.
+   * @param {Object} options.passthrough        Any custom options to be passed to the underlying base material.
    *
    * @example
    * const material = new CustomShaderMaterial({
@@ -164,3 +173,5 @@ function _patchShader(type, shader, { defines = "", header = "", main = "" }) {
       ${patchedShader}
     `;
 }
+
+export { CustomShaderMaterial, TYPES };

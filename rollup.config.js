@@ -2,11 +2,23 @@ export default [
   {
     input: "index.js",
     output: {
-      file: "build/three-csm.module.js",
+      file: "build/three-csm.m.js",
       format: "es",
     },
     external: ["three"],
   },
+  {
+    input: "index.js",
+    output: {
+      file: "build/three-csm.m.cdn.js",
+      format: "es",
+      paths: {
+        three: "https://cdn.skypack.dev/three",
+      },
+    },
+    external: ["three"],
+  },
+
   {
     input: "index.js",
     output: {

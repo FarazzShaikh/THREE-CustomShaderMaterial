@@ -3,22 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta
-      name="viewport"
-      content="width=device-width, minimal-ui, viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, minimal-ui, viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <title>Three-Noise | Examples</title>
     <link href="main.css" rel="stylesheet" />
   </head>
   <body>
     <div class="Side">
-      <a
-        class="Title"
-        href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial"
-        >CustomShaderMaterial</a
-      >
+      <a class="Title" href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial">CustomShaderMaterial</a>
       <div class="SubTitle">Examples</div>
       <div class="Section">General</div>
+      <a class="Example" href="AllMaterials/index.html">All Material and properties</a>
       <a class="Example" href="EnvMap/index.html">Environment Map</a>
       <a class="Example" href="PBR/index.html">PBR Texturing with Height Map</a>
 
@@ -27,7 +21,7 @@
       <a class="Example" href="HopfTorus/index.html">Hopf Tori</a>
     </div>
 
-    <iframe class="Iframe" allow="autoplay" src=""></iframe>
+    <iframe class="Iframe" allow="autoplay"></iframe>
 
     <a class="SideIcon">&lt;</a>
     <a class="CodeIcon" href="" target="_blank">&lt;&#47;&gt;</a>
@@ -37,8 +31,7 @@
       const toggleLink = document.querySelector(".SideIcon");
       const exampleLinks = document.querySelectorAll("a.Example");
       const iFrame = document.querySelector(".Iframe");
-      const sourcePath =
-        "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/tree/master/example/";
+      const sourcePath = "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/tree/master/example/";
 
       toggleLink.addEventListener("click", (e) => {
         e.preventDefault();
@@ -52,8 +45,7 @@
         sourceLink.href = sourcePath + loadQuery[1];
       } else {
         // choose random example to show if none linked
-        let target =
-          exampleLinks[Math.floor(Math.random() * exampleLinks.length)];
+        let target = exampleLinks[0];
         updateExample({ target });
       }
 
@@ -66,10 +58,7 @@
 
         // Allow user to cmd/ctrl + click to open in new tab
         if (e.metaKey) {
-          window.open(
-            `${location.origin}${location.pathname}?src=${src}`,
-            "_blank"
-          );
+          window.open(`${location.origin}${location.pathname}?src=${src}`, "_blank");
           return;
         }
 
@@ -77,11 +66,7 @@
         sourceLink.href = sourcePath + src;
 
         // Update search query
-        history.pushState(
-          null,
-          null,
-          `${location.origin}${location.pathname}?src=${src}`
-        );
+        history.pushState(null, null, `${location.origin}${location.pathname}?src=${src}`);
         e.preventDefault && e.preventDefault();
       }
     </script>

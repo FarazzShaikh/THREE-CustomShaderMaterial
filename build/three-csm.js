@@ -23,7 +23,7 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
 
   var THREE__namespace = /*#__PURE__*/_interopNamespace(THREE);
 
-  const TYPES$1 = {
+  const TYPES = {
     NORMAL: "MeshNormalMaterial",
     BASIC: "MeshBasicMaterial",
     PHONG: "MeshPhongMaterial",
@@ -68,32 +68,45 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
      *         header: vertex.header,
      *         main: vertex.main,
      *     },
+     *    fShader: {
+     *         defines: fragment.defines,
+     *         header: fragment.header,
+     *         main: fragment.main,
+     *     },
      *     uniforms: {
      *         uTime: { value: 1.0 },
      *         uResolution: { value: new THREE.Vector3() },
      *     },
      *     passthrough: {
-     *         wireframe: true,
+     *         flatShading: true,
      *     },
      * });
      * material.uniforms.uResolution.set(1920, 1080, 0);
      */
     constructor(options) {
+      if (!options) {
+        throw new Error("Options object must be provided.");
+      }
+
+      if (options.fShader) {
+        if (_checkUndefined(options.fShader)) {
+          throw new Error("Property 'fShader' requires all its components to be present.");
+        }
+      }
+
+      if (options.vShader) {
+        if (_checkUndefined(options.vShader)) {
+          throw new Error("Property 'vShader' requires all its components to be present.");
+        }
+      }
+
+      if (!options.uniforms) options.uniforms = {};
+      if (!options.passthrough) options.passthrough = {};
+
       const base = new THREE__namespace[options.baseMaterial](options.passthrough);
       super();
 
-      if (options.baseMaterial == TYPES$1.BASIC)
-        console.warn(
-          "TYPES.BASIC does not support displacement in a Vertex Shader. Use TYPES.PHYSICAL instead."
-        );
-
-      if (
-        options.baseMaterial == TYPES$1.NORMAL ||
-        options.baseMaterial == TYPES$1.LAMBERT
-      )
-        console.warn(
-          "TYPES.NORMAL and TYPES.LAMBERT do not support envornment maps."
-        );
+      if (options.baseMaterial == TYPES.NORMAL || options.baseMaterial == TYPES.LAMBERT) console.warn("TYPES.NORMAL and TYPES.LAMBERT do not support envornment maps.");
 
       for (const key in base) {
         if (this[key] === undefined) this[key] = 0;
@@ -102,11 +115,19 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
       this.setValues(base);
 
       this.onBeforeCompile = (shader) => {
-        shader.vertexShader = _patchvShader(shader.vertexShader, {
+        shader.vertexShader = _patchShader("vert", shader.vertexShader, {
           defines: options.vShader.defines,
           header: options.vShader.header,
           main: options.vShader.main,
         });
+
+        if (options.fShader) {
+          shader.fragmentShader = _patchShader("frag", shader.fragmentShader, {
+            defines: options.fShader.defines,
+            header: options.fShader.header,
+            main: options.fShader.main,
+          });
+        }
 
         Object.keys(options.uniforms).forEach((k) => {
           shader.uniforms[k] = options.uniforms[k];
@@ -119,23 +140,42 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
   }
 
   /**
+   * Checks if shader object is null or undefined
+   * @private
+   */
+  function _checkUndefined(shader) {
+    let f = false;
+
+    f |= shader.defines === undefined || shader.defines === null;
+    f |= shader.header === undefined || shader.header === null;
+    f |= shader.main === undefined || shader.main === null;
+
+    return f;
+  }
+
+  /**
    * From https://codepen.io/marco_fugaro/pen/xxZWPWJ?editors=0010
    * @private
    */
-  function _patchvShader(shader, { defines = "", header = "", main = "" }) {
+  function _patchShader(type, shader, { defines = "", header = "", main = "" }) {
     let patchedShader = shader;
 
-    const replaces = {
-      "#include <defaultnormal_vertex>":
-        THREE__namespace.ShaderChunk.defaultnormal_vertex.replace(
-          "vec3 transformedNormal = objectNormal;",
-          `vec3 transformedNormal = newNormal;`
-        ),
+    const replaces =
+      type === "vert"
+        ? {
+            "#include <defaultnormal_vertex>": THREE__namespace.ShaderChunk.defaultnormal_vertex.replace("vec3 transformedNormal = objectNormal;", `vec3 transformedNormal = newNormal;`),
 
-      "#include <displacementmap_vertex>": `
+            "#include <project_vertex>": `
           transformed = newPos;
+          #include <project_vertex>
         `,
-    };
+          }
+        : {
+            "#include <color_fragment>": `
+          #include <color_fragment>
+          diffuseColor = newColor;
+    `,
+          };
 
     const replaceAll = (str, find, rep) => str.split(find).join(rep);
     Object.keys(replaces).forEach((key) => {
@@ -156,16 +196,6 @@ var THREE_CustomShaderMaterial = (function (exports, THREE) {
       ${patchedShader}
     `;
   }
-
-  const TYPES = {
-    NORMAL: "MeshNormalMaterial",
-    BASIC: "MeshBasicMaterial",
-    PHONG: "MeshPhongMaterial",
-    MATCAP: "MeshMatcapMaterial",
-    TOON: "MeshToonMaterial",
-    PHYSICAL: "MeshPhysicalMaterial",
-    LAMBERT: "MeshLambertMaterial",
-  };
 
   exports.CustomShaderMaterial = CustomShaderMaterial;
   exports.TYPES = TYPES;

@@ -16,6 +16,8 @@
       "better-docs": {
           "name": "THREE-CustomShaderMaterial",
           "title": "CSM | ",
+          "logo": "Assets/logo.png",
+          "css": "Assets/docs.css",
           "navLinks": [
             {
                 "label": "Github",

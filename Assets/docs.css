@@ -1,0 +1,15 @@
+
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.image img {
+    width: 40px;
+    height: 40px;
+}
+
+.content sup {
+    font-size: 50%;
+}

@@ -2,12 +2,24 @@
   "name": "three-custom-shader-material",
   "version": "2.2.2",
   "description": "Extend Three.js standard materials with your vertex shaders!",
-  "main": "build/three-csm.module.js",
+  "main": "build/three-csm.m.js",
   "type": "module",
   "files": [
-    "build/three-csm.module.js",
+    "build/*",
     "README.md",
     "package.json"
+  ],
+  "keywords": [
+    "glsl",
+    "shader",
+    "webgl",
+    "custom",
+    "threejs",
+    "three.js",
+    "web",
+    "webdev",
+    "3d",
+    "graphics"
   ],
   "repository": {
     "type": "git",
@@ -28,6 +40,6 @@
     "rollup": "^2.47.0"
   },
   "dependencies": {
-    "three": "^0.128.0"
+    "three": "^0.129.0"
   }
 }
