@@ -91,13 +91,13 @@ const material = new CustomShaderMaterial({
     },
     // Optional
     fShader: {
-        defines: defines,           
-        header: header,                 // Custom Fragment Shader
-        main: main,
+        defines: fdefines,           
+        header: fheader,                 // Custom Fragment Shader
+        main: fmain,
     },
     // Optional
     uniforms: { 
-        three_noise_seed: { value: 2 } // Custom uniforms
+        three_noise_seed: { value: 2 }  // Custom uniforms
     }, 
     // Optional
     passthrough: {
