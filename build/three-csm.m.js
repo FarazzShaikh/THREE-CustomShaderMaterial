@@ -8,6 +8,8 @@ const TYPES = {
   TOON: "MeshToonMaterial",
   PHYSICAL: "MeshPhysicalMaterial",
   LAMBERT: "MeshLambertMaterial",
+  DEPTH: "MeshDepthMaterial",
+  POINTS: "PointsMaterial",
 };
 
 /**
@@ -33,9 +35,9 @@ class CustomShaderMaterial extends THREE.Material {
    * @param {Object} options                    Options for material.
    * @param {string} options.baseMaterial       Base Material. The material whos fragment shader is used. Any type from the exported <code>TYPES</code> object
    * @param {CustomShader} options.vShader   Custom Vertex Shader
-   * @param {CustomShader} options.fShader   Custom Fragment Shader
-   * @param {Object} options.uniforms           Custom Uniforms to be passed to the shader.
-   * @param {Object} options.passthrough        Any custom options to be passed to the underlying base material.
+   * @param {CustomShader} [options.fShader]   Custom Fragment Shader
+   * @param {Object} [options.uniforms]           Custom Uniforms to be passed to the shader.
+   * @param {Object} [options.passthrough]        Any custom options to be passed to the underlying base material.
    *
    * @example
    * const material = new CustomShaderMaterial({
