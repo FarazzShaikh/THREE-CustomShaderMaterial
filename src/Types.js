@@ -6,4 +6,6 @@ export const TYPES = {
   TOON: "MeshToonMaterial",
   PHYSICAL: "MeshPhysicalMaterial",
   LAMBERT: "MeshLambertMaterial",
+  DEPTH: "MeshDepthMaterial",
+  POINTS: "PointsMaterial",
 };
