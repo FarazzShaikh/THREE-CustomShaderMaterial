@@ -15,6 +15,7 @@ jobs:
       - name: Install and Build 🔨
         run: |
           npm install
+          npm run build
           npm run doc
 
       - name: Deploy 📖
@@ -40,7 +41,7 @@ jobs:
         if: ${{ steps.publish.outputs.type != 'none' }}
         with:
           body_path: CHANGELOG.txt
-          files: src/*
+          files: build/*
           tag_name: ${{steps.publish.outputs.version}}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
