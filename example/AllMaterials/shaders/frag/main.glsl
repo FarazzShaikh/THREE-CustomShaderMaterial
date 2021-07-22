@@ -1,1 +1,1 @@
-vec4 newColor = vec4(sin(uTime), cos(uTime), sin(uTime * 0.5), 1.0);
+csm_DiffuseColor = vec4(sin(uTime), cos(uTime), sin(uTime * 0.5), 1.0);

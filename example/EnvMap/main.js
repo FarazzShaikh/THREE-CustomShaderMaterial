@@ -1,8 +1,8 @@
-import * as THREE from "three";
+import * as THREE from "https://cdn.skypack.dev/three";
 import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
 import { EXRLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/EXRLoader.js";
 
-import { CustomShaderMaterial, TYPES } from "../../build/three-csm.module.js";
+import { CustomShaderMaterial, TYPES } from "../../build/three-csm.m.cdn.js";
 import { loadShadersCSM } from "../lib/glNoise/build/glNoise.m.js";
 
 const paths = {
@@ -15,12 +15,7 @@ document.body.style.cursor = "wait";
 
 loadShadersCSM(paths).then((vertex) => {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -69,19 +64,17 @@ loadShadersCSM(paths).then((vertex) => {
     pmremGenerator.dispose();
   };
 
-  new EXRLoader()
-    .setDataType(THREE.UnsignedByteType)
-    .load("./textures/env.exr", function (texture) {
-      exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
-      exrBackground = exrCubeRenderTarget.texture;
+  new EXRLoader().setDataType(THREE.UnsignedByteType).load("./textures/env.exr", function (texture) {
+    exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
+    exrBackground = exrCubeRenderTarget.texture;
 
-      texture.dispose();
-      scene.background = exrBackground;
-      material.envMap = exrBackground;
-      renderer.domElement.style.cursor = "default";
-      document.body.style.cursor = "default";
-      animate();
-    });
+    texture.dispose();
+    scene.background = exrBackground;
+    material.envMap = exrBackground;
+    renderer.domElement.style.cursor = "default";
+    document.body.style.cursor = "default";
+    animate();
+  });
 
   const animate = function (dt) {
     requestAnimationFrame(animate);

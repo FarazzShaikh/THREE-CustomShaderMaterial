@@ -4,13 +4,16 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "source": {
-        "include": ["index.js", "src"],
+        "include": ["index.ts", "src"],
         "includePattern": "\\.(jsx|js|ts|tsx)$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
-    "plugins": [],
+    "plugins": [
+        "node_modules/better-docs/typescript"
+    
+    ],
     "typescript": {
-        "moduleRoot": "test"
+        "moduleRoot": "src"
     },
      "templates": {
       "better-docs": {

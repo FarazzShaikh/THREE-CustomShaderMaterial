@@ -14,7 +14,8 @@
       <div class="Section">General</div>
       <a class="Example" href="AllMaterials/index.html">All Material and properties</a>
       <a class="Example" href="EnvMap/index.html">Environment Map</a>
-      <a class="Example" href="PBR/index.html">PBR Texturing with Height Map</a>
+      <a class="Example" extern="true" href="https://farazzshaikh.github.io/experiments/3D/Planet/index.html">Planet</a>
+      <a class="Example" extern="true" href="https://farazzshaikh.github.io/experiments/3D/Waves/index.html">Waves</a>
 
       <div class="Section">3D Graphs by Steve Trettel</div>
       <a class="Example" href="ComplexPowers/index.html">Complex Powers</a>
@@ -33,11 +34,6 @@
       const iFrame = document.querySelector(".Iframe");
       const sourcePath = "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/tree/master/example/";
 
-      toggleLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        document.body.toggleAttribute("data-hideSidebar");
-      });
-
       // Load query example in iFrame if linked
       let loadQuery = location.search.split("src=");
       if (loadQuery[1]) {
@@ -45,29 +41,46 @@
         sourceLink.href = sourcePath + loadQuery[1];
       } else {
         // choose random example to show if none linked
-        let target = exampleLinks[0];
+        let target = exampleLinks[2];
         updateExample({ target });
       }
+
+      toggleLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.body.toggleAttribute("data-hideSidebar");
+      });
 
       exampleLinks.forEach((link) => {
         link.addEventListener("click", updateExample, false);
       });
 
       function updateExample(e) {
-        let src = e.target.href.split("example/")[1];
+        e.preventDefault && e.preventDefault();
+
+        let src;
+        if (e.target.getAttribute("extern") === "true") {
+          src = e.target.href;
+        } else {
+          src = e.target.href.split("example/")[1];
+        }
+
+        console.log(src);
 
         // Allow user to cmd/ctrl + click to open in new tab
         if (e.metaKey) {
-          window.open(`${location.origin}${location.pathname}?src=${src}`, "_blank");
+          if (e.target.getAttribute("extern") === "true") {
+            window.open(`${src}`, "_blank");
+          } else {
+            window.open(`${location.origin}${location.pathname}?src=${src}`, "_blank");
+          }
           return;
         }
 
         iFrame.src = e.target.href;
         sourceLink.href = sourcePath + src;
 
-        // Update search query
+        // // Update search query
         history.pushState(null, null, `${location.origin}${location.pathname}?src=${src}`);
-        e.preventDefault && e.preventDefault();
       }
     </script>
   </body>

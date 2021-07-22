@@ -3,6 +3,7 @@
   "version": "2.3.1",
   "description": "Extend Three.js standard materials with your vertex shaders!",
   "main": "build/three-csm.m.js",
+  "types": "build/three-csm.d.ts",
   "type": "module",
   "files": [
     "build/*",
@@ -27,19 +28,26 @@
   },
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && rm -rf build/types",
     "doc": "chmod +x scripts/doc.sh && scripts/doc.sh"
   },
   "author": "Faraz Shaikh",
   "license": "MIT",
   "devDependencies": {
+    "@types/three": "^0.130.1",
     "better-docs": "^2.3.2",
     "jsdoc": "^3.6.6",
     "loke-jsdoc-theme": "^2.1.0",
     "postprocessing": "^6.21.5",
-    "rollup": "^2.47.0"
+    "rollup": "^2.47.0",
+    "rollup-plugin-dts": "^3.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0"
   },
   "dependencies": {
-    "three": "^0.129.0"
+    "@rollup/plugin-typescript": "^8.2.3",
+    "three": "^0.129.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
   }
 }

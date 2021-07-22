@@ -1,12 +1,11 @@
 
-//requires a function vec3 displace(vec3) from geometry.glsl
-
+// requires a function vec3 displace(vec3) from geometry.glsl
 
 vec3 newPos = displace(position);
 
 float offset = 0.001;
-vec3 tangent = vec3(1,0,0);
-vec3 bitangent = vec3(0,1,0);
+vec3 tangent = vec3(1, 0, 0);
+vec3 bitangent = vec3(0, 1, 0);
 vec3 neighbour1 = position + tangent * offset;
 vec3 neighbour2 = position + bitangent * offset;
 

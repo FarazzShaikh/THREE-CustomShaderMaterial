@@ -5,13 +5,11 @@ import { CustomShaderMaterial, TYPES } from "../../build/three-csm.m.cdn.js";
 import { loadShadersCSM } from "../lib/glNoise/build/glNoise.m.js";
 
 const paths = {
-  defines: "./shaders/defines.glsl",
   header: "./shaders/header.glsl",
   main: "./shaders/main.glsl",
 };
 
 const frag_paths = {
-  defines: "./shaders/frag/defines.glsl",
   header: "./shaders/frag/header.glsl",
   main: "./shaders/frag/main.glsl",
 };
@@ -88,11 +86,7 @@ function initSpheres(vertex, fragment, scene, font, options) {
 
     const material = new CustomShaderMaterial({
       baseMaterial: type,
-      vShader: {
-        defines: vertex.defines,
-        header: vertex.header,
-        main: vertex.main,
-      },
+      vShader: vertex,
       fShader: fShader,
       uniforms: {
         uTime: { value: 1.0 },
@@ -160,6 +154,7 @@ loadShadersCSM(paths).then((vertex) => {
       materials.push(
         ...initSpheres(vertex, fragment, scene, font, {
           wireframe: true,
+          transparent: true,
         })
       );
       materials.push(

@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Version 2.4.0
+
+### Changes
+
+- Output variables `newPos`, `newNormal` and `newColor` depricated in favor of `csm_Position`, `csm_Normal` and `csm_DiffuseColor`
+  - This is a non breaking change as the old ones still work for compatibility.
+- Output variables from custom shader are now optional
+  - `csm_Position`, `csm_Normal` and `csm_DiffuseColor` now default to their orignal values (`position`, `objectNormal` and `vColor`) if not set in custom shader.
+
+### Enhancements
+
+- Rewritten in TypeScript
+- Minified to reduce filesize
+
 ## Version 2.3.1
 
 ### New
@@ -18,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Now supports **all** material types.
 - Now you can set the **diffuse color** of the object as well.
-- Added CDN friendly version of library - `build/three-csm.m.cdn.js`.
+- Added CDN-friendly version of the library - `build/three-csm.m.cdn.js`.
 
 ### Changed
 

@@ -44,3 +44,9 @@ jobs:
           tag_name: ${{steps.publish.outputs.version}}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Push build to branch
+        uses: EndBug/add-and-commit@v7
+        with:
+          default_author: github_actions
+          add: "build/* -f"
