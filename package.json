@@ -34,6 +34,7 @@
   "author": "Faraz Shaikh",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.3",
     "@types/three": "^0.130.1",
     "better-docs": "^2.3.2",
     "jsdoc": "^3.6.6",
@@ -42,12 +43,11 @@
     "rollup": "^2.47.0",
     "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.30.0"
-  },
-  "dependencies": {
-    "@rollup/plugin-typescript": "^8.2.3",
-    "three": "^0.129.0",
+    "rollup-plugin-typescript2": "^0.30.0",
     "tslib": "^2.3.0",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "three": "^0.129.0"
   }
 }
