@@ -2,7 +2,7 @@
 <br />
 <p align="center">
    <a href="">
-        <img src="./Assets/icon.png" alt="Logo" width="300" height="300">
+        <img src="./Assets/logo.png" alt="Logo" width="300" height="300">
     </a>
 
   <h1 align="center"><sup>THREE</sup>CustomShaderMaterial</h1>

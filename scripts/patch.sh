@@ -3,7 +3,7 @@
 # One use case is for javadoc-generated API documentation.
 #
 # Run like this:
-# add-favicon <directory> <favicon.png>
+# add-favicon <directory> <favlogo.png>
 # The arguments should be paths relative to the current working directory.
 
 # Once this has been run, running it another time has no effect.
