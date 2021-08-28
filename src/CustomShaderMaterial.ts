@@ -144,9 +144,16 @@ function _patchShader(type: string, shader: string, customShader: iCustomShader)
         vec3 csm_Position;
         vec3 csm_Normal;
         vec4 csm_DiffuseColor;
+        float csm_PointSize;
         ${main}
       `
   );
+
+
+  if(main.includes("csm_PointSize")) {
+    patchedShader = patchedShader.replace("gl_PointSize = size;", "gl_PointSize = csm_PointSize;")
+  }
+
 
   return `
       ${defines}
