@@ -35,7 +35,7 @@
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.2.3",
-    "@types/three": "^0.130.1",
+    "@types/three": "^0.134.0",
     "better-docs": "^2.3.2",
     "jsdoc": "^3.6.6",
     "loke-jsdoc-theme": "^2.1.0",
@@ -48,6 +48,6 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "three": "^0.129.0"
+    "three": "^0.134.0"
   }
 }
