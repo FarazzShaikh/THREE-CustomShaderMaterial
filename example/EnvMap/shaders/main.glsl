@@ -1,0 +1,1 @@
+vec3 newPos = position + (normal * displace(position));

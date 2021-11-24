@@ -1,0 +1,56 @@
+body {
+    margin: 10em;
+    background-color: #000;
+    color: #fff;
+    font-family: Monospace;
+    font-size: 13px;
+    line-height: 24px;
+
+}
+
+a {
+    color: #ff0;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+canvas {
+    display: block;
+}
+
+/*
+p {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  margin-right: 150px;
+  margin-left: 80px;
+}
+*/
+
+h1{
+    font-family: Monospace;
+    font-size: 30px;
+    line-height: 40px;
+
+}
+
+h2{
+    font-family: Monospace;
+    font-size: 20px;
+    line-height: 30px;
+
+}
+
+strong{
+    color:#54B2FE;
+}
+
+
+
+.warning{
+   color:#F579AC;
+}

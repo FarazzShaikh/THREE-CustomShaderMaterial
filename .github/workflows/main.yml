@@ -15,6 +15,7 @@ jobs:
       - name: Install and Build 🔨
         run: |
           npm install
+          npm run build
           npm run doc
 
       - name: Deploy 📖
@@ -26,7 +27,7 @@ jobs:
       - name: Publish 📝
         uses: JS-DevTools/npm-publish@v1
         id: publish
-        if: ${{ env.deployment_status == 'success' }}
+        if: ${{ env.deployment_status != 'failed' }}
         with:
           token: ${{ secrets.NPM_TOKEN }}
 
@@ -40,7 +41,13 @@ jobs:
         if: ${{ steps.publish.outputs.type != 'none' }}
         with:
           body_path: CHANGELOG.txt
-          files: src/*
+          files: build/*
           tag_name: ${{steps.publish.outputs.version}}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Push build to branch
+        uses: EndBug/add-and-commit@v7
+        with:
+          default_author: github_actions
+          add: "build/* -f"

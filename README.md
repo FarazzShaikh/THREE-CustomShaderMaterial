@@ -1,7 +1,11 @@
 
 <br />
 <p align="center">
-  <h1 align="center">THREE-CustomShaderMaterial</h1>
+   <a href="">
+        <img src="./Assets/logo.png" alt="Logo" width="300" height="300">
+    </a>
+
+  <h1 align="center"><sup>THREE</sup>CustomShaderMaterial</h1>
 
   <p align="center">
     Extend Three.js standard materials with your own vertex shaders!
@@ -17,32 +21,48 @@
   </p>
 </p>
 
-## BREAKING
-
-Version 2.0.0 introduces potentially breaking changes. Please read the API and adjust your code accordingly.
-
 ## Installation
-
-Make sure to have ThreeJS installed.
 ```bash
-$ npm i three
+npm install three-custom-shader-material
+# or
+yarn add three-custom-shader-material
 ```
 
-Install through NPM
-```bash
-$ npm i three-custom-shader-material
-```
+For Browsers, download files from `build/`. Here is what each file is:
 
-For Browsers, download `build/three-csm.js`.
+- `three-csm.js` - IIFE type module for browsers importing Three using a `<script>` tag.
+- `three-csm.m.js` - ES Module. Import Three the NodeJS way `import * as THREE from "three"`
+- `three-csm.m.cdn.js` - ES Module. Import Three from a CDN `import * as THREE from "https://cdn.skypack.dev/three"`
 
 ## Importing
 
+
+### NodeJS
+
+In NodeJS, you can import it like you normally do.
+```js
+import { CustomShaderMaterial, TYPES } from "three-custom-shader-material"
+```
+
+
+### ES modules
+
+```js
+import { CustomShaderMaterial, TYPES } from "three-csm.m.js"
+// or
+import { CustomShaderMaterial, TYPES } from "three-csm.m.cdn.js"
+```
+
 ### Browser
 
-In your HTML
+In HTML using IIFE.
+
 ```html
-<script src="lib/three-csm.js"></script>
-<script src="./main.js" defer></script>
+<script src="three.js"></script>
+<script src="three-csm.js"></script>
+
+<!-- Your script -->
+<script src="main.js" defer></script>
 ```
 
 Then, in your JavaScript you can use the `THREE_Noise` object.
@@ -50,47 +70,115 @@ Then, in your JavaScript you can use the `THREE_Noise` object.
 const { CustomShaderMaterial, TYPES } = THREE_CustomShaderMaterial;
 ```
 
-### NodeJS
-In NodeJS, you can import it like you normally do.
-```js
-import {CustomShaderMaterial, TYPES} from "three-custom-shader-material"
-```
 
 ## Usage
 
 ```js
-// Import GLSL vertex shaders as strings
-import header from "example/shaders/header.js";
-import main from "example/shaders/main.js";
-import defines from "example/shaders/defines.js";
+// Set up ThreeJS 
+// ... 
 
-// Import GLSL fragment shaders as strings
-import fheader from "example/shaders/fheader.js";
-import fmain from "example/shaders/fmain.js";
-import fdefines from "example/shaders/fdefines.js";
-
-// ...
-
+// Set up CSM
 const material = new CustomShaderMaterial({
-    baseMaterial: TYPES.PHYSICAL,       // Material to extend
+    // Material to extend
+    baseMaterial: TYPES.PHYSICAL,      
     vShader: {
-        defines: defines,           
-        header: header,                 // Custom Vertex Shader
-        main: main,
+        // Custom Vertex Shader
+        defines: await (await fetch("vert_defines.glsl")).text(),           
+        header: await (await fetch("vert_header.glsl")).text(),                    
+        main: await (await fetch("vert_main.glsl")).text(),    
+    },
+    fShader: {
+        // Custom Fragment Shader
+        defines: await (await fetch("frag_defines.glsl")).text(),           
+        header: await (await fetch("frag_header.glsl")).text(),                    
+        main: await (await fetch("frag_main.glsl")).text(),  
     },
     uniforms: { 
-        three_noise_seed: { value: 2 } // Custom uniforms
+        // Custom uniforms
+        uTime: { value: 0 }  
     }, 
     passthrough: {
+        // options passthrough to unerlying material.
         wireframe: false,
-        lights: true,                   // Options passthrough to unerlying material.
+        lights: true,                   
   },
 });
 
 const plane = new THREE.Mesh(geometry, material); // Use like a regular material
+
+// ...
+
+function render(time) {
+    if(material.uniforms)
+        material.uniforms.time.value = time;
+
+    // ...
+}
+
 ```
-## Note
 
-The variables `newPos` and `newNormal` must be defined in the `main` section of the injected shader. See the example shaders for how to format shaders for use with CSM.
+Here is what the different keys in the `vShader` and `fShader` objects may contain.
 
-Variable `gl_FragColor` must be assigned a value in the `main` section of the fragment shader.
+- `defines` - All your macro and pragma definitions.
+- `header` - All your global variables, functions, uniforms, varyings and attribute definitions.
+- `main` - Main Shader code. Part to be injected into the `main()` function of the underlying material.
+
+All shader code passed into CSM must be strings.
+
+## Output Variables
+
+CSM provides the following output variables:
+
+| Variable | Type | Description | Available In |
+|----------|------|-------------|--------------|
+| csm_Position | `vec3` | Custom vertex position. | Vertex Shader | 
+| csm_Normal | `vec3` | Custom vertex position. | Vertex Shader | 
+| csm_DiffuseColor | `vec4` | Custom frag color. | Fragment Shader | 
+
+You must use these variables like you would use standard GLSL output variables.
+
+```c
+// gl_Position = position * vec3(2.0);
+csm_Position = position * vec3(2.0);
+```
+
+See the `example` directory for how to format shaders for use with CSM.
+
+## Loading Shaders
+
+The best way to load shaders for CSM would be to use the [loadShaderCSM](https://github.com/FarazzShaikh/glNoise#loadshaderscsm) loader from my library [glNoise](https://github.com/FarazzShaikh/glNoise).
+
+
+If you do not want another dependency then your best bets are the following
+
+- Use `fetch` in the browser like so:
+  ```js
+  const frag_defines = await (await fetch("frag_defines.glsl")).text();
+  ```
+- Use `fs` in NodeJS
+  ```js
+  const frag_defines = await new Promise((res, rej) => {
+      fs.readFile("frag_defines.glsl", "utf8", (err, data) => {
+        if(err) rej(err);
+        res(data);
+      });
+  });
+
+  // or with fs/promises
+
+  const frag_defines = await fs.readFile("frag_defines.glsl", "utf8")
+  ```
+- Export the shader as a string from a `.js` file.
+  ```js
+    // frag_defines.js
+    export defualt ` // glsl
+        ...
+    `;
+
+    // main.js
+    import frag_defines from "frag_defines.js";
+  ```
+
+## Credits
+
+Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).

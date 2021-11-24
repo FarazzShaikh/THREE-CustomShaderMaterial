@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      // project options
+      "lib":["es5", "es6", "dom"],
+      "outDir": "build",
+      "removeComments": true,
+      "target": "ES6",
+      "declaration": true,
+      "declarationDir": "build/types",
+  
+      // Strict Checks
+      "alwaysStrict": true,
+      "allowUnreachableCode": false,
+      "noImplicitAny": true,
+      "strictNullChecks": true, 
+      "noImplicitReturns": true,
+      "noUncheckedIndexedAccess": true, 
+    //   "noUnusedLocals": true,
+    //   "noUnusedParameters": true,
+    },
+    "include": ["src/**/*"],
+    "exclude": [
+      "node_modules/**/*"
+    ]
+  }

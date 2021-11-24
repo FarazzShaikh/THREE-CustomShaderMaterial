@@ -1,13 +1,26 @@
 {
   "name": "three-custom-shader-material",
-  "version": "2.2.0",
+  "version": "2.4.2",
   "description": "Extend Three.js standard materials with your vertex shaders!",
-  "main": "build/three-csm.module.js",
+  "main": "build/three-csm.m.js",
+  "types": "build/three-csm.d.ts",
   "type": "module",
   "files": [
-    "build/three-csm.module.js",
+    "build/*",
     "README.md",
     "package.json"
+  ],
+  "keywords": [
+    "glsl",
+    "shader",
+    "webgl",
+    "custom",
+    "threejs",
+    "three.js",
+    "web",
+    "webdev",
+    "3d",
+    "graphics"
   ],
   "repository": {
     "type": "git",
@@ -15,22 +28,26 @@
   },
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
-    "build": "rollup -c",
+    "build": "rollup -c && rm -rf build/types",
     "doc": "chmod +x scripts/doc.sh && scripts/doc.sh"
   },
   "author": "Faraz Shaikh",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.3",
+    "@types/three": "^0.134.0",
     "better-docs": "^2.3.2",
     "jsdoc": "^3.6.6",
     "loke-jsdoc-theme": "^2.1.0",
-    "rollup": "^2.47.0"
+    "postprocessing": "^6.21.5",
+    "rollup": "^2.47.0",
+    "rollup-plugin-dts": "^3.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
   },
   "dependencies": {
-    "three": "^0.128.0"
-  },
-  "resolutions": {
-    "underscore": "1.13.1"
+    "three": "^0.134.0"
   }
 }
