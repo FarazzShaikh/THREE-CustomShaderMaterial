@@ -48,6 +48,6 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "three": "^0.134.0"
+    "three": "^0.136.0"
   }
 }

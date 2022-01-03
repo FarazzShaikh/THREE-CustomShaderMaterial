@@ -1,5 +1,6 @@
 import * as THREE from "https://cdn.skypack.dev/three";
-import { OrbitControls } from "https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js";
+import { FontLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "https://cdn.skypack.dev/three/examples/jsm/geometries/TextGeometry.js";
 
 import { CustomShaderMaterial, TYPES } from "../../build/three-csm.m.cdn.js";
 import { loadShadersCSM } from "../lib/glNoise/build/glNoise.m.js";
@@ -106,7 +107,7 @@ ${type}
 ${options ? JSON.stringify(options, null, 4) : ""}
     `;
 
-    const textGeometry = new THREE.TextGeometry(str, {
+    const textGeometry = new TextGeometry(str, {
       font: font,
       size: 0.2,
       height: 0.01,
@@ -130,7 +131,14 @@ ${options ? JSON.stringify(options, null, 4) : ""}
 loadShadersCSM(paths).then((vertex) => {
   loadShadersCSM(frag_paths).then((fragment) => {
     const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, (window.innerHeight * 5) / 2, (window.innerHeight * 5) / -2, -100, 100);
+    const camera = new THREE.OrthographicCamera(
+      window.innerWidth / -2,
+      window.innerWidth / 2,
+      (window.innerHeight * 5) / 2,
+      (window.innerHeight * 5) / -2,
+      -100,
+      100
+    );
     // camera.position.set(0, 0, 3);
     camera.zoom = 50;
     camera.updateProjectionMatrix();
@@ -148,7 +156,7 @@ loadShadersCSM(paths).then((vertex) => {
     initHelpers(scene);
 
     let materials = [];
-    const loader = new THREE.FontLoader();
+    const loader = new FontLoader();
     loader.load("./Assets/font/font.json", (font) => {
       materials.push(...initSpheres(vertex, fragment, scene, font));
       materials.push(
