@@ -1,6 +1,6 @@
 {
   "name": "three-custom-shader-material",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Extend Three.js standard materials with your vertex shaders!",
   "main": "build/three-csm.m.js",
   "types": "build/three-csm.d.ts",
