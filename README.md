@@ -10,7 +10,7 @@
 <br>
 
 <p align="center">
-  <a href="https://farazzshaikh.github.io/experiments/?src=/experiments/Particles/1M%20Particles/index.html" target="_blank"><img height="260" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/wavesDemo.png" alt="Waves" /></a>
+  <a href="https://codesandbox.io/s/customshadermaterial-waves-0lg38?file=/src/App.tsx" target="_blank"><img height="260" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/wavesDemo.png" alt="Waves" /></a>
 </p>
 <p align="middle">
   <i>The demo is real, you can click it! It contains full code, too. 📦</i>
