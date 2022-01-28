@@ -1,0 +1,40 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+        with:
+          submodules: 'true'
+
+      - name: Install and Build 🔨
+        run: |
+          yarn
+          yarn build
+
+      - name: Publish 📝
+        uses: JS-DevTools/npm-publish@v1
+        id: publish
+        if: ${{ env.deployment_status != 'failed' }}
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Pre Release 👷
+        run: |
+          chmod +x scripts/getChange.sh
+          ./scripts/getChange.sh ${{steps.publish.outputs.version}} CHANGELOG.md > CHANGELOG.txt
+
+      - name: Release 🚀
+        uses: softprops/action-gh-release@v1
+        if: ${{ steps.publish.outputs.type != 'none' }}
+        with:
+          body_path: CHANGELOG.txt
+          files: build/*
+          tag_name: ${{steps.publish.outputs.version}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
