@@ -6,7 +6,7 @@
   "main": "./index.cjs.js",
   "types": "./index.d.ts",
   "files": [
-    "**"
+    "dist/**/*"
   ],
   "exports": {
     "./package.json": "./package.json",
