@@ -45,7 +45,6 @@ export default class CustomShaderMaterial extends Material {
       this.uniforms = shader.uniforms
       this.needsUpdate = true
     }
-    this.needsUpdate = true
   }
 
   private patchShader(

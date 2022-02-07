@@ -46,7 +46,6 @@
   "scripts": {
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly && yarn copy",
-    "prepublishOnly": "npm run build",
     "copy": "shx cp package.json README.md LICENSE dist"
   },
   "husky": {

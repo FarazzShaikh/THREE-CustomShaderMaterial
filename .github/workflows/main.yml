@@ -16,26 +16,3 @@ jobs:
         run: |
           yarn
           yarn build
-          cd dist
-
-      - name: Publish 📝
-        uses: JS-DevTools/npm-publish@v1
-        id: publish
-        if: ${{ env.deployment_status != 'failed' }}
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-
-      - name: Pre Release 👷
-        run: |
-          chmod +x scripts/getChange.sh
-          ./scripts/getChange.sh ${{steps.publish.outputs.version}} CHANGELOG.md > CHANGELOG.txt
-
-      - name: Release 🚀
-        uses: softprops/action-gh-release@v1
-        if: ${{ steps.publish.outputs.type != 'none' }}
-        with:
-          body_path: CHANGELOG.txt
-          files: dist/*
-          tag_name: ${{steps.publish.outputs.version}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}

@@ -703,10 +703,10 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
-"@types/three@^0.136.1":
-  version "0.136.1"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.136.1.tgz#030fc01cdc5ce82cad93db17b94a24515cb4b50e"
-  integrity sha512-gzTw6RR4dU8sGf+RpLBWWKHRVIJ4gwKVQPk+IFCgha04Efg/itXYUalX6iBcYeSmaDu0qE5M7uTq0XLQpU4FAg==
+"@types/three@^0.137.0":
+  version "0.137.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.137.0.tgz#6047e0658262b4de7c464a40288f9071ddd9a6d5"
+  integrity sha512-Xc5EAlfYmgrCLI/VlSVqiRJAtzhWF0Rw2jSq48nqJy+Hcb5sfDOXyfZn1+RNcHyi9l8CeCAXCZygO8IyeOJVEA==
 
 "@types/webpack-dev-server@^4.7.2":
   version "4.7.2"
@@ -3619,10 +3619,10 @@ terser@^5.10.0, terser@^5.7.2:
     source-map "~0.7.2"
     source-map-support "~0.5.20"
 
-three-custom-shader-material@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.1.2.tgz#b9e66109e5edac7e2b9b7a0508a12e221362cce0"
-  integrity sha512-KyrjXIb4cIK9mC0Vf56+mfHIJSggzseze3JQXXJWUss1sBNXeWLE0QatBZgDu0q5OerkFUKvI+DzeXhSWeknRw==
+three-custom-shader-material@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.1.3.tgz#3271dd5e4fcac771165aa70ab8f6f537934d1b4e"
+  integrity sha512-NF3FiOerVzCd5kKXgCB0DEyNF2lEbGSAQRuHiaqyv+S7N3+RZfKxUWmkXY2XuKQY1n5vbas/gCPQvNGhGjYAdA==
   dependencies:
     "@react-three/fiber" "^7.0.26"
     three "^0.137.5"
