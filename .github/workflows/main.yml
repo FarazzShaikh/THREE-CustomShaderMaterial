@@ -16,6 +16,7 @@ jobs:
         run: |
           yarn
           yarn build
+          cd dist
 
       - name: Publish 📝
         uses: JS-DevTools/npm-publish@v1
@@ -34,7 +35,7 @@ jobs:
         if: ${{ steps.publish.outputs.type != 'none' }}
         with:
           body_path: CHANGELOG.txt
-          files: build/*
+          files: dist/*
           tag_name: ${{steps.publish.outputs.version}}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}

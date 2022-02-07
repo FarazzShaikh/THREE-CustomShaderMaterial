@@ -448,7 +448,7 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@^7.0.21", "@react-three/fiber@^7.0.26":
+"@react-three/fiber@^7.0.26":
   version "7.0.26"
   resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.26.tgz#36ec19fa7bff00738a7dd368d37d81fed912dd52"
   integrity sha512-46NBais4fQIGcMGLBbOf84lp8y/cg73jOEVmAQQJqWX6iOVeNg29jYd15LBuCW2qPD1qDRU0rOfLbMDgwr/vxQ==
@@ -3619,13 +3619,13 @@ terser@^5.10.0, terser@^5.7.2:
     source-map "~0.7.2"
     source-map-support "~0.5.20"
 
-three-custom-shader-material@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.1.0.tgz#c158afb9b7b0ea9eb48434fcfc3a947bae358687"
-  integrity sha512-LfSxprmOEEeP1aBfN4aFnA/dleD9IrH8F2/EAU9pCqyAQArGovctRtINBsMKcQLvY7mIVkLQoo/uw/nIyBqEGg==
+three-custom-shader-material@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.1.2.tgz#b9e66109e5edac7e2b9b7a0508a12e221362cce0"
+  integrity sha512-KyrjXIb4cIK9mC0Vf56+mfHIJSggzseze3JQXXJWUss1sBNXeWLE0QatBZgDu0q5OerkFUKvI+DzeXhSWeknRw==
   dependencies:
-    "@react-three/fiber" "^7.0.21"
-    three "^0.135.0"
+    "@react-three/fiber" "^7.0.26"
+    three "^0.137.5"
 
 three-mesh-bvh@^0.5.4:
   version "0.5.5"
@@ -3647,11 +3647,6 @@ three-stdlib@^2.8.6:
     opentype.js "^1.3.3"
     potpack "^1.0.1"
     zstddec "^0.0.2"
-
-three@^0.135.0:
-  version "0.135.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.135.0.tgz#cff4ec8edd3c51ce9bc7e88d13e8eafed4d0ddfc"
-  integrity sha512-kuEpuuxRzLv0MDsXai9huCxOSQPZ4vje6y0gn80SRmQvgz6/+rI0NAvCRAw56zYaWKMGMfqKWsxF9Qa2Z9xymQ==
 
 three@^0.137.5:
   version "0.137.5"
