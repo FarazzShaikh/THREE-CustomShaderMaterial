@@ -71,10 +71,11 @@ function Cube() {
   <summary>Show Typescript example</summary>
 
 ```tsx
-import CustomShaderMaterial, { CSM } from 'three-custom-shader-material'
+import CustomShaderMaterial from 'three-custom-shader-material'
+import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
 
 function Cube() {
-  const materialRef = useRef<CSM | null>(null)
+  const materialRef = useRef<CustomShaderMaterialType | null>(null)
 
   useFrame((state) => {
     if (materialRef.current) {
@@ -110,11 +111,11 @@ function Cube() {
   <summary>Show VanillaJS example</summary>
 
 ```js
-import { CSM } from 'three-custom-shader-material'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 function Box() {
   const geometry = new THREE.BoxGeometry()
-  const material = new CSM({
+  const material = new CustomShaderMaterial({
     MeshPhysicalMaterial    // baseMaterial
     /* glsl */ ` ... `,     // vertexShader
     /* glsl */ ` ... `,     // fragmentShader
