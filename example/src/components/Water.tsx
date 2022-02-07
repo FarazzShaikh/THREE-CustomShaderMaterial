@@ -1,25 +1,26 @@
-import React, { useMemo, useRef } from "react";
-import CustomShaderMaterial, { CSM } from "three-custom-shader-material";
-import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
+import React, { useMemo, useRef } from 'react'
+import CustomShaderMaterial from 'three-custom-shader-material'
+import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
+import * as THREE from 'three'
+import { useFrame } from '@react-three/fiber'
 
-import * as oceanShader from "../shaders/ocean";
+import * as oceanShader from '../shaders/ocean'
 // @ts-ignore
-import { patchShaders } from "gl-noise/build/glNoise.m";
+import { patchShaders } from 'gl-noise/build/glNoise.m'
 
-import useWaterControls from "./useWaterControls";
+import useWaterControls from './useWaterControls'
 
 export default function Water({ base }: { base: any }) {
-  const thickness = 0.2;
-  const material = useRef<CSM | null>(null);
+  const thickness = 0.2
+  const material = useRef<CustomShaderMaterialType | null>(null)
 
   useFrame((state) => {
     if (material?.current) {
-      material.current.uniforms.uTime.value = -state.clock.elapsedTime / 5;
+      material.current.uniforms.uTime.value = -state.clock.elapsedTime / 5
     }
-  });
+  })
 
-  useWaterControls(material);
+  useWaterControls(material)
 
   return (
     <group>
@@ -39,10 +40,10 @@ export default function Water({ base }: { base: any }) {
           uniforms={{
             uTime: { value: 0 },
             waterColor: {
-              value: new THREE.Color("#52a7f7"),
+              value: new THREE.Color('#52a7f7'),
             },
             waterHighlight: {
-              value: new THREE.Color("#b3ffff"),
+              value: new THREE.Color('#b3ffff'),
             },
             offset: {
               value: 0.4,
@@ -60,5 +61,5 @@ export default function Water({ base }: { base: any }) {
         />
       </mesh>
     </group>
-  );
+  )
 }

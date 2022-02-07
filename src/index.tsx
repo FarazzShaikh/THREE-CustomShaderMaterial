@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 import { extend, MaterialProps, ReactThreeFiber, MeshStandardMaterialProps } from '@react-three/fiber'
-import { CSM } from './CSM'
+import CSM from './vanilla'
 import { iCSMProps } from './types'
 
 extend({ CustomShaderMaterial: CSM })
@@ -15,10 +15,10 @@ declare global {
   }
 }
 
-export default forwardRef<CSM, iCSMAllProps>(
+const CustomShaderMaterial = forwardRef<CSM, iCSMAllProps>(
   ({ baseMaterial, fragmentShader, vertexShader, uniforms, ...rest }, ref) => {
     return <customShaderMaterial ref={ref} args={[baseMaterial, fragmentShader, vertexShader, uniforms, { ...rest }]} />
   }
 )
 
-export { CSM }
+export default CustomShaderMaterial

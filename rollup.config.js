@@ -46,4 +46,16 @@ export default [
     external,
     plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
   },
+  {
+    input: `./src/vanilla.ts`,
+    output: { file: `dist/vanilla.js`, format: 'esm' },
+    external,
+    plugins: [babel(getBabelOptions({ useESModules: true })), resolve({ extensions })],
+  },
+  {
+    input: `./src/vanilla.ts`,
+    output: { file: `dist/vanilla.cjs.js`, format: 'cjs' },
+    external,
+    plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
+  },
 ]
