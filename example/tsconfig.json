@@ -15,11 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": ".",
-    "paths": {
-      "three-custom-shader-material": ["../src/index.tsx"],
-      "three-custom-shader-material/*": ["../src/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["./src"]
 }

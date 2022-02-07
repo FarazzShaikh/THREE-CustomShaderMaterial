@@ -1,4 +1,4 @@
-import { IUniform, Material, MeshPhysicalMaterial } from 'three'
+import { IUniform, Material } from 'three'
 import { iCSMProps, iCSMShader } from './types'
 
 import * as PATCH_MAP from './patchMaps'
@@ -45,6 +45,7 @@ export default class CustomShaderMaterial extends Material {
       this.uniforms = shader.uniforms
       this.needsUpdate = true
     }
+    this.needsUpdate = true
   }
 
   private patchShader(

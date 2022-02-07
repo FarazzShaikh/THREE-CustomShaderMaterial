@@ -3,21 +3,23 @@ import { extend, MaterialProps, ReactThreeFiber, MeshStandardMaterialProps } fro
 import CSM from './vanilla'
 import { iCSMProps } from './types'
 
-extend({ CustomShaderMaterial: CSM })
-
-type iCSMAllProps = iCSMProps & MaterialProps & MeshStandardMaterialProps
-
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      customShaderMaterial: ReactThreeFiber.Object3DNode<CSM, typeof CSM>
+      customShaderMaterial_: ReactThreeFiber.Node<CSM, typeof CSM>
     }
   }
 }
 
+extend({ CustomShaderMaterial_: CSM })
+
+type iCSMAllProps = iCSMProps & MaterialProps & MeshStandardMaterialProps
+
 const CustomShaderMaterial = forwardRef<CSM, iCSMAllProps>(
   ({ baseMaterial, fragmentShader, vertexShader, uniforms, ...rest }, ref) => {
-    return <customShaderMaterial ref={ref} args={[baseMaterial, fragmentShader, vertexShader, uniforms, { ...rest }]} />
+    return (
+      <customShaderMaterial_ ref={ref} args={[baseMaterial, fragmentShader, vertexShader, uniforms, { ...rest }]} />
+    )
   }
 )
 
