@@ -44,6 +44,7 @@
     "procedural"
   ],
   "scripts": {
+    "start": "rollup -c -w",
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly && yarn copy",
     "copy": "shx cp package.json README.md LICENSE dist"
