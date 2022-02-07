@@ -61,20 +61,20 @@ export default function App() {
           ) : (
             <Lights />
           )}
-
-          <Water base={Base} />
-          <ContactShadows
-            position={[0, -0.2, 0]}
-            width={10}
-            height={10}
-            far={20}
-            opacity={0.5}
-            rotation={[Math.PI / 2, 0, 0]}
-          />
-
-          <Copy base={Base} />
-          <OrbitControls />
         </Suspense>
+
+        <Water base={Base} />
+        <ContactShadows
+          position={[0, -0.2, 0]}
+          width={10}
+          height={10}
+          far={20}
+          opacity={0.5}
+          rotation={[Math.PI / 2, 0, 0]}
+        />
+
+        <Copy base={Base} />
+        <OrbitControls />
       </Canvas>
 
       <div className="copy">
