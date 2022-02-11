@@ -1,4 +1,4 @@
-import { IUniform, Material } from 'three'
+import { IUniform, Material, MathUtils } from 'three'
 import { iCSMProps, iCSMShader } from './types'
 
 import * as PATCH_MAP from './patchMaps'
@@ -24,10 +24,15 @@ export default class CustomShaderMaterial extends Material {
       this[key] = base[key]
     }
 
+    console.log(this)
+
     const parsedFragmentShdaer = this.parseShader(fragmentShader)
     const parsedVertexShdaer = this.parseShader(vertexShader)
 
     this.uniforms = uniforms || {}
+    this.customProgramCacheKey = () => {
+      return this.uuid
+    }
 
     this.onBeforeCompile = (shader) => {
       if (parsedFragmentShdaer) {
