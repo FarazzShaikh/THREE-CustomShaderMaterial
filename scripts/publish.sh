@@ -4,4 +4,4 @@ cp README.md dist &&\
 cp LICENSE  dist &&\
 yarn patchJSON &&\
 cd dist &&\
-yarn publish
+npm publish
