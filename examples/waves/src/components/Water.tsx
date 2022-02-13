@@ -9,6 +9,7 @@ import * as oceanShader from '../shaders/ocean'
 import { patchShaders } from 'gl-noise/build/glNoise.m'
 
 import useWaterControls from './useWaterControls'
+import { useControls } from 'leva'
 
 export default function Water({ base }: { base: any }) {
   const thickness = 0.2
@@ -22,6 +23,12 @@ export default function Water({ base }: { base: any }) {
 
   useWaterControls(material)
 
+  const { Flatshading } = useControls({
+    Flatshading: {
+      value: false,
+    },
+  })
+
   return (
     <group>
       <mesh castShadow receiveShadow rotation-x={-Math.PI / 2}>
@@ -33,9 +40,9 @@ export default function Water({ base }: { base: any }) {
           fragmentShader={patchShaders(oceanShader.frag)}
           side={THREE.DoubleSide}
           color={0x68c3c0}
-          roughness={0}
-          metalness={0}
-          flatShading
+          roughness={0.2}
+          metalness={0.1}
+          flatShading={Flatshading}
           vertexColors
           uniforms={{
             uTime: { value: 0 },

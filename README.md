@@ -50,7 +50,7 @@ function Cube() {
       <boxGeometry />
       <CustomShaderMaterial
         ref={materialRef}
-        baseMaterial={MeshPhysicalMaterial}
+        baseMaterial={THREE.MeshPhysicalMaterial}
         vertexShader={/* glsl */ ` ... `}
         fragmentShader={/* glsl */ ` ... `}
         uniforms={{
@@ -88,7 +88,7 @@ function Cube() {
       <boxGeometry />
       <CustomShaderMaterial
         ref={materialRef}
-        baseMaterial={MeshPhysicalMaterial}
+        baseMaterial={THREE.MeshPhysicalMaterial}
         vertexShader={/* glsl */ ` ... `}
         fragmentShader={/* glsl */ ` ... `}
         uniforms={{
@@ -116,15 +116,15 @@ import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 function Box() {
   const geometry = new THREE.BoxGeometry()
   const material = new CustomShaderMaterial({
-    MeshPhysicalMaterial    // baseMaterial
-    /* glsl */ ` ... `,     // vertexShader
-    /* glsl */ ` ... `,     // fragmentShader
+    THREE.MeshPhysicalMaterial    // baseMaterial
+    /* glsl */ ` ... `,           // vertexShader
+    /* glsl */ ` ... `,           // fragmentShader
     { uTime: {
-        value: 0,           // uniforms
+        value: 0,                 // uniforms
       },
     },
     {
-      flatShading: true     // options
+      flatShading: true           // options
       color: 0xff00ff
     }
   })
@@ -157,8 +157,9 @@ CSM provides the following output variables:
 | ---------------- | -------- | ------- | ----------------------- | --------------- | ---------------------------------------------------------------------------------------------------- |
 | csm_Position     | ❌       | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be multiplied by `projectionMatrix` and `modelViewPosition` furthur down the line. |
 | csm_Normal       | ❌       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                      |
-| csm_PointSize    | ❌       | `float` | Custom gl_Point size.   | Vertex Shader   |                                                                                                      |
+| csm_PointSize    | ❌       | `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                                      |
 | csm_DiffuseColor | ❌       | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                      |
+| csm_FragColor    | ❌       | `vec4`  | Custom gl_FragColor.    | Fragment Shader |                                                                                                      |
 
 You must use these variables like you would use standard GLSL output variables.
 
@@ -166,14 +167,6 @@ You must use these variables like you would use standard GLSL output variables.
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
 csm_Position = position * vec3(2.0);
 ```
-
-## Roadmap
-
-- [ ] Support `MeshToonMaterial`
-- [ ] Support `MeshLambertMaterial`
-- [ ] Support `MeshDepthMaterial`
-- [ ] `gl_FragColor` override
-- [ ] Make `csm_Position` independent from `modelViewPosition` and `projectionMatrix`
 
 ## Credits
 

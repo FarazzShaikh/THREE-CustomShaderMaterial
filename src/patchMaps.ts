@@ -1,20 +1,34 @@
-import keywords from "./keywords";
+import keywords from './keywords'
 
 export const VERT = {
-  "#include <defaultnormal_vertex>": `
-    vec3 transformedNormal = ${keywords.normal};
+  [`${keywords.normal}`]: {
+    '#include <defaultnormal_vertex>': `
+    #include <defaultnormal_vertex>
+    transformedNormal = ${keywords.normal};
     `,
-
-  "#include <project_vertex>": `
+  },
+  [`${keywords.posiiton}`]: {
+    '#include <project_vertex>': `
     transformed = ${keywords.posiiton};
     #include <project_vertex>
   `,
-  "gl_PointSize = size;": `gl_PointSize = ${keywords.pointSize};`,
-};
+  },
+  [`${keywords.pointSize}`]: {
+    'gl_PointSize = size;': `gl_PointSize = ${keywords.pointSize};`,
+  },
+}
 
 export const FRAG = {
-  "#include <color_fragment>": `
+  [`${keywords.diffuseColor}`]: {
+    '#include <color_fragment>': `
     #include <color_fragment>
     diffuseColor = ${keywords.diffuseColor};
-`,
-};
+  `,
+  },
+  [`${keywords.fragColor}`]: {
+    '#include <output_fragment>': `
+    #include <output_fragment>
+    gl_FragColor  = ;
+  `,
+  },
+}

@@ -24,8 +24,6 @@ export default class CustomShaderMaterial extends Material {
       this[key] = base[key]
     }
 
-    console.log(this)
-
     const parsedFragmentShdaer = this.parseShader(fragmentShader)
     const parsedVertexShdaer = this.parseShader(vertexShader)
 
@@ -43,7 +41,7 @@ export default class CustomShaderMaterial extends Material {
       if (parsedVertexShdaer) {
         const patchedVertexShdaer = this.patchShader(parsedVertexShdaer, shader.vertexShader, PATCH_MAP.VERT)
 
-        shader.vertexShader = patchedVertexShdaer
+        shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShdaer
       }
 
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
@@ -56,14 +54,19 @@ export default class CustomShaderMaterial extends Material {
     customShader: iCSMShader,
     shader: string,
     patchMap: {
-      [key: string]: string
+      [key: string]: {
+        [key: string]: any
+      }
     }
   ): string {
     let patchedShader: string = shader
 
-    Object.keys(patchMap).forEach((key: string) => {
-      const v = patchMap[key]!
-      patchedShader = replaceAll(patchedShader, key, v)
+    Object.keys(patchMap).forEach((name: string) => {
+      Object.keys(patchMap[name]).forEach((key) => {
+        if (customShader.main.includes(name)) {
+          patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
+        }
+      })
     })
 
     patchedShader = patchedShader.replace(
@@ -73,8 +76,19 @@ export default class CustomShaderMaterial extends Material {
           void main() {
             vec3 csm_Position;
             vec3 csm_Normal;
-            vec4 csm_DiffuseColor;
-            float csm_PointSize;
+
+            #ifdef IS_VERTEX
+              csm_Position = position;
+            #endif
+
+            #ifdef IS_VERTEX
+              csm_Normal = normal;
+            #endif
+
+            vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);
+            vec4 csm_FragColor = vec4(1., 0., 0., 1.);
+            float csm_PointSize = 1.;
+
             ${customShader.main}
           `
     )
