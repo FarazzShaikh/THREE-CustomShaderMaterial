@@ -1,16 +1,12 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import {
-  extend,
   MaterialProps,
-  ReactThreeFiber,
   MeshStandardMaterialProps,
   MeshPhysicalMaterialProps,
   MeshPhongMaterialProps,
 } from '@react-three/fiber'
-import CSM from './vanilla'
+import CustomShaderMaterial from './vanilla'
 import { iCSMProps } from './types'
-
-extend({ CustomShaderMaterial: CSM })
 
 type iCSMAllProps = iCSMProps &
   MaterialProps &
@@ -20,16 +16,12 @@ type iCSMAllProps = iCSMProps &
     alphaWrite?: unknown
   }
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      customShaderMaterial: ReactThreeFiber.Object3DNode<CSM, typeof CSM>
-    }
-  }
-}
-
-export default forwardRef<CSM, iCSMAllProps>(
+export default forwardRef<CustomShaderMaterial, iCSMAllProps>(
   ({ baseMaterial, fragmentShader, vertexShader, uniforms, ...rest }, ref) => {
-    return <customShaderMaterial ref={ref} args={[baseMaterial, fragmentShader, vertexShader, uniforms, { ...rest }]} />
+    const material = useMemo(
+      () => new CustomShaderMaterial(baseMaterial, fragmentShader, vertexShader, uniforms),
+      [baseMaterial, fragmentShader, vertexShader, uniforms]
+    )
+    return <primitive dispose={undefined} object={material} ref={ref} attach="material" {...rest} />
   }
 )
