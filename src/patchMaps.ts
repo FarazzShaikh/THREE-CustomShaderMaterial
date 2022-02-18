@@ -28,7 +28,7 @@ export const FRAG = {
   [`${keywords.fragColor}`]: {
     '#include <output_fragment>': `
     #include <output_fragment>
-    gl_FragColor  = ;
+    gl_FragColor  = ${keywords.fragColor};
   `,
   },
 }
