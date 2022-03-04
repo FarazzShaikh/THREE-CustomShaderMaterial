@@ -1,7 +1,7 @@
 import { IUniform, Material } from 'three'
 
 export interface iCSMProps {
-  baseMaterial: typeof Material
+  baseMaterial: new () => Material
   vertexShader?: string
   fragmentShader?: string
   uniforms?: { [key: string]: IUniform<any> }

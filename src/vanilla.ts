@@ -5,6 +5,7 @@ import * as PATCH_MAP from './patchMaps'
 
 export default class CustomShaderMaterial extends Material {
   uniforms: { [key: string]: IUniform<any> }
+  private base: Material
 
   constructor(
     baseMaterial: iCSMProps['baseMaterial'],
@@ -16,15 +17,9 @@ export default class CustomShaderMaterial extends Material {
     // @ts-ignore
     const base = new baseMaterial(opts)
     super()
+    this.base = base
 
     this.uniforms = uniforms || {}
-
-    for (const key in base) {
-      // @ts-ignore
-      if (this[key] === undefined) this[key] = 0
-      // @ts-ignore
-      this[key] = base[key]
-    }
 
     this.update(fragmentShader, vertexShader, uniforms)
   }
@@ -42,6 +37,13 @@ export default class CustomShaderMaterial extends Material {
     vertexShader: iCSMProps['vertexShader'],
     uniforms: iCSMProps['uniforms']
   ) {
+    for (const key in this.base) {
+      // @ts-ignore
+      if (this[key] === undefined) this[key] = 0
+      // @ts-ignore
+      this[key] = this.base[key]
+    }
+
     const parsedFragmentShdaer = this.parseShader(fragmentShader)
     const parsedVertexShdaer = this.parseShader(vertexShader)
 
@@ -63,6 +65,7 @@ export default class CustomShaderMaterial extends Material {
       }
 
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
+      console.log(shader.uniforms)
       this.uniforms = shader.uniforms
       this.needsUpdate = true
     }
