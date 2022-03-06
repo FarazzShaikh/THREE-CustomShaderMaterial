@@ -1,7 +1,7 @@
 {
   "name": "three-custom-shader-material",
   "private": "true",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "description": "Extend Three.js standard materials with your own shaders!",
   "module": "./index.js",
   "main": "./index.cjs.js",
