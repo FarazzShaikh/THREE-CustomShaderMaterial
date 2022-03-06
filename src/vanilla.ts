@@ -21,6 +21,12 @@ export default class CustomShaderMaterial extends Material {
 
     this.uniforms = uniforms || {}
 
+    for (const key in this.base) {
+      // @ts-ignore
+      if (this[key] === undefined) this[key] = 0
+      // @ts-ignore
+      this[key] = this.base[key]
+    }
     this.update(fragmentShader, vertexShader, uniforms)
   }
 
@@ -37,13 +43,6 @@ export default class CustomShaderMaterial extends Material {
     vertexShader: iCSMProps['vertexShader'],
     uniforms: iCSMProps['uniforms']
   ) {
-    for (const key in this.base) {
-      // @ts-ignore
-      if (this[key] === undefined) this[key] = 0
-      // @ts-ignore
-      this[key] = this.base[key]
-    }
-
     const parsedFragmentShdaer = this.parseShader(fragmentShader)
     const parsedVertexShdaer = this.parseShader(vertexShader)
 
