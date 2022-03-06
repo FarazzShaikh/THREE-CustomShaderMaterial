@@ -64,7 +64,6 @@ export default class CustomShaderMaterial extends Material {
       }
 
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
-      console.log(shader.uniforms)
       this.uniforms = shader.uniforms
       this.needsUpdate = true
     }
