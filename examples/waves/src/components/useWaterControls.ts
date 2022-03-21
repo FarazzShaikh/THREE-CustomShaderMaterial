@@ -1,5 +1,6 @@
 import React from 'react'
 
+// @ts-ignore
 import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
 import { useControls } from 'leva'
 import { Color } from 'three'

@@ -1,5 +1,5 @@
 import { IUniform, Material, MathUtils } from 'three'
-import { iCSMProps, iCSMShader } from './types'
+import { AllMaterialParams, iCSMProps, iCSMShader } from './types'
 
 import * as PATCH_MAP from './patchMaps'
 
@@ -8,11 +8,11 @@ export default class CustomShaderMaterial extends Material {
   private base: Material
 
   constructor(
-    baseMaterial: iCSMProps['baseMaterial'],
-    fragmentShader?: iCSMProps['fragmentShader'],
-    vertexShader?: iCSMProps['vertexShader'],
-    uniforms?: iCSMProps['uniforms'],
-    opts?: any
+    baseMaterial: new () => Material,
+    fragmentShader?: string,
+    vertexShader?: string,
+    uniforms?: { [key: string]: THREE.IUniform<any> },
+    opts?: AllMaterialParams
   ) {
     // @ts-ignore
     const base = new baseMaterial(opts)
@@ -95,6 +95,7 @@ export default class CustomShaderMaterial extends Material {
           void main() {
             vec3 csm_Position;
             vec3 csm_Normal;
+            vec3 csm_Emissive;
 
             #ifdef IS_VERTEX
               csm_Position = position;
@@ -102,6 +103,10 @@ export default class CustomShaderMaterial extends Material {
 
             #ifdef IS_VERTEX
               csm_Normal = normal;
+            #endif
+            
+            #ifndef IS_VERTEX
+              csm_Emissive = emissive;
             #endif
 
             vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);
@@ -113,7 +118,6 @@ export default class CustomShaderMaterial extends Material {
     )
 
     patchedShader = customShader.defines + patchedShader
-
     return patchedShader
   }
 

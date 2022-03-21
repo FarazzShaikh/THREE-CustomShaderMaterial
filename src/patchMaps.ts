@@ -1,8 +1,8 @@
-import keywords from "./keywords";
+import keywords from './keywords'
 
 export const VERT = {
   [`${keywords.normal}`]: {
-    "#include <defaultnormal_vertex>": `
+    '#include <defaultnormal_vertex>': `
     vec3 transformedNormal = ${keywords.normal};
     #ifdef USE_INSTANCING
     	// this is in lieu of a per-instance normal-matrix
@@ -21,30 +21,35 @@ export const VERT = {
     		transformedTangent = - transformedTangent;
     	#endif
     #endif
-    `
+    `,
   },
-  [`${keywords.posiiton}`]: {
-    "#include <project_vertex>": `
-    transformed = ${keywords.posiiton};
+  [`${keywords.positon}`]: {
+    '#include <project_vertex>': `
+    transformed = ${keywords.positon};
     #include <project_vertex>
-  `
+  `,
   },
   [`${keywords.pointSize}`]: {
-    "gl_PointSize = size;": `gl_PointSize = ${keywords.pointSize};`
-  }
-};
+    'gl_PointSize = size;': `gl_PointSize = ${keywords.pointSize};`,
+  },
+}
 
 export const FRAG = {
   [`${keywords.diffuseColor}`]: {
-    "#include <color_fragment>": `
+    '#include <color_fragment>': `
     #include <color_fragment>
     diffuseColor = ${keywords.diffuseColor};
-  `
+  `,
   },
   [`${keywords.fragColor}`]: {
-    "#include <output_fragment>": `
+    '#include <output_fragment>': `
     #include <output_fragment>
     gl_FragColor  = ${keywords.fragColor};
-  `
-  }
-};
+  `,
+  },
+  [`${keywords.emissive}`]: {
+    'vec3 totalEmissiveRadiance = emissive;': `
+    vec3 totalEmissiveRadiance = ${keywords.emissive};
+    `,
+  },
+}

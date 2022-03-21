@@ -4,19 +4,13 @@ import {
   MeshStandardMaterialProps,
   MeshPhysicalMaterialProps,
   MeshPhongMaterialProps,
+  PointsMaterialProps,
+  LineBasicMaterialProps,
 } from '@react-three/fiber'
 import CustomShaderMaterial from './vanilla'
-import { iCSMProps } from './types'
+import { AllMaterialProps, iCSMProps } from './types'
 
-type iCSMAllProps = iCSMProps &
-  MaterialProps &
-  MeshPhysicalMaterialProps &
-  MeshStandardMaterialProps &
-  MeshPhongMaterialProps & {
-    alphaWrite?: unknown
-  }
-
-export default forwardRef<CustomShaderMaterial, iCSMAllProps>(
+export default forwardRef<CustomShaderMaterial, iCSMProps>(
   ({ baseMaterial, fragmentShader, vertexShader, uniforms, ...rest }, ref) => {
     const material = useMemo(
       () => new CustomShaderMaterial(baseMaterial, fragmentShader, vertexShader, uniforms),
