@@ -16,17 +16,3 @@ jobs:
         run: |
           yarn
           yarn build
-
-      - name: Pre Release
-        run: |
-          chmod +x scripts/getChange.sh
-          ./scripts/getChange.sh ${{steps.publish.outputs.version}} CHANGELOG.md > CHANGELOG.txt
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          body_path: CHANGELOG.txt
-          files: src/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}

@@ -106,7 +106,9 @@ export default class CustomShaderMaterial extends Material {
             #endif
             
             #ifndef IS_VERTEX
-              csm_Emissive = emissive;
+              #ifdef STANDARD
+                csm_Emissive = emissive;
+              #endif
             #endif
 
             vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);

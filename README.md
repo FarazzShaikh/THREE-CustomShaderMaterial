@@ -160,6 +160,7 @@ CSM provides the following output variables:
 | csm_PointSize    | ❌       | `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                                      |
 | csm_DiffuseColor | ❌       | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                      |
 | csm_FragColor    | ❌       | `vec4`  | Custom gl_FragColor.    | Fragment Shader |                                                                                                      |
+| csm_Emissive     | ❌       | `vec3`  | Custom emissive color.  | Fragment Shader |                                                                                                      |
 
 You must use these variables like you would use standard GLSL output variables.
 
