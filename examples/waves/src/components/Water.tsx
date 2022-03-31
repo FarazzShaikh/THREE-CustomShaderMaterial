@@ -47,10 +47,10 @@ export default function Water({ base }: { base: any }) {
           uniforms={{
             uTime: { value: 0 },
             waterColor: {
-              value: new THREE.Color('#52a7f7'),
+              value: new THREE.Color('#52a7f7').convertLinearToSRGB(),
             },
             waterHighlight: {
-              value: new THREE.Color('#b3ffff'),
+              value: new THREE.Color('#b3ffff').convertLinearToSRGB(),
             },
             offset: {
               value: 0.4,

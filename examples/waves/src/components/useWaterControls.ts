@@ -12,13 +12,13 @@ export default function useWaterControls(material: React.RefObject<CustomShaderM
       Color: {
         value: '#52a7f7',
         onChange: (v) => {
-          material.current!.uniforms.waterColor.value = new Color(v)
+          material.current!.uniforms.waterColor.value = new Color(v).convertLinearToSRGB()
         },
       },
       HighlightColor: {
         value: '#b3ffff',
         onChange: (v) => {
-          material.current!.uniforms.waterHighlight.value = new Color(v)
+          material.current!.uniforms.waterHighlight.value = new Color(v).convertLinearToSRGB()
         },
       },
 
