@@ -22,11 +22,17 @@ export default class CustomShaderMaterial extends Material {
     this.uniforms = uniforms || {}
 
     for (const key in this.base) {
+      let k = key
+      if (key.startsWith('_')) {
+        k = key.split('_')[1]
+      }
+
       // @ts-ignore
-      if (this[key] === undefined) this[key] = 0
+      if (this[k] === undefined) this[k] = 0
       // @ts-ignore
-      this[key] = this.base[key]
+      this[k] = this.base[k]
     }
+
     this.update(fragmentShader, vertexShader, uniforms)
   }
 
