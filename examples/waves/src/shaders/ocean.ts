@@ -70,6 +70,7 @@ uniform float offset;
 uniform float contrast;
 uniform float brightness;
 
+
 vec3 calcColor() {
 
   float mask = (pow(vHeight, 2.) - offset) * contrast;
@@ -77,6 +78,8 @@ vec3 calcColor() {
   vec3 diffuseColor = mix(waterColor, waterHighlight, mask);
 
   diffuseColor *= brightness;
+
+
 
   return diffuseColor;
 }

@@ -10,7 +10,8 @@
 <br>
 
 <p align="center">
-  <a href="https://0lg38.sse.codesandbox.io/" target="_blank"><img src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/wavesDemo.png" alt="Waves" /></a>
+  <a href="https://0lg38.sse.codesandbox.io/" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/waves-demo.png" alt="Waves" /></a>
+   <a href="https://0lg38.sse.codesandbox.io/" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/points-demo.png" alt="Waves" /></a>
 </p>
 <p align="middle">
   <i>The demo is real, you can click it! It contains full code, too. 📦</i>
@@ -19,19 +20,31 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/three-custom-shader-material" target="_blank">
-    <img src="https://img.shields.io/npm/v/three-custom-shader-material.svg?style=flat&colorA=000000&colorB=000000" />
+    <img src="https://img.shields.io/npm/v/three-custom-shader-material.svg?style=for-the-badge&colorA=000000&colorB=000000" />
   </a>
   <a href="https://www.npmjs.com/package/three-custom-shader-material" target="_blank">
-    <img src="https://img.shields.io/npm/dm/three-custom-shader-material.svg?style=flat&colorA=000000&colorB=000000" />
+    <img src="https://img.shields.io/npm/dt/three-custom-shader-material?style=for-the-badge&colorA=000000&colorB=000000" />
   </a>
   <a href="https://twitter.com/CantBeFaraz" target="_blank">
-    <img src="https://img.shields.io/twitter/follow/CantBeFaraz?label=%40CantBeFaraz&style=flat&colorA=000000&colorB=000000&logo=twitter&logoColor=000000" alt="Chat on Twitter">
+    <img src="https://img.shields.io/twitter/follow/CantBeFaraz?label=%40CantBeFaraz&style=for-the-badge&colorA=000000&colorB=000000&logo=twitter&logoColor=000000" alt="Chat on Twitter">
   </a>
 </p>
 
 <br>
 
 Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders.
+
+<p align="center">
+  <img width="40%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/react-ex.png" alt="Waves" />
+  <img width="40%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/vanilla-ex.png" alt="Waves" />
+</p>
+<p align="middle">
+  <i>Supports both Vanilla and React!</i>
+</p>
+<br />
+
+<details>
+  <summary>Show React example</summary>
 
 ```jsx
 import CustomShaderMaterial from 'three-custom-shader-material'
@@ -67,8 +80,10 @@ function Cube() {
 }
 ```
 
+</details>
+
 <details>
-  <summary>Show Typescript example</summary>
+  <summary>Show React TS example</summary>
 
 ```tsx
 import CustomShaderMaterial from 'three-custom-shader-material'
@@ -108,14 +123,14 @@ function Cube() {
 </details>
 
 <details>
-  <summary>Show VanillaJS example</summary>
+  <summary>Show Vanilla example</summary>
 
 ```js
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 function Box() {
   const geometry = new THREE.BoxGeometry()
-  const material = new CustomShaderMaterial({
+  const material = new CustomShaderMaterial(
     THREE.MeshPhysicalMaterial    // baseMaterial
     /* glsl */ ` ... `,           // vertexShader
     /* glsl */ ` ... `,           // fragmentShader
@@ -127,7 +142,7 @@ function Box() {
       flatShading: true           // options
       color: 0xff00ff
     }
-  })
+  )
 
   return new THREE.Mesh(geometry, material)
 }
@@ -139,13 +154,13 @@ function Box() {
 
 npm
 
-```sh
+```bash
 npm install three-custom-shader-material
 ```
 
 Yarn
 
-```sh
+```bash
 yarn add three-custom-shader-material
 ```
 
@@ -164,11 +179,22 @@ CSM provides the following output variables:
 
 You must use these variables like you would use standard GLSL output variables.
 
-```c
+```glsl
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
 csm_Position = position * vec3(2.0);
 ```
 
-## Credits
+**Note: Shaders passed to CSM are indentation-sensitive.**
 
-Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
+```glsl
+void main() {
+  if(...) {
+
+    ...
+
+} // Bad indentation. This will cause a compile error.
+
+  ...
+
+  }  // Bad indentation. This will cause a compile error.
+```

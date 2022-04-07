@@ -45,7 +45,7 @@ export default function App() {
 
   return (
     <>
-      <Leva />
+      <Leva hidden />
       <Canvas
         gl={{
           antialias: true,

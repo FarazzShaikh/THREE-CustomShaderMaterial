@@ -60,7 +60,6 @@ export default class CustomShaderMaterial extends Material {
     this.onBeforeCompile = (shader) => {
       if (parsedFragmentShdaer) {
         const patchedFragmentShdaer = this.patchShader(parsedFragmentShdaer, shader.fragmentShader, PATCH_MAP.FRAG)
-
         shader.fragmentShader = patchedFragmentShdaer
       }
       if (parsedVertexShdaer) {
@@ -137,10 +136,11 @@ export default class CustomShaderMaterial extends Material {
       main: '',
     }
 
-    const main = shader.match(/void\s*main\s*\w*\s*\([\w\s,]*\)\s*{([\w\W]*?)}/g)
+    console.log(shader)
+    const main = shader.match(/^(\s*)(void\s*main\s*\(.*\)\s*).*?{[\s\S]*?^\1}\s*$/gm)
 
     if (main?.length) {
-      const mainBody = main[0].match(/\{((.|\n)*?)\}/g)
+      const mainBody = main[0].match(/{[\w\W\s\S]*}/gm)
 
       if (mainBody?.length) {
         parsedShader.main = mainBody[0]

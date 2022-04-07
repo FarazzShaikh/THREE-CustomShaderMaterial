@@ -30,7 +30,9 @@ export const VERT = {
   `,
   },
   [`${keywords.pointSize}`]: {
-    'gl_PointSize = size;': `gl_PointSize = ${keywords.pointSize};`,
+    'gl_PointSize = size;': `
+    gl_PointSize = ${keywords.pointSize};
+    `,
   },
 }
 
