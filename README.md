@@ -32,18 +32,38 @@
 
 <br>
 
-Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders.
-
-<p align="center">
-  <img width="40%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/react-ex.png" alt="Waves" />
-  <img width="40%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/vanilla-ex.png" alt="Waves" />
-</p>
-<p align="middle">
-  <i>Supports both Vanilla and React!</i>
-</p>
-<br />
+Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders. ***It Supports both Vanilla and React!***
 
 <details>
+  <summary>Show Vanilla example</summary>
+
+```js
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+
+function Box() {
+  const geometry = new THREE.BoxGeometry()
+  const material = new CustomShaderMaterial(
+    THREE.MeshPhysicalMaterial    // baseMaterial
+    /* glsl */ ` ... `,           // vertexShader
+    /* glsl */ ` ... `,           // fragmentShader
+    { uTime: {
+        value: 0,                 // uniforms
+      },
+    },
+    {
+      flatShading: true           // options
+      color: 0xff00ff
+    }
+  )
+
+  return new THREE.Mesh(geometry, material)
+}
+```
+
+</details>
+
+
+<details open>
   <summary>Show React example</summary>
 
 ```jsx
@@ -82,73 +102,6 @@ function Cube() {
 
 </details>
 
-<details>
-  <summary>Show React TS example</summary>
-
-```tsx
-import CustomShaderMaterial from 'three-custom-shader-material'
-import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
-
-function Cube() {
-  const materialRef = useRef<CustomShaderMaterialType | null>(null)
-
-  useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
-    }
-  })
-
-  return (
-    <mesh>
-      <boxGeometry />
-      <CustomShaderMaterial
-        ref={materialRef}
-        baseMaterial={THREE.MeshPhysicalMaterial}
-        vertexShader={/* glsl */ ` ... `}
-        fragmentShader={/* glsl */ ` ... `}
-        uniforms={{
-          uTime: {
-            value: 0,
-          },
-        }}
-        flatShading
-        color={0xff00ff}
-        // ...
-      />
-    </mesh>
-  )
-}
-```
-
-</details>
-
-<details>
-  <summary>Show Vanilla example</summary>
-
-```js
-import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
-
-function Box() {
-  const geometry = new THREE.BoxGeometry()
-  const material = new CustomShaderMaterial(
-    THREE.MeshPhysicalMaterial    // baseMaterial
-    /* glsl */ ` ... `,           // vertexShader
-    /* glsl */ ` ... `,           // fragmentShader
-    { uTime: {
-        value: 0,                 // uniforms
-      },
-    },
-    {
-      flatShading: true           // options
-      color: 0xff00ff
-    }
-  )
-
-  return new THREE.Mesh(geometry, material)
-}
-```
-
-</details>
 
 ## Installation
 
