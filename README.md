@@ -10,8 +10,8 @@
 <br>
 
 <p align="center">
-  <a href="https://0lg38.sse.codesandbox.io/" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/waves-demo.png" alt="Waves" /></a>
-   <a href="https://0lg38.sse.codesandbox.io/" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/points-demo.png" alt="Waves" /></a>
+  <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/waves" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/waves-demo.png" alt="Waves" /></a>
+   <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/points" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/points-demo.png" alt="Waves" /></a>
 </p>
 <p align="middle">
   <i>The demo is real, you can click it! It contains full code, too. 📦</i>
@@ -32,7 +32,7 @@
 
 <br>
 
-Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders. ***It Supports both Vanilla and React!***
+Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders. **_It Supports both Vanilla and React!_**
 
 <details>
   <summary>Show Vanilla example</summary>
@@ -61,7 +61,6 @@ function Box() {
 ```
 
 </details>
-
 
 <details open>
   <summary>Show React example</summary>
@@ -101,7 +100,6 @@ function Cube() {
 ```
 
 </details>
-
 
 ## Installation
 
