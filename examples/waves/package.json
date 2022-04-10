@@ -29,7 +29,7 @@
     "react-scripts": "^5.0.0",
     "styled-components": "^5.3.5",
     "three": "^0.139.1",
-    "three-custom-shader-material": "^3.2.13"
+    "three-custom-shader-material": "^3.3.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",
