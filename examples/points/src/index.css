@@ -80,3 +80,11 @@ a {
     background-position: 0% 50%;
   }
 }
+
+canvas {
+  cursor: grab;
+}
+
+canvas:active {
+  cursor: grabbing;
+}

@@ -136,7 +136,6 @@ export default class CustomShaderMaterial extends Material {
       main: '',
     }
 
-    console.log(shader)
     const main = shader.match(/^(\s*)(void\s*main\s*\(.*\)\s*).*?{[\s\S]*?^\1}\s*$/gm)
 
     if (main?.length) {
