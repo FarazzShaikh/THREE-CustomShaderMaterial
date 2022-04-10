@@ -121,7 +121,7 @@ CSM provides the following output variables:
 
 | Variable         | Required | Type    | Description             | Available In    | Notes                                                                                                |
 | ---------------- | -------- | ------- | ----------------------- | --------------- | ---------------------------------------------------------------------------------------------------- |
-| csm_Position     | ❌       | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be multiplied by `projectionMatrix` and `modelViewPosition` furthur down the line. |
+| csm_Position     | ❌       | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here. |
 | csm_Normal       | ❌       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                      |
 | csm_PointSize    | ❌       | `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                                      |
 | csm_DiffuseColor | ❌       | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                      |
