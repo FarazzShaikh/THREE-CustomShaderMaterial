@@ -1,5 +1,4 @@
 import { OrbitControls } from '@react-three/drei'
-import { Icosahedron } from '@react-three/drei'
 import { Environment } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Suspense, useEffect, useMemo, useRef } from 'react'

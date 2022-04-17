@@ -20,6 +20,7 @@ import {
   MeshDepthMaterial,
 } from 'three'
 import { useControls } from 'leva'
+import Tag from './Tag'
 
 export default function App() {
   const { Base } = useControls(
@@ -46,6 +47,7 @@ export default function App() {
   return (
     <>
       <Leva />
+      <Tag />
       <Canvas
         gl={{
           antialias: true,
@@ -76,13 +78,6 @@ export default function App() {
         <Copy base={Base} />
         <OrbitControls />
       </Canvas>
-
-      <div className="copy">
-        Made with 🧡 by{' '}
-        <a target="_blank" href="https://github.com/FarazzShaikh">
-          Faraz Shaikh
-        </a>
-      </div>
     </>
   )
 }

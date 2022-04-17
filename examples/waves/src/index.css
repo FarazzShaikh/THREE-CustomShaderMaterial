@@ -32,27 +32,41 @@ body {
     segoe ui, arial, sans-serif;
 }
 
-.copy {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-
-  text-align: center;
-  color: black;
-
-  padding: 32px;
-}
-
-a {
-  font-style: italic;
-  color: #3b56ee;
-}
-
 canvas {
   cursor: grab;
 }
 
 canvas:active {
   cursor: grabbing;
+}
+
+.copy {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  pointer-events: none;
+}
+
+.copy svg {
+  width: 32px;
+  fill: black;
+}
+
+.copy > * {
+  padding: 32px;
+}
+
+a {
+  font-style: italic;
+  color: #5387ff;
+  font-weight: bold;
+  text-decoration: underline;
+  pointer-events: all;
 }

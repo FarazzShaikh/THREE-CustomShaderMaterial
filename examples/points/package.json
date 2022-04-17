@@ -5,19 +5,13 @@
   "dependencies": {
     "@react-three/drei": "^9.1.5",
     "@react-three/fiber": "^8.0.10",
-    "@react-three/postprocessing": "^2.3.1",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
     "gl-noise": "^1.6.1",
-    "postprocessing": "^6.26.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
     "react-scripts": "5.0.0",
     "three": "^0.139.2",
-    "three-custom-shader-material": "^3.3.2",
-    "web-vitals": "^2.1.0"
+    "three-custom-shader-material": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
