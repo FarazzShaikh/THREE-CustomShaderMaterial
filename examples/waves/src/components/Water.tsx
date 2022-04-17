@@ -37,9 +37,9 @@ export default function Water({ base }: { base: any }) {
           ref={material}
           baseMaterial={base}
           vertexShader={patchShaders(oceanShader.vert)}
-          fragmentShader={patchShaders(oceanShader.frag)}
+          fragmentShader={oceanShader.frag}
           side={THREE.DoubleSide}
-          color={0x68c3c0}
+          color={'red'}
           roughness={0.2}
           metalness={0.1}
           flatShading={Flatshading}

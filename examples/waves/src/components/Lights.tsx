@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef } from 'react'
+import { DirectionalLight } from 'three'
 
 export default function Lights() {
-  const ref = useRef();
+  const ref = useRef<DirectionalLight>(null!)
 
   // useHelper(ref, DirectionalLightHelper);
 
@@ -9,8 +10,8 @@ export default function Lights() {
     <group>
       <hemisphereLight
         args={[
-          "white", //
-          "darkslategrey",
+          'white', //
+          'darkslategrey',
           0.4,
         ]}
       />
@@ -27,5 +28,5 @@ export default function Lights() {
         intensity={0.3}
       />
     </group>
-  );
+  )
 }

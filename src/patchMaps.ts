@@ -2,31 +2,16 @@ import keywords from './keywords'
 
 export const VERT = {
   [`${keywords.normal}`]: {
-    '#include <defaultnormal_vertex>': `
-    vec3 transformedNormal = ${keywords.normal};
-    #ifdef USE_INSTANCING
-    	// this is in lieu of a per-instance normal-matrix
-    	// shear transforms in the instance matrix are not supported
-    	mat3 m = mat3( instanceMatrix );
-    	transformedNormal /= vec3( dot( m[ 0 ], m[ 0 ] ), dot( m[ 1 ], m[ 1 ] ), dot( m[ 2 ], m[ 2 ] ) );
-    	transformedNormal = m * transformedNormal;
-    #endif
-    transformedNormal = normalMatrix * transformedNormal;
-    #ifdef FLIP_SIDED
-    	transformedNormal = - transformedNormal;
-    #endif
+    '#include <beginnormal_vertex>': `
+    vec3 objectNormal = ${keywords.normal};
     #ifdef USE_TANGENT
-    	vec3 transformedTangent = ( modelViewMatrix * vec4( objectTangent, 0.0 ) ).xyz;
-    	#ifdef FLIP_SIDED
-    		transformedTangent = - transformedTangent;
-    	#endif
+	    vec3 objectTangent = vec3( tangent.xyz );
     #endif
     `,
   },
   [`${keywords.positon}`]: {
-    '#include <project_vertex>': `
-    transformed = ${keywords.positon};
-    #include <project_vertex>
+    '#include <begin_vertex>': `
+    vec3 transformed = ${keywords.positon};
   `,
   },
   [`${keywords.pointSize}`]: {
