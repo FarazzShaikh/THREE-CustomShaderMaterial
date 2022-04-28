@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added smarter cache key
   - Custom cache key is now a hash: `hash([fragmentShader, vertexShader, uniforms])`
-  - Custom cache key function can be supplied with constructor or update function.
+  - Custom cache key function can be supplied with constructor or update function. `cacheKey : () => string`
 
 ## Version 3.2.10
 
