@@ -23,9 +23,20 @@ export interface iCSMShader {
   main: string
 }
 
-export type iCSMProps = {
-  baseMaterial: new () => THREE.Material
+interface CSMParam {
+  baseMaterial: new (opts: { [key: string]: any }) => THREE.Material
+  vertexShader?: string
+  fragmentShader?: string
+  cacheKey?: () => string
+  uniforms?: { [key: string]: THREE.IUniform<any> }
+}
+
+export type iCSMProps = CSMParam & AllMaterialProps
+export type iCSMParams = CSMParam & AllMaterialParams
+
+export type iCSMUpdateParams = {
   vertexShader?: string
   fragmentShader?: string
   uniforms?: { [key: string]: THREE.IUniform<any> }
-} & AllMaterialProps
+  cacheKey?: () => string
+}

@@ -1,27 +1,19 @@
-import { IUniform, Material, MathUtils } from 'three'
-import { AllMaterialParams, iCSMProps, iCSMShader } from './types'
+import { IUniform, Material } from 'three'
+import hash from 'object-hash'
+import { iCSMUpdateParams, iCSMShader, iCSMParams } from './types'
 
 import * as PATCH_MAP from './patchMaps'
 
+const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
 export default class CustomShaderMaterial extends Material {
   uniforms: { [key: string]: IUniform<any> }
-  private base: Material
 
-  constructor(
-    baseMaterial: new () => Material,
-    fragmentShader?: string,
-    vertexShader?: string,
-    uniforms?: { [key: string]: THREE.IUniform<any> },
-    opts?: AllMaterialParams
-  ) {
-    // @ts-ignore
+  constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey, ...opts }: iCSMParams) {
     const base = new baseMaterial(opts)
     super()
-    this.base = base
-
     this.uniforms = uniforms || {}
 
-    for (const key in this.base) {
+    for (const key in base) {
       let k = key
       if (key.startsWith('_')) {
         k = key.split('_')[1]
@@ -30,25 +22,18 @@ export default class CustomShaderMaterial extends Material {
       // @ts-ignore
       if (this[k] === undefined) this[k] = 0
       // @ts-ignore
-      this[k] = this.base[k]
+      this[k] = base[k]
     }
 
-    this.update(fragmentShader, vertexShader, uniforms)
+    this.update({ fragmentShader, vertexShader, uniforms, cacheKey })
   }
 
-  update(
-    fragmentShader: iCSMProps['fragmentShader'],
-    vertexShader: iCSMProps['vertexShader'],
-    uniforms: iCSMProps['uniforms']
-  ) {
-    this.generateMaterial(fragmentShader, vertexShader, uniforms)
+  update({ fragmentShader, vertexShader, uniforms, cacheKey }: iCSMUpdateParams) {
+    this.uuid = cacheKey?.() || hash([fragmentShader, vertexShader, uniforms])
+    this.generateMaterial({ fragmentShader, vertexShader, uniforms })
   }
 
-  private generateMaterial(
-    fragmentShader: iCSMProps['fragmentShader'],
-    vertexShader: iCSMProps['vertexShader'],
-    uniforms: iCSMProps['uniforms']
-  ) {
+  private generateMaterial({ fragmentShader, vertexShader, uniforms }: iCSMUpdateParams) {
     const parsedFragmentShdaer = this.parseShader(fragmentShader)
     const parsedVertexShdaer = this.parseShader(vertexShader)
 
@@ -70,8 +55,8 @@ export default class CustomShaderMaterial extends Material {
 
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
       this.uniforms = shader.uniforms
-      this.needsUpdate = true
     }
+    this.needsUpdate = true
   }
 
   private patchShader(
@@ -156,5 +141,3 @@ export default class CustomShaderMaterial extends Material {
     return parsedShader
   }
 }
-
-const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)

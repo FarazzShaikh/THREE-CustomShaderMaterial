@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Version 3.3.3 **[Breaking]**
+
+### Changes
+
+- Swapped plain params for object-params
+
+  ```js
+  // Old
+  const material = new CustomShaderMaterial(baseMaterial, fragmentShader, vertexShader, uniforms)
+  material.update(fragmentShader, vertexShader, uniforms)
+
+  // New
+  const material = new CustomShaderMaterial({
+    baseMaterial,
+    fragmentShader,
+    vertexShader,
+    uniforms,
+    cacheKey,
+  })
+  material.update({ fragmentShader, vertexShader, uniforms, cacheKey })
+  ```
+
+- Added smarter cache key
+  - Custom cache key is now a hash: `hash([fragmentShader, vertexShader, uniforms])`
+  - Custom cache key function can be supplied with constructor or update function.
+
 ## Version 3.2.10
 
 ### Changes

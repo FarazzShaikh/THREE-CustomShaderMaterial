@@ -44,7 +44,7 @@
     "procedural"
   ],
   "scripts": {
-    "start": "rollup -c -w",
+    "start": "tsc --emitDeclarationOnly && rollup -c -w",
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly && cp package.json dist/package.json",
     "release": "chmod +x ./scripts/publish.sh && ./scripts/publish.sh",
@@ -81,5 +81,9 @@
     "react": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "@types/object-hash": "^2.2.1",
+    "object-hash": "^3.0.0"
   }
 }
