@@ -29,7 +29,11 @@ export default class CustomShaderMaterial extends Material {
   }
 
   update({ fragmentShader, vertexShader, uniforms, cacheKey }: iCSMUpdateParams) {
-    this.uuid = cacheKey?.() || hash([fragmentShader, vertexShader, uniforms])
+    const serializedUniforms = Object.values(uniforms || {}).forEach(({ value }) => {
+      return JSON.stringify(value)
+    })
+
+    this.uuid = cacheKey?.() || hash([fragmentShader, vertexShader, serializedUniforms])
     this.generateMaterial({ fragmentShader, vertexShader, uniforms })
   }
 

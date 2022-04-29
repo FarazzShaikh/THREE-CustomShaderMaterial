@@ -10,7 +10,8 @@ import { patchShaders } from 'gl-noise/build/glNoise.m'
 
 import useWaterControls from './useWaterControls'
 import { useControls } from 'leva'
-import { MathUtils } from 'three'
+import { MathUtils, Vector3 } from 'three'
+import { useTexture } from '@react-three/drei'
 
 export default function Water({ base }: { base: any }) {
   const thickness = 0.2
