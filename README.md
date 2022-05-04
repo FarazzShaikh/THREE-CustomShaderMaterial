@@ -118,16 +118,16 @@ yarn add three-custom-shader-material
 
 CSM provides the following output variables:
 
-| Variable         | Required | Type    | Description             | Available In    | Notes                                                                                     |
-| ---------------- | -------- | ------- | ----------------------- | --------------- | ----------------------------------------------------------------------------------------- |
-| csm_Position     | ❌       | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here. |
-| csm_Normal       | ❌       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                           |
-| csm_PointSize    | ❌       | `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                           |
-| csm_DiffuseColor | ❌       | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                           |
-| csm_FragColor    | ❌       | `vec4`  | Custom gl_FragColor.    | Fragment Shader |                                                                                           |
-| csm_Emissive     | ❌       | `vec3`  | Custom emissive color.  | Fragment Shader |                                                                                           |
+| Variable         |  Type    | Description             | Available In    | Notes                                                                                     |
+| ---------------- |  ------- | ----------------------- | --------------- | ----------------------------------------------------------------------------------------- |
+| csm_Position     |  `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here. |
+| csm_Normal       |  `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                           |
+| csm_PointSize    |  `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                           |
+| csm_DiffuseColor |  `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                           |
+| csm_FragColor    |  `vec4`  | Custom gl_FragColor.    | Fragment Shader |                                                                                           |
+| csm_Emissive     |  `vec3`  | Custom emissive color.  | Fragment Shader |                                                                                           |
 
-You must use these variables like you would use standard GLSL output variables.
+All of them are optional but you must use these variables like you would use standard GLSL output variables.
 
 ```glsl
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
