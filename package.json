@@ -70,7 +70,8 @@
     "react": "^18.0.0",
     "rollup": "^2.70.1",
     "three": "^0.139.1",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "@types/object-hash": "^2.2.1"
   },
   "peerDependencies": {
     "@react-three/fiber": ">=8.0",
@@ -78,12 +79,14 @@
     "three": ">=0.138"
   },
   "peerDependenciesMeta": {
+    "@react-three/fiber": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }
   },
   "dependencies": {
-    "@types/object-hash": "^2.2.1",
     "object-hash": "^3.0.0"
   }
 }
