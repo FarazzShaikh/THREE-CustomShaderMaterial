@@ -5,6 +5,12 @@ import { iCSMUpdateParams, iCSMShader, iCSMParams } from './types'
 import * as PATCH_MAP from './patchMaps'
 
 const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
+const escapeRegExpMatch = function (s: string) {
+  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+}
+const isExactMatch = (str: string, match: string) => {
+  return new RegExp(`\\b${escapeRegExpMatch(match)}\\b`).test(str)
+}
 export default class CustomShaderMaterial extends Material {
   uniforms: { [key: string]: IUniform<any> }
 
@@ -76,7 +82,7 @@ export default class CustomShaderMaterial extends Material {
 
     Object.keys(patchMap).forEach((name: string) => {
       Object.keys(patchMap[name]).forEach((key) => {
-        if (customShader.main.includes(name)) {
+        if (isExactMatch(customShader.main, name)) {
           patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
         }
       })
@@ -88,11 +94,13 @@ export default class CustomShaderMaterial extends Material {
           ${customShader.header}
           void main() {
             vec3 csm_Position;
+            vec4 csm_PositionRaw;
             vec3 csm_Normal;
             vec3 csm_Emissive;
 
             #ifdef IS_VERTEX
               csm_Position = position;
+              csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
             #endif
 
             #ifdef IS_VERTEX

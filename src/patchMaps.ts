@@ -9,9 +9,20 @@ export const VERT = {
     #endif
     `,
   },
-  [`${keywords.positon}`]: {
+  [`${keywords.position}`]: {
     '#include <begin_vertex>': `
-    vec3 transformed = ${keywords.positon};
+    vec3 transformed = ${keywords.position};
+  `,
+  },
+  [`${keywords.positionRaw}`]: {
+    '#include <begin_vertex>': `
+    vec4 csm_positionUnprojected = ${keywords.positionRaw};
+    mat4x4 csm_unprojectMatrix = projectionMatrix * modelViewMatrix;
+    #ifdef USE_INSTANCING
+      csm_unprojectMatrix = csm_unprojectMatrix * instanceMatrix;
+    #endif
+    csm_positionUnprojected = inverse(csm_unprojectMatrix) * csm_positionUnprojected;
+    vec3 transformed = csm_positionUnprojected.xyz;
   `,
   },
   [`${keywords.pointSize}`]: {
