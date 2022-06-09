@@ -1,8 +1,8 @@
 export const vert = /* glsl */ `  
+
 uniform float uTime;
 uniform float uHeight;
 varying float vHeight;
-
 
 vec3 displace(vec3 point) {
 
@@ -60,7 +60,7 @@ void main() {
 }
     `
 
-export const frag = `
+export const frag = /* glsl */ `
 varying float vHeight;
 
 uniform vec3 waterColor;
@@ -70,17 +70,10 @@ uniform float offset;
 uniform float contrast;
 uniform float brightness;
 
-
 vec3 calcColor() {
-
   float mask = (pow(vHeight, 2.) - offset) * contrast;
-
   vec3 diffuseColor = mix(waterColor, waterHighlight, mask);
-
   diffuseColor *= brightness;
-
-
-
   return diffuseColor;
 }
 

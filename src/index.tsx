@@ -3,9 +3,9 @@ import CustomShaderMaterial from './vanilla'
 import { iCSMProps } from './types'
 
 export default forwardRef<CustomShaderMaterial, iCSMProps>(
-  ({ baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey, ...rest }, ref) => {
+  ({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...rest }, ref) => {
     const material = useMemo(
-      () => new CustomShaderMaterial({ baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey }),
+      () => new CustomShaderMaterial({ baseMaterial, fragmentShader, vertexShader, patchMap, uniforms, cacheKey }),
       [baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey]
     )
     return <primitive object={material} ref={ref} attach="material" {...rest} />

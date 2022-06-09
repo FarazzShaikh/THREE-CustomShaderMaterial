@@ -1,6 +1,9 @@
 import keywords from './keywords'
+import { CSMPatchMap } from './types'
 
-export const VERT = {
+const defaultPatchMap: CSMPatchMap = {
+  // VERT
+
   [`${keywords.normal}`]: {
     '#include <beginnormal_vertex>': `
     vec3 objectNormal = ${keywords.normal};
@@ -30,9 +33,9 @@ export const VERT = {
     gl_PointSize = ${keywords.pointSize};
     `,
   },
-}
 
-export const FRAG = {
+  // FRAG
+
   [`${keywords.diffuseColor}`]: {
     '#include <color_fragment>': `
     #include <color_fragment>
@@ -51,3 +54,4 @@ export const FRAG = {
     `,
   },
 }
+export default defaultPatchMap

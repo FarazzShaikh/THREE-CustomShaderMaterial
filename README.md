@@ -118,14 +118,14 @@ yarn add three-custom-shader-material
 
 CSM provides the following output variables:
 
-| Variable         |  Type    | Description             | Available In    | Notes                                                                                     |
-| ---------------- |  ------- | ----------------------- | --------------- | ----------------------------------------------------------------------------------------- |
-| csm_Position     |  `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here. |
-| csm_Normal       |  `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                           |
-| csm_PointSize    |  `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                           |
-| csm_DiffuseColor |  `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                           |
-| csm_FragColor    |  `vec4`  | Custom gl_FragColor.    | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor`                                                                                            |
-| csm_Emissive     |  `vec3`  | Custom emissive color.  | Fragment Shader |                                                                                           |
+| Variable         | Type    | Description             | Available In    | Notes                                                                                                                                                          |
+| ---------------- | ------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| csm_Position     | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
+| csm_Normal       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                                                                                |
+| csm_PointSize    | `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                                                                                                |
+| csm_DiffuseColor | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                                                                                |
+| csm_FragColor    | `vec4`  | Custom gl_FragColor.    | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
+| csm_Emissive     | `vec3`  | Custom emissive color.  | Fragment Shader |                                                                                                                                                                |
 
 All of them are optional but you must use these variables like you would use standard GLSL output variables.
 
@@ -134,17 +134,21 @@ All of them are optional but you must use these variables like you would use sta
 csm_Position = position * vec3(2.0);
 ```
 
-**Note: Shaders passed to CSM are indentation-sensitive.**
+## Custom overrides
 
-```glsl
-void main() {
-  if(...) {
+You can define any custom overrides you'd like using the `patchMap` prop. The prop is used as shown below.
 
-    ...
-
-} // Bad indentation. This will cause a compile error.
-
-  ...
-
-  }  // Bad indentation. This will cause a compile error.
+```js
+const material = new CustomShaderMaterial({
+   baseMaterial: THREE.MeshPhysicalMaterial,
+   vertexShader: ` ... `,
+   fragmentShader: ... `,
+   uniforms: {...},
+   patchMap={{
+      "<KEYWORD>": {        // The keyword you will assign to in your custom shader
+        "TO_REPLACE":       // The chunk you'd like to replace.
+          "REPLACED_WITH"   // The chunk you'd like put in place of `TO_REPLACE`
+      }
+   }}
+})
 ```

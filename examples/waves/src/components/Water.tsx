@@ -4,14 +4,12 @@ import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 
-import * as oceanShader from '../shaders/ocean'
+import * as oceanShader from './shaders'
 // @ts-ignore
 import { patchShaders } from 'gl-noise/build/glNoise.m'
 
 import useWaterControls from './useWaterControls'
 import { useControls } from 'leva'
-import { MathUtils, Vector3 } from 'three'
-import { useTexture } from '@react-three/drei'
 
 export default function Water({ base }: { base: any }) {
   const thickness = 0.2
@@ -41,11 +39,10 @@ export default function Water({ base }: { base: any }) {
           vertexShader={patchShaders(oceanShader.vert)}
           fragmentShader={oceanShader.frag}
           side={THREE.DoubleSide}
-          color={'red'}
+          color={'blue'}
           roughness={0.2}
           metalness={0.1}
           flatShading={Flatshading}
-          vertexColors
           uniforms={{
             uTime: { value: 0 },
             waterColor: {

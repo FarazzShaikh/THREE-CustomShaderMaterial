@@ -1,5 +1,6 @@
 rm -rf ./node_modeules ./yarn.lock
 yarn
+yarn build
 
 cd dist
 yarn link

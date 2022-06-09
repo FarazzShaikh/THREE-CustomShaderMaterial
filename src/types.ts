@@ -23,11 +23,20 @@ export interface iCSMShader {
   main: string
 }
 
+export interface CSMPatchMap {
+  [keyword: string]: {
+    [toReplace: string]: string
+  }
+}
+
+export type CSMBaseMaterial = (new (opts: { [key: string]: any }) => THREE.Material) | THREE.Material
+
 interface CSMParam {
-  baseMaterial: new (opts: { [key: string]: any }) => THREE.Material
+  baseMaterial: CSMBaseMaterial
   vertexShader?: string
   fragmentShader?: string
   cacheKey?: () => string
+  patchMap?: CSMPatchMap
   uniforms?: { [key: string]: THREE.IUniform<any> }
 }
 

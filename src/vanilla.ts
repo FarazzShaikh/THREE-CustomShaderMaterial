@@ -1,8 +1,15 @@
 import { IUniform, Material } from 'three'
 import hash from 'object-hash'
-import { iCSMUpdateParams, iCSMShader, iCSMParams } from './types'
+import { iCSMUpdateParams, iCSMShader, iCSMParams, CSMPatchMap, CSMBaseMaterial } from './types'
 
-import * as PATCH_MAP from './patchMaps'
+import PATCH_MAP from './patchMaps'
+
+// @ts-ignore
+import tokenize from 'glsl-tokenizer'
+// @ts-ignore
+import stringify from 'glsl-token-string'
+// @ts-ignore
+import tokenFunctions from 'glsl-token-functions'
 
 const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
 const escapeRegExpMatch = function (s: string) {
@@ -11,13 +18,27 @@ const escapeRegExpMatch = function (s: string) {
 const isExactMatch = (str: string, match: string) => {
   return new RegExp(`\\b${escapeRegExpMatch(match)}\\b`).test(str)
 }
+
+function isConstructor(f: CSMBaseMaterial): f is new (opts: { [key: string]: any }) => THREE.Material {
+  try {
+    // @ts-ignore
+    new f()
+  } catch (err: any) {
+    if (err.message.indexOf('is not a constructor') >= 0) {
+      return false
+    }
+  }
+  return true
+}
 export default class CustomShaderMaterial extends Material {
   uniforms: { [key: string]: IUniform<any> }
+  private customPatchMap: CSMPatchMap
 
-  constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey, ...opts }: iCSMParams) {
-    const base = new baseMaterial(opts)
+  constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
+    const base = isConstructor(baseMaterial) ? new baseMaterial(opts) : baseMaterial
     super()
     this.uniforms = uniforms || {}
+    this.customPatchMap = patchMap || {}
 
     for (const key in base) {
       let k = key
@@ -54,11 +75,11 @@ export default class CustomShaderMaterial extends Material {
 
     this.onBeforeCompile = (shader) => {
       if (parsedFragmentShdaer) {
-        const patchedFragmentShdaer = this.patchShader(parsedFragmentShdaer, shader.fragmentShader, PATCH_MAP.FRAG)
+        const patchedFragmentShdaer = this.patchShader(parsedFragmentShdaer, shader.fragmentShader)
         shader.fragmentShader = patchedFragmentShdaer
       }
       if (parsedVertexShdaer) {
-        const patchedVertexShdaer = this.patchShader(parsedVertexShdaer, shader.vertexShader, PATCH_MAP.VERT)
+        const patchedVertexShdaer = this.patchShader(parsedVertexShdaer, shader.vertexShader)
 
         shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShdaer
       }
@@ -69,16 +90,13 @@ export default class CustomShaderMaterial extends Material {
     this.needsUpdate = true
   }
 
-  private patchShader(
-    customShader: iCSMShader,
-    shader: string,
-    patchMap: {
-      [key: string]: {
-        [key: string]: any
-      }
-    }
-  ): string {
+  private patchShader(customShader: iCSMShader, shader: string): string {
     let patchedShader: string = shader
+
+    const patchMap: CSMPatchMap = {
+      ...PATCH_MAP,
+      ...this.customPatchMap,
+    }
 
     Object.keys(patchMap).forEach((name: string) => {
       Object.keys(patchMap[name]).forEach((key) => {
@@ -127,29 +145,26 @@ export default class CustomShaderMaterial extends Material {
 
   private parseShader(shader?: string): iCSMShader | undefined {
     if (!shader) return
-    const parsedShader: iCSMShader = {
+
+    const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?);/gm, '')
+    const tokens = tokenize(s)
+    const funcs = tokenFunctions(tokens)
+    const mainIndex = funcs
+      .map((e: any) => {
+        return e.name
+      })
+      .indexOf('main')
+    const variables = stringify(tokens.slice(0, mainIndex >= 0 ? funcs[mainIndex].outer[0] : undefined))
+    const mainBody = mainIndex >= 0 ? this.getShaderFromIndex(tokens, funcs[mainIndex].body) : ''
+
+    return {
       defines: '',
-      header: '',
-      main: '',
+      header: variables,
+      main: mainBody,
     }
+  }
 
-    const main = shader.match(/^(\s*)(void\s*main\s*\(.*\)\s*).*?{[\s\S]*?^\1}\s*$/gm)
-
-    if (main?.length) {
-      const mainBody = main[0].match(/{[\w\W\s\S]*}/gm)
-
-      if (mainBody?.length) {
-        parsedShader.main = mainBody[0]
-      }
-
-      const rest = shader.replace(main[0], '')
-      const defines = rest.match(/#(.*?;)/g) || []
-      const header = defines.reduce((prev, curr) => prev.replace(curr, ''), rest)
-
-      parsedShader.header = header
-      parsedShader.defines = defines.join('\n')
-    }
-
-    return parsedShader
+  private getShaderFromIndex(tokens: any, index: number[]) {
+    return stringify(tokens.slice(index[0], index[1]))
   }
 }
