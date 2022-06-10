@@ -35,7 +35,14 @@ export default class CustomShaderMaterial extends Material {
   private customPatchMap: CSMPatchMap
 
   constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
-    const base = isConstructor(baseMaterial) ? new baseMaterial(opts) : baseMaterial
+    let base: THREE.Material
+    if (isConstructor(baseMaterial)) {
+      base = new baseMaterial(opts)
+    } else {
+      base = baseMaterial
+      Object.assign(base, opts)
+    }
+
     super()
     this.uniforms = uniforms || {}
     this.customPatchMap = patchMap || {}
@@ -146,6 +153,7 @@ export default class CustomShaderMaterial extends Material {
   private parseShader(shader?: string): iCSMShader | undefined {
     if (!shader) return
 
+    // TODO better way to remove comments
     const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?);/gm, '')
     const tokens = tokenize(s)
     const funcs = tokenFunctions(tokens)

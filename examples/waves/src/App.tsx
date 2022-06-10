@@ -8,7 +8,6 @@ import Lights from './components/Lights'
 import Water from './components/Water'
 
 import {
-  Color,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
   MeshNormalMaterial,
