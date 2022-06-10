@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Version 3.4.0
+
+### Added support to extend already initialized materials
+
+Vanilla:
+
+```js
+const material = new Material()
+new CustomShaderMaterial({ baseMaterial: material })
+```
+
+React:
+
+```jsx
+const material = useMemo(() => new Material(), [])
+<CustomShaderMaterial baseMaterial={material} />
+```
+
+### Add support for custom patch maps
+
+Vanilla:
+
+```js
+new CustomShaderMaterial({ patchMap: {...} })
+```
+
+React:
+
+```jsx
+<CustomShaderMaterial patchMap={{...}} />
+```
+
+### Upgraded shader parsing
+
+- Shaders are indentation-sensitive no more.
+- Supports full set of standard GLSL syntax.
+
 ## Version 3.3.3 **[Breaking]**
 
 ### Changes
