@@ -10,8 +10,10 @@
 <br>
 
 <p align="center">
-  <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/waves" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/waves-demo.png" alt="Waves" /></a>
-   <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/points" target="_blank"><img width="49%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/points-demo.png" alt="Waves" /></a>
+  <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/waves" target="_blank"><img width="33%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/waves-demo.png" alt="Waves" /></a>
+   <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/points" target="_blank"><img width="33%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/points-demo.png" alt="Waves" /></a>
+  <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/caustics" target="_blank"><img width="33%" src="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/raw/master/Assets/caustics-ex.png" alt="Caustics" /></a>
+</p>
 </p>
 <p align="middle">
   <i>The demo is real, you can click it! It contains full code, too. 📦</i>
