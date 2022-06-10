@@ -11,7 +11,7 @@
     "react-icons": "^4.3.1",
     "react-scripts": "5.0.0",
     "three": "^0.139.2",
-    "three-custom-shader-material": "^3.3.3"
+    "three-custom-shader-material": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
