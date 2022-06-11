@@ -43,8 +43,8 @@ const defaultPatchMap: CSMPatchMap = {
   `,
   },
   [`${keywords.fragColor}`]: {
-    '#include <output_fragment>': `
-    #include <output_fragment>
+    '#include <dithering_fragment>': `
+    #include <dithering_fragment>
     gl_FragColor  = ${keywords.fragColor};
   `,
   },
