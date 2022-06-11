@@ -53,7 +53,7 @@ function Box() {
         value: 0,
       },
     },
-    flatShading: true
+    flatShading: true,
     color: 0xff00ff
   })
 
