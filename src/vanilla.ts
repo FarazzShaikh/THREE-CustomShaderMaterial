@@ -154,7 +154,7 @@ export default class CustomShaderMaterial extends Material {
     if (!shader) return
 
     // TODO better way to remove comments
-    const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?);/gm, '')
+    const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?)\n/gm, '')
     const tokens = tokenize(s)
     const funcs = tokenFunctions(tokens)
     const mainIndex = funcs
