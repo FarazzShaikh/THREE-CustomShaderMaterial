@@ -30,9 +30,14 @@ function isConstructor(f: CSMBaseMaterial): f is new (opts: { [key: string]: any
   }
   return true
 }
+
+export * from './types'
 export default class CustomShaderMaterial extends Material {
   uniforms: { [key: string]: IUniform<any> }
-  private customPatchMap: CSMPatchMap
+
+  private _customPatchMap: CSMPatchMap
+  private _fs: string
+  private _vs: string
 
   constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
     let base: THREE.Material
@@ -45,7 +50,9 @@ export default class CustomShaderMaterial extends Material {
 
     super()
     this.uniforms = uniforms || {}
-    this.customPatchMap = patchMap || {}
+    this._customPatchMap = patchMap || {}
+    this._fs = fragmentShader || ''
+    this._vs = vertexShader || ''
 
     for (const key in base) {
       let k = key
@@ -62,18 +69,26 @@ export default class CustomShaderMaterial extends Material {
     this.update({ fragmentShader, vertexShader, uniforms, cacheKey })
   }
 
-  update({ fragmentShader, vertexShader, uniforms, cacheKey }: iCSMUpdateParams) {
-    const serializedUniforms = Object.values(uniforms || {}).forEach(({ value }) => {
-      return JSON.stringify(value)
-    })
+  update(opts?: Partial<iCSMUpdateParams>) {
+    const uniforms = opts?.uniforms || {}
+    const fragmentShader = opts?.fragmentShader || this._fs
+    const vertexShader = opts?.vertexShader || this._vs
 
-    this.uuid = cacheKey?.() || hash([fragmentShader, vertexShader, serializedUniforms])
-    this.generateMaterial({ fragmentShader, vertexShader, uniforms })
+    const serializedUniforms = Object.values(uniforms).reduce((prev, { value }) => {
+      return prev + JSON.stringify(value)
+    }, '')
+
+    this.uuid = opts?.cacheKey?.() || hash([fragmentShader, vertexShader, serializedUniforms])
+    this.generateMaterial({
+      fragmentShader,
+      vertexShader,
+      uniforms,
+    })
   }
 
-  private generateMaterial({ fragmentShader, vertexShader, uniforms }: iCSMUpdateParams) {
-    const parsedFragmentShdaer = this.parseShader(fragmentShader)
-    const parsedVertexShdaer = this.parseShader(vertexShader)
+  private generateMaterial({ fragmentShader, vertexShader, uniforms }: Omit<iCSMUpdateParams, 'cacheKey'>) {
+    const parsedFragmentShader = this.parseShader(fragmentShader)
+    const parsedVertexShader = this.parseShader(vertexShader)
 
     this.uniforms = uniforms || {}
     this.customProgramCacheKey = () => {
@@ -81,14 +96,14 @@ export default class CustomShaderMaterial extends Material {
     }
 
     this.onBeforeCompile = (shader) => {
-      if (parsedFragmentShdaer) {
-        const patchedFragmentShdaer = this.patchShader(parsedFragmentShdaer, shader.fragmentShader)
-        shader.fragmentShader = patchedFragmentShdaer
+      if (parsedFragmentShader) {
+        const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader)
+        shader.fragmentShader = patchedFragmentShader
       }
-      if (parsedVertexShdaer) {
-        const patchedVertexShdaer = this.patchShader(parsedVertexShdaer, shader.vertexShader)
+      if (parsedVertexShader) {
+        const patchedVertexShader = this.patchShader(parsedVertexShader, shader.vertexShader)
 
-        shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShdaer
+        shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShader
       }
 
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
@@ -102,7 +117,7 @@ export default class CustomShaderMaterial extends Material {
 
     const patchMap: CSMPatchMap = {
       ...PATCH_MAP,
-      ...this.customPatchMap,
+      ...this._customPatchMap,
     }
 
     Object.keys(patchMap).forEach((name: string) => {
@@ -118,29 +133,19 @@ export default class CustomShaderMaterial extends Material {
       `
           ${customShader.header}
           void main() {
-            vec3 csm_Position;
-            vec4 csm_PositionRaw;
-            vec3 csm_Normal;
-            vec3 csm_Emissive;
-
             #ifdef IS_VERTEX
-              csm_Position = position;
-              csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
-            #endif
-
-            #ifdef IS_VERTEX
-              csm_Normal = normal;
-            #endif
-            
-            #ifndef IS_VERTEX
+              vec3 csm_Position = position;
+              vec4 csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+              vec3 csm_Normal = normal;
+              float csm_PointSize = 1.;
+            #else 
               #ifdef STANDARD
-                csm_Emissive = emissive;
+                vec3 csm_Emissive = emissive;
               #endif
+              
+              vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);
+              vec4 csm_FragColor = vec4(1., 0., 0., 1.);
             #endif
-
-            vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);
-            vec4 csm_FragColor = vec4(1., 0., 0., 1.);
-            float csm_PointSize = 1.;
 
             ${customShader.main}
           `
@@ -153,8 +158,9 @@ export default class CustomShaderMaterial extends Material {
   private parseShader(shader?: string): iCSMShader | undefined {
     if (!shader) return
 
-    // TODO better way to remove comments
+    // Strip comments
     const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?)\n/gm, '')
+
     const tokens = tokenize(s)
     const funcs = tokenFunctions(tokens)
     const mainIndex = funcs

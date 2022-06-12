@@ -20,7 +20,7 @@ export default function Lights() {
         castShadow //
         position={[-5, 3, -5]}
         intensity={3}
-        shadowBias={-0.0002}
+        shadow-Bias={-0.0002}
         color="orange"
       />
       <directionalLight

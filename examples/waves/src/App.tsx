@@ -48,9 +48,6 @@ export default function App() {
       <Leva />
       <Tag />
       <Canvas
-        gl={{
-          antialias: true,
-        }}
         camera={{
           position: [4, 4, 4],
         }}

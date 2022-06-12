@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import * as FIBER from '@react-three/fiber'
 
 export type AllMaterialParams = THREE.MeshPhongMaterialParameters &
   THREE.MeshPhysicalMaterialParameters &
@@ -8,14 +7,6 @@ export type AllMaterialParams = THREE.MeshPhongMaterialParameters &
   THREE.MeshLambertMaterialParameters &
   THREE.MeshStandardMaterialParameters &
   THREE.PointsMaterialParameters
-
-export type AllMaterialProps = FIBER.MeshPhongMaterialProps & //
-  FIBER.MeshPhysicalMaterialProps &
-  FIBER.MeshToonMaterialProps &
-  FIBER.MeshBasicMaterialProps &
-  FIBER.MeshLambertMaterialProps &
-  FIBER.MeshStandardMaterialProps &
-  FIBER.PointsMaterialProps
 
 export interface iCSMShader {
   defines: string
@@ -31,7 +22,7 @@ export interface CSMPatchMap {
 
 export type CSMBaseMaterial = (new (opts: { [key: string]: any }) => THREE.Material) | THREE.Material
 
-interface CSMParam {
+export interface _CSMParam {
   baseMaterial: CSMBaseMaterial
   vertexShader?: string
   fragmentShader?: string
@@ -40,12 +31,11 @@ interface CSMParam {
   uniforms?: { [key: string]: THREE.IUniform<any> }
 }
 
-export type iCSMProps = CSMParam & AllMaterialProps
-export type iCSMParams = CSMParam & AllMaterialParams
+export type iCSMParams = _CSMParam & AllMaterialParams
 
 export type iCSMUpdateParams = {
-  vertexShader?: string
-  fragmentShader?: string
-  uniforms?: { [key: string]: THREE.IUniform<any> }
-  cacheKey?: () => string
+  vertexShader: string
+  fragmentShader: string
+  uniforms: { [key: string]: THREE.IUniform<any> }
+  cacheKey: () => string
 }

@@ -70,6 +70,7 @@
     "json": "^11.0.0",
     "react": "^18.0.0",
     "rollup": "^2.70.1",
+    "rollup-plugin-dts": "^4.2.2",
     "three": "^0.139.1",
     "typescript": "^4.6.3"
   },
