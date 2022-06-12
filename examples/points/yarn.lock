@@ -8336,10 +8336,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-three-custom-shader-material@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.4.2.tgz#5411db2bc8f46db054e358d1d299342669eb810d"
-  integrity sha512-n1VKei2ovssqOh9k9aI1W48IOuT+IQc0oQkAwNxF+bfn8t4HHPOz0sBQXrZ2sS1L8D00LSbwHKq3uLqlUKWDdQ==
+three-custom-shader-material@^3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.4.3.tgz#6aa644a92d3e3557cbba51c9c11b2eddebe2cc70"
+  integrity sha512-7/FqQJ83FI8qRexLFEh08XcIbFZKLmAVHX1zfNZArBAQBHcxKnZPYWGUgYLlYCeBIfY1yw2PyyW31ik+oTNY0A==
   dependencies:
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"
