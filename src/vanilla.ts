@@ -38,6 +38,7 @@ export default class CustomShaderMaterial extends Material {
   private _customPatchMap: CSMPatchMap
   private _fs: string
   private _vs: string
+  private _base: CSMBaseMaterial
 
   constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
     let base: THREE.Material
@@ -53,6 +54,7 @@ export default class CustomShaderMaterial extends Material {
     this._customPatchMap = patchMap || {}
     this._fs = fragmentShader || ''
     this._vs = vertexShader || ''
+    this._base = baseMaterial
 
     for (const key in base) {
       let k = key
@@ -84,6 +86,13 @@ export default class CustomShaderMaterial extends Material {
       vertexShader,
       uniforms,
     })
+  }
+
+  clone() {
+    // @ts-ignore
+    return new this.constructor({
+      baseMaterial: this._base,
+    }).copy(this)
   }
 
   private generateMaterial({ fragmentShader, vertexShader, uniforms }: Omit<iCSMUpdateParams, 'cacheKey'>) {
