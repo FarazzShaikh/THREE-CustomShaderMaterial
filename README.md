@@ -118,7 +118,7 @@ yarn add three-custom-shader-material
 
 ## Output Variables
 
-CSM provides the following output variables:
+CSM provides the following output variables, you MUST use these for your shaders to take effect
 
 | Variable         | Type    | Description             | Available In    | Notes                                                                                                                                                          |
 | ---------------- | ------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
