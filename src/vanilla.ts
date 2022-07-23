@@ -167,6 +167,8 @@ export default class CustomShaderMaterial extends Material {
             #else 
               #ifdef STANDARD
                 vec3 csm_Emissive = emissive;
+                float csm_Roughness = roughness;
+                float csm_Metalness = metalness;
               #endif
               
               vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);

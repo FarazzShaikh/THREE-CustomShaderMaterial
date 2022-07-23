@@ -1,9 +1,13 @@
 export default {
   position: 'csm_Position',
   positionRaw: 'csm_PositionRaw',
-  emissive: 'csm_Emissive',
-  normal: 'csm_Normal',
   pointSize: 'csm_PointSize',
-  diffuseColor: 'csm_DiffuseColor',
   fragColor: 'csm_FragColor',
+
+  // PBR
+  diffuseColor: 'csm_DiffuseColor',
+  normal: 'csm_Normal',
+  roughness: 'csm_Roughness',
+  metalness: 'csm_Metalness',
+  emissive: 'csm_Emissive',
 }

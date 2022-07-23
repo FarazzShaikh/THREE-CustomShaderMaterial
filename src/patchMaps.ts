@@ -53,5 +53,17 @@ const defaultPatchMap: CSMPatchMap = {
     vec3 totalEmissiveRadiance = ${keywords.emissive};
     `,
   },
+  [`${keywords.roughness}`]: {
+    '#include <roughnessmap_fragment>': `
+    #include <roughnessmap_fragment>
+    roughnessFactor = ${keywords.roughness};
+    `,
+  },
+  [`${keywords.metalness}`]: {
+    '#include <metalnessmap_fragment>': `
+    #include <metalnessmap_fragment>
+    metalnessFactor = ${keywords.metalness};
+    `,
+  },
 }
 export default defaultPatchMap

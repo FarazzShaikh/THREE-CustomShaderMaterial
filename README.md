@@ -54,7 +54,7 @@ function Box() {
       },
     },
     flatShading: true,
-    color: 0xff00ff
+    color: 0xff00ff,
   })
 
   return new THREE.Mesh(geometry, material)
@@ -63,7 +63,7 @@ function Box() {
 
 </details>
 
-<details open>
+<details >
   <summary>Show React example</summary>
 
 ```jsx
@@ -104,32 +104,25 @@ function Cube() {
 
 ## Installation
 
-npm
-
 ```bash
 npm install three-custom-shader-material
-```
-
-Yarn
-
-```bash
 yarn add three-custom-shader-material
 ```
 
 ## Output Variables
 
-CSM provides the following output variables:
+CSM provides the following output variables, all of them are optional but you must use these variables like you would use standard GLSL output variables to see results.
 
 | Variable         | Type    | Description             | Available In    | Notes                                                                                                                                                          |
 | ---------------- | ------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | csm_Position     | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
-| csm_Normal       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                                                                                |
-| csm_PointSize    | `float` | Custom gl_PointSize.    | Vertex Shader   |                                                                                                                                                                |
 | csm_DiffuseColor | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                                                                                |
+| csm_Normal       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                                                                                |
+| csm_PointSize    | `float` | Custom gl_PointSize.    | Vertex Shader   | Only available in `PointsMaterial`                                                                                                                             |
 | csm_FragColor    | `vec4`  | Custom gl_FragColor.    | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
-| csm_Emissive     | `vec3`  | Custom emissive color.  | Fragment Shader |                                                                                                                                                                |
-
-All of them are optional but you must use these variables like you would use standard GLSL output variables.
+| csm_Emissive     | `vec3`  | Custom emissive color.  | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| csm_Roughness    | `float` | Custom roughness.       | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| csm_Metalness    | `float` | Custom metalness.       | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
 
 ```glsl
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
