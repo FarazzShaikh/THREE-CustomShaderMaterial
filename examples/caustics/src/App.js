@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import {
   Box,
+  Environment,
   MeshReflectorMaterial,
   OrbitControls,
   OrthographicCamera,
@@ -17,18 +18,12 @@ import Lights from './components/Lights'
 import Caustics from './Caustics'
 import { useControls } from 'leva'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { Color, MathUtils } from 'three'
-import {
-  EffectComposer,
-  DepthOfField,
-  Bloom,
-  Noise,
-  Vignette,
-  HueSaturation,
-  BrightnessContrast,
-} from '@react-three/postprocessing'
+import { BoxGeometry, Color, MathUtils, Mesh, MeshPhysicalMaterial } from 'three'
+import { Perf } from 'r3f-perf'
 
 import suzanne from '@gsimone/suzanne'
+import { useMemo } from 'react'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 function Thing() {
   const [transform, setTransfrom] = useState()
@@ -52,6 +47,8 @@ function Thing() {
           </group>
         </TransformControls>
       </Caustics>
+
+      <Perf />
     </>
   )
 }
@@ -68,6 +65,8 @@ export default function App() {
       <Suspense>
         <Thing />
       </Suspense>
+
+      <Perf />
     </Canvas>
   )
 }

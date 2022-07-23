@@ -1,4 +1,4 @@
-import { IUniform, Material } from 'three'
+import { IUniform, Material, MathUtils } from 'three'
 import hash from 'object-hash'
 import { iCSMUpdateParams, iCSMShader, iCSMParams, CSMPatchMap, CSMBaseMaterial } from './types'
 
@@ -38,7 +38,9 @@ export default class CustomShaderMaterial extends Material {
   private _customPatchMap: CSMPatchMap
   private _fs: string
   private _vs: string
+  private _cacheKey: (() => string) | undefined
   private _base: CSMBaseMaterial
+  private _instanceID: string
 
   constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
     let base: THREE.Material
@@ -54,7 +56,9 @@ export default class CustomShaderMaterial extends Material {
     this._customPatchMap = patchMap || {}
     this._fs = fragmentShader || ''
     this._vs = vertexShader || ''
+    this._cacheKey = cacheKey
     this._base = baseMaterial
+    this._instanceID = MathUtils.generateUUID()
 
     for (const key in base) {
       let k = key
@@ -80,7 +84,7 @@ export default class CustomShaderMaterial extends Material {
       return prev + JSON.stringify(value)
     }, '')
 
-    this.uuid = opts?.cacheKey?.() || hash([fragmentShader, vertexShader, serializedUniforms])
+    this.uuid = opts?.cacheKey?.() || hash([fragmentShader, vertexShader, serializedUniforms, this._instanceID])
     this.generateMaterial({
       fragmentShader,
       vertexShader,
@@ -88,11 +92,24 @@ export default class CustomShaderMaterial extends Material {
     })
   }
 
-  clone() {
+  clone(): this {
     // @ts-ignore
-    return new this.constructor({
+    const c = new this.constructor({
       baseMaterial: this._base,
-    }).copy(this)
+      fragmentShader: this._fs,
+      vertexShader: this._vs,
+      patchMap: this._customPatchMap,
+      uniforms: this.uniforms,
+      cacheKey: this._cacheKey,
+    })
+
+    for (const key in this) {
+      if (key === 'uuid') continue
+      // @ts-ignore
+      c[key] = this[key]
+    }
+
+    return c
   }
 
   private generateMaterial({ fragmentShader, vertexShader, uniforms }: Omit<iCSMUpdateParams, 'cacheKey'>) {

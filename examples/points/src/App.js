@@ -37,11 +37,11 @@ const shader = {
 
       vec2 uv = vec2(gl_PointCoord.x, 1. - gl_PointCoord.y);
       vec2 cUV = 2. * uv - 1.;
-      float alpha = .15 / length(cUV);
+      float a = .15 / length(cUV);
+      float alpha = 1.;
+      if(a < 0.15) alpha = 0.;
 
-      if(alpha < 0.15) discard;
-
-      csm_FragColor = vec4(vViewNormal, (vVisibility + 0.01));
+      csm_DiffuseColor = vec4(vViewNormal, (vVisibility + 0.01) * alpha);
     }
 
 
@@ -75,7 +75,7 @@ function Thing() {
         <CustomShaderMaterial
           ref={matRef}
           baseMaterial={PointsMaterial}
-          size={0.01}
+          size={0.02}
           vertexShader={patchShaders(shader.vertex)}
           fragmentShader={patchShaders(shader.fragment)}
           uniforms={uniforms}
