@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Version 3.5.0
+
+### Added `csm_Roughness` and `csm_Metalness`
+
+```glsl
+csm_Roughness = 0.0; // PBR Roughness
+csm_Metalness = 1.0; // PBR Metalness
+```
+
+### Misc
+
+- Updated deps
+- Fixed `.clone()` (#20)
+
 ## Version 3.4.0
 
 ### Added support to extend already initialized materials

@@ -4,17 +4,17 @@
   "private": true,
   "dependencies": {
     "@gsimone/suzanne": "^0.0.12",
-    "@react-three/drei": "9.11.3",
-    "@react-three/fiber": "8.0.19",
+    "@react-three/drei": "9.17.3",
+    "@react-three/fiber": "8.2.1",
     "@react-three/postprocessing": "^2.3.2",
     "gl-noise": "^1.6.1",
     "leva": "^0.9.27",
     "postprocessing": "^6.27.0",
     "r3f-perf": "^6.4.2",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "three": "0.141.0",
+    "three": "0.142.0",
     "three-custom-shader-material": "^3.4.4"
   },
   "scripts": {

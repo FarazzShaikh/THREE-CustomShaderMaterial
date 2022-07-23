@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-spring/three": "^9.4.4",
+    "@react-spring/three": "^9.5.2",
     "@react-three/drei": "^9.4.2",
     "@react-three/fiber": "^8.0.11",
-    "@types/three": "^0.139.0",
+    "@types/three": "^0.142.0",
     "gl-noise": "^1.6.1",
     "leva": "^0.9.23",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
     "react-scripts": "^5.0.1",
-    "three": "^0.139.1",
+    "three": "^0.142.0",
     "three-custom-shader-material": "^3.4.4"
   },
   "scripts": {
