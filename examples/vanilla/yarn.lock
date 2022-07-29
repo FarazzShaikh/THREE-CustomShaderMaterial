@@ -266,10 +266,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-three-custom-shader-material@^3.4.4:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.4.4.tgz#14f523f86f8ac7813802ac5d85e77fb220b4b3b8"
-  integrity sha512-OeY92bVpVJ0LkgRh84NW+had+/QzDHoKkQGr1deCofaLkXdqkmMkp3GLcF88pUuumdRJMi2SySOrFsxZpfuZsA==
+three-custom-shader-material@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.5.1.tgz#3d6b424cfbe9e1cecb19ea5a43dfe9e2335808cd"
+  integrity sha512-Yf1pjWMAiqyUP0yQcvzPaBxohH5ta+JKPJ8anU6a2SGrOJ5Kx7FyFDbr9y3eJrwVGzBhFvZZyRtgRShT8r1rSg==
   dependencies:
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"

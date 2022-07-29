@@ -27,7 +27,7 @@
     "react-icons": "^4.3.1",
     "react-scripts": "^5.0.1",
     "three": "^0.142.0",
-    "three-custom-shader-material": "^3.4.4"
+    "three-custom-shader-material": "^3.5.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.6",
