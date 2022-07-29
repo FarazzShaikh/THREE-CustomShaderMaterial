@@ -171,8 +171,8 @@ export default class CustomShaderMaterial extends Material {
                 float csm_Metalness = metalness;
               #endif
               
-              vec4 csm_DiffuseColor = vec4(1., 0., 0., 1.);
-              vec4 csm_FragColor = vec4(1., 0., 0., 1.);
+              vec4 csm_DiffuseColor = vec4(diffuse, 1.);
+              vec4 csm_FragColor = vec4(diffuse, 1.);
             #endif
 
             ${customShader.main}

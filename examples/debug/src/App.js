@@ -12,6 +12,8 @@ function Thing() {
       <Sphere args={[1, 128, 128]}>
         <CustomShaderMaterial
           baseMaterial={MeshStandardMaterial} //
+          color="red"
+          transparent
           vertexShader={
             /* glsl */ `
           varying vec3 vPos;
