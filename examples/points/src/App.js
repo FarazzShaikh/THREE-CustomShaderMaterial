@@ -26,7 +26,7 @@ const shader = {
       vVisibility = visibility;
 
       csm_Position = position + (normal * n * 0.5);
-      csm_PointSize = ((1. - visibility) * 0.05) + size;
+      csm_PointSize += ((1. - visibility) * 0.05);
     }
     `,
   fragment: /* glsl */ `

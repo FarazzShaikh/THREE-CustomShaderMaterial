@@ -41,6 +41,7 @@ export default class CustomShaderMaterial extends Material {
   private _cacheKey: (() => string) | undefined
   private _base: CSMBaseMaterial
   private _instanceID: string
+  private _type: string
 
   constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
     let base: THREE.Material
@@ -58,6 +59,7 @@ export default class CustomShaderMaterial extends Material {
     this._vs = vertexShader || ''
     this._cacheKey = cacheKey
     this._base = baseMaterial
+    this._type = base.type
     this._instanceID = MathUtils.generateUUID()
 
     for (const key in base) {
@@ -71,7 +73,6 @@ export default class CustomShaderMaterial extends Material {
       // @ts-ignore
       this[k] = base[k]
     }
-
     this.update({ fragmentShader, vertexShader, uniforms, cacheKey })
   }
 
@@ -124,18 +125,23 @@ export default class CustomShaderMaterial extends Material {
     this.onBeforeCompile = (shader) => {
       if (parsedFragmentShader) {
         const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader)
-        shader.fragmentShader = patchedFragmentShader
+        shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
       }
       if (parsedVertexShader) {
         const patchedVertexShader = this.patchShader(parsedVertexShader, shader.vertexShader)
 
         shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShader
+        shader.vertexShader = this.getMaterialDefine() + shader.vertexShader
       }
 
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
       this.uniforms = shader.uniforms
     }
     this.needsUpdate = true
+  }
+
+  private getMaterialDefine() {
+    return `#define IS_${this._type.toUpperCase()};\n`
   }
 
   private patchShader(customShader: iCSMShader, shader: string): string {
@@ -163,16 +169,32 @@ export default class CustomShaderMaterial extends Material {
               vec3 csm_Position = position;
               vec4 csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
               vec3 csm_Normal = normal;
-              float csm_PointSize = 1.;
+              
+              #ifdef IS_POINTSMATERIAL
+                float csm_PointSize = size;
+              #endif
+
             #else 
-              #ifdef STANDARD
+              #if defined IS_MESHSTANDARDMATERIAL || defined IS_MESHPHYSICALMATERIAL
                 vec3 csm_Emissive = emissive;
                 float csm_Roughness = roughness;
                 float csm_Metalness = metalness;
               #endif
               
-              vec4 csm_DiffuseColor = vec4(diffuse, 1.);
-              vec4 csm_FragColor = vec4(diffuse, 1.);
+              #ifdef USE_MAP
+                vec4 _csm_sampledDiffuseColor = texture2D(map, vUv);
+
+                #ifdef DECODE_VIDEO_TEXTURE
+                  // inline sRGB decode (TODO: Remove this code when https://crbug.com/1256340 is solved)
+                  _csm_sampledDiffuseColor = vec4(mix(pow(_csm_sampledDiffuseColor.rgb * 0.9478672986 + vec3(0.0521327014), vec3(2.4)), _csm_sampledDiffuseColor.rgb * 0.0773993808, vec3(lessThanEqual(_csm_sampledDiffuseColor.rgb, vec3(0.04045)))), _csm_sampledDiffuseColor.w);
+                #endif
+
+                vec4 csm_DiffuseColor = vec4(diffuse, opacity) * _csm_sampledDiffuseColor;
+                vec4 csm_FragColor = vec4(diffuse, opacity) * _csm_sampledDiffuseColor;
+              #else
+                vec4 csm_DiffuseColor = vec4(diffuse, opacity);
+                vec4 csm_FragColor = vec4(diffuse, opacity);
+              #endif
             #endif
 
             ${customShader.main}
