@@ -1,7 +1,7 @@
 import keywords from './keywords'
 import { CSMPatchMap } from './types'
 
-const defaultPatchMap: CSMPatchMap = {
+export const defaultPatchMap: CSMPatchMap = {
   // VERT
 
   [`${keywords.normal}`]: {
@@ -66,4 +66,29 @@ const defaultPatchMap: CSMPatchMap = {
     `,
   },
 }
-export default defaultPatchMap
+
+export const shaderMaterial_PatchMap: CSMPatchMap = {
+  // VERT
+  [`${keywords.position}`]: {
+    'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );': `
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( ${keywords.position}, 1.0 );
+  `,
+  },
+  [`${keywords.positionRaw}`]: {
+    'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );': `
+    gl_Position = ${keywords.position};
+  `,
+  },
+
+  // FRAG
+  [`${keywords.diffuseColor}`]: {
+    'gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );': `
+    gl_FragColor = ${keywords.diffuseColor};
+  `,
+  },
+  [`${keywords.fragColor}`]: {
+    'gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );': `
+    gl_FragColor = ${keywords.fragColor};
+  `,
+  },
+}

@@ -3,7 +3,7 @@ import { OrbitControls, PerspectiveCamera, Sphere, Environment } from '@react-th
 import { Suspense } from 'react'
 import { Perf } from 'r3f-perf'
 import CustomShaderMaterial from 'three-custom-shader-material'
-import { MeshPhysicalMaterial, MeshStandardMaterial } from 'three'
+import { MeshPhysicalMaterial, MeshStandardMaterial, ShaderMaterial } from 'three'
 import { patchShaders } from 'gl-noise/build/glNoise.m'
 import { MeshPhongMaterial } from 'three'
 
@@ -13,7 +13,7 @@ function Thing() {
       <Sphere args={[1, 128, 128]}>
         <CustomShaderMaterial
           baseMaterial={MeshPhysicalMaterial} //
-          color="grey"
+          color="red"
           transparent
           vertexShader={
             /* glsl */ `
@@ -34,7 +34,7 @@ function Thing() {
             csm_Roughness = pow(noise, 1.) * 0.5;
             csm_Metalness = pow(noise, 1.) * 1.2;
 
-            // csm_DiffuseColor = vec4(vec3(0.2), 1);
+            // csm_DiffuseColor = vec4(vPos, 1);
           }
           `)}
         />
