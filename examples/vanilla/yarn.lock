@@ -267,9 +267,9 @@ supports-preserve-symlinks-flag@^1.0.0:
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
 three-custom-shader-material@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.5.2.tgz#4eeedb2caccfcebb828dfc1a0f9fa9bf6d0f12aa"
-  integrity sha512-K9547Xd1OLYBCR33SjLdDgbub3WI3DZqDz8n51sNrZLqXlq+5glN9fR63ywaHwP0XSVnYG9+eb9/nMwhxGh3zQ==
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.5.3.tgz#00b4bc0d5664560a6d3e409cbe24d033697b5952"
+  integrity sha512-AkCYGwmEhSLKR876m3xM8eZzwovQKOgIk79gG27tZevvC/d8sbeC1CbKxjWXEgZ+eLLdLrn4rnPAsLtaxSh08g==
   dependencies:
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"

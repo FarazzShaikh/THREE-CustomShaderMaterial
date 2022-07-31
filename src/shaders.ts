@@ -3,8 +3,9 @@ export const defaultDefinitions = /* glsl */ `
 #ifdef IS_VERTEX
     vec3 csm_Position = position;
     vec4 csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+    vec3 csm_Normal = normal;
 #else
-    #ifdef IS_SHADERMATERIAL
+    #if defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHNORMALMATERIAL
         vec4 csm_DiffuseColor = vec4(1., 0., 1., 1.);
         vec4 csm_FragColor = vec4(1., 0., 1., 1.);
     #else
