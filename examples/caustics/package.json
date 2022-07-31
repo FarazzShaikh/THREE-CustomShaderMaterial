@@ -15,7 +15,7 @@
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
     "three": "0.142.0",
-    "three-custom-shader-material": "^3.5.1"
+    "three-custom-shader-material": "^3.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
