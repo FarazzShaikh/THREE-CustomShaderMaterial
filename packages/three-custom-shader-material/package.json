@@ -8,6 +8,7 @@
   "types": "dist/three-custom-shader-material.cjs.d.ts",
   "files": [
     "dist/**",
+    "vanilla/**",
     "README.md",
     "CHANGELOG.md",
     "LICENSE.md"
