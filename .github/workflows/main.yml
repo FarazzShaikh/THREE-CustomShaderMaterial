@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+  pull_request: {}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -12,7 +14,10 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Set up Yarn cache
+        uses: c-hive/gha-yarn-cache@v2
+
       - name: Install and Build 🔨
         run: |
           yarn
-          yarn build
+          yarn ci
