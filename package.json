@@ -28,5 +28,8 @@
     "@changesets/cli": "^2.24.3",
     "@manypkg/cli": "^0.19.1",
     "@preconstruct/cli": "^2.1.5"
+  },
+  "stackblitz": {
+    "startCommand": "cd examples/vanilla && yarn start"
   }
 }
