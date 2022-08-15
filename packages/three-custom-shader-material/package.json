@@ -1,26 +1,22 @@
 {
   "name": "three-custom-shader-material",
-  "private": "true",
+  "private": "false",
   "version": "4.0.0",
   "description": "Extend Three.js standard materials with your own shaders!",
-  "module": "./index.js",
-  "main": "./index.cjs.js",
-  "types": "./index.d.ts",
+  "main": "dist/three-custom-shader-material.cjs.js",
+  "module": "dist/three-custom-shader-material.esm.js",
+  "types": "dist/three-custom-shader-material.cjs.d.ts",
   "files": [
-    "**"
+    "dist/**",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE.md"
   ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./index.d.ts",
-      "require": "./index.cjs.js",
-      "import": "./index.js"
-    },
-    "./vanilla": {
-      "types": "./vanilla.d.ts",
-      "require": "./vanilla.cjs.js",
-      "import": "./vanilla.js"
-    }
+  "preconstruct": {
+    "entrypoints": [
+      "index.tsx",
+      "vanilla.ts"
+    ]
   },
   "repository": {
     "type": "git",
@@ -31,6 +27,7 @@
   },
   "author": "Faraz Shaikh <farazzshaikh@gmail.com>",
   "license": "MIT",
+  "sideEffects": false,
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial#readme",
   "keywords": [
     "react",
@@ -44,11 +41,8 @@
     "procedural"
   ],
   "scripts": {
-    "start": "tsc --emitDeclarationOnly && rollup -c -w",
-    "build": "rollup -c",
-    "postbuild": "tsc --emitDeclarationOnly && cp package.json dist/package.json",
-    "release": "chmod +x ./scripts/publish.sh && ./scripts/publish.sh",
-    "patchJSON": "json -I -f dist/package.json -e \"this.private=false;\""
+    "dev": "preconstruct watch",
+    "build": "preconstruct build"
   },
   "devDependencies": {
     "@babel/core": "7.17.8",

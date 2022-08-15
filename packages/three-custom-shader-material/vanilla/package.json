@@ -1,0 +1,4 @@
+{
+  "main": "dist/three-custom-shader-material-vanilla.cjs.js",
+  "module": "dist/three-custom-shader-material-vanilla.esm.js"
+}
