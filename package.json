@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "dev": "preconstruct dev && yarn workspace csm-demo-waves start",
+    "dev": "preconstruct dev && yarn workspace vanilla dev",
     "postinstall": "preconstruct dev && manypkg check",
     "test": "jest --passWithNoTests",
     "ci": "preconstruct validate && manypkg check && yarn build && yarn test",
