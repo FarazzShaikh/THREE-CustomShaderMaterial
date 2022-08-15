@@ -2150,10 +2150,46 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
+"@react-three/drei@^9.22.3":
+  version "9.22.3"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.22.3.tgz#c221d3a10c1e8861fea8914653dbed634936ced1"
+  integrity sha512-25umbMmVYBAljlXuT4sOA1p+0wi3AvMlY4u1pzVZzlp/ncuaBlH+xvq5mI67VwyqkRbm0qPt/L+DxUgkEuLwWQ==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    "@react-spring/three" "^9.3.1"
+    "@use-gesture/react" "^10.2.0"
+    detect-gpu "^4.0.19"
+    glsl-noise "^0.0.0"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    meshline "^2.0.4"
+    react-composer "^5.0.3"
+    react-merge-refs "^1.1.0"
+    stats.js "^0.17.0"
+    suspend-react "^0.0.8"
+    three-mesh-bvh "^0.5.10"
+    three-stdlib "^2.13.0"
+    troika-three-text "^0.46.4"
+    utility-types "^3.10.0"
+    zustand "^3.5.13"
+
 "@react-three/fiber@8.2.1":
   version "8.2.1"
   resolved "https://registry.npmjs.org/@react-three/fiber/-/fiber-8.2.1.tgz"
   integrity sha512-fiU9iGJecgMG/tV+tt97BHiTUkxGr0QdNcOiHJ7E4WPw0yTSERJtMDAI/JBvc5h3ZQOXzMNwmVQsICsvNaf8yA==
+  dependencies:
+    "@babel/runtime" "^7.17.8"
+    "@types/react-reconciler" "^0.26.7"
+    react-reconciler "^0.27.0"
+    react-use-measure "^2.1.1"
+    scheduler "^0.21.0"
+    suspend-react "^0.0.8"
+    zustand "^3.7.1"
+
+"@react-three/fiber@^8.3.1":
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.3.1.tgz#83379ba5bf5d21a130023ed6de651b0bf467e14a"
+  integrity sha512-5I1fcnE/3Y89MBNtC58N4ZEm962NqlFwBChhS09AVBz9PmD51uwY0z4y6WPMoVVKhUG39CS6iSbTPQwZygkerA==
   dependencies:
     "@babel/runtime" "^7.17.8"
     "@types/react-reconciler" "^0.26.7"
@@ -10735,7 +10771,7 @@ three-mesh-bvh@^0.5.10:
   resolved "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.5.15.tgz"
   integrity sha512-jxE5iGjcoEMiyxUs7hMeZL6jBXBz9973ilqhXPhKlA1f7eitjIxRTtu7UWVQy+PhxXTsknmPzWmN5c+uAa/anA==
 
-three-stdlib@^2.10.2, three-stdlib@^2.8.11:
+three-stdlib@^2.10.2, three-stdlib@^2.13.0, three-stdlib@^2.8.11:
   version "2.13.0"
   resolved "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.13.0.tgz"
   integrity sha512-hFTTX6K6y8jrDREtzx1nl029rcOYJ5R8YBWg7M3s7uhcAx0fhs4d8tS+dj82vPksLDlMW8Pu/x0CVTRrqiUFDQ==
@@ -10755,6 +10791,11 @@ three@^0.142.0:
   version "0.142.0"
   resolved "https://registry.npmjs.org/three/-/three-0.142.0.tgz"
   integrity sha512-ESjPO+3geFr+ZUfVMpMnF/eVU2uJPOh0e2ZpMFqjNca1wApS9lJb7E4MjwGIczgt9iuKd8PEm6Pfgp2bJ92Xtg==
+
+three@^0.143.0:
+  version "0.143.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.143.0.tgz#1455bca132cc2b20beb7f41d313e10c29e5ed9df"
+  integrity sha512-oKcAGYHhJ46TGEuHjodo2n6TY2R6lbvrkp+feKZxqsUL/WkH7GKKaeu6RHeyb2Xjfk2dPLRKLsOP0KM2VgT8Zg==
 
 throat@^6.0.1:
   version "6.0.1"
