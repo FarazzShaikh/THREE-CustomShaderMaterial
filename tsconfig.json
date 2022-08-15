@@ -9,10 +9,8 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "declaration": true,
-    "declarationDir": "dist",
     "skipLibCheck": true,
-    "removeComments": false,
-    "baseUrl": "."
+    "removeComments": false
   },
   "include": ["packages/**/src/**/*", "packages/**/test/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
