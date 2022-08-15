@@ -14,5 +14,6 @@
     "removeComments": false,
     "baseUrl": "."
   },
-  "include": ["src"]
+  "include": ["packages/**/src/**/*", "packages/**/test/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
