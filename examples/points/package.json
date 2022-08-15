@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-three/drei": "^9.1.5",
-    "@react-three/fiber": "^8.0.10",
+    "@react-three/drei": "9.17.3",
+    "@react-three/fiber": "8.2.1",
     "gl-noise": "^1.6.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

@@ -11,10 +11,10 @@
     "leva": "^0.9.27",
     "postprocessing": "^6.27.0",
     "r3f-perf": "^6.4.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-scripts": "5.0.1",
-    "three": "0.142.0",
+    "three": "^0.142.0",
     "three-custom-shader-material": "^4.0.0"
   },
   "scripts": {
