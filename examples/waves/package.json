@@ -1,5 +1,6 @@
 {
-  "name": "csm-demo-waves",
+  "name": "waves",
+  "private": true,
   "version": "1.0.0",
   "keywords": [
     "typescript",
