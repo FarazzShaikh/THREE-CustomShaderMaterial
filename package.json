@@ -29,6 +29,6 @@
     "@preconstruct/cli": "^2.1.5"
   },
   "stackblitz": {
-    "startCommand": "yarn preconstruct dev && cd examples/vanilla && yarn dev"
+    "startCommand": "cd examples/waves && yarn start"
   }
 }
