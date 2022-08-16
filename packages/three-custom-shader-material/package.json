@@ -28,7 +28,6 @@
   },
   "author": "Faraz Shaikh <farazzshaikh@gmail.com>",
   "license": "MIT",
-  "sideEffects": false,
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial#readme",
   "keywords": [
     "react",
