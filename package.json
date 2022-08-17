@@ -7,13 +7,13 @@
   "license": "MIT",
   "workspaces": {
     "packages": [
-      "packages/*",
+      "package",
       "examples/*"
     ]
   },
   "preconstruct": {
     "packages": [
-      "packages/*"
+      "package"
     ]
   },
   "scripts": {

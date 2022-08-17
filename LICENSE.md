@@ -1,1 +1,1 @@
-packages/three-custom-shader-material/LICENSE.md
+package/LICENSE.md
