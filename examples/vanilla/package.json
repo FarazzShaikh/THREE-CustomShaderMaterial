@@ -1,7 +1,7 @@
 {
   "name": "vanilla",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1-next.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -14,6 +14,6 @@
   "dependencies": {
     "@types/three": "^0.142.0",
     "three": "^0.142.0",
-    "three-custom-shader-material": "^4.0.0"
+    "three-custom-shader-material": "^5.0.0-next.0"
   }
 }
