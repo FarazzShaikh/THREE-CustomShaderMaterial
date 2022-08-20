@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.5",
     "@gsimone/suzanne": "^0.0.12",
     "@react-three/drei": "9.17.3",
     "@react-three/fiber": "8.2.1",
@@ -11,17 +12,19 @@
     "leva": "^0.9.27",
     "postprocessing": "^6.27.0",
     "r3f-perf": "^6.4.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-scripts": "5.0.1",
-    "three": "0.142.0",
-    "three-custom-shader-material": "^4.0.0"
+    "three": "^0.142.0",
+    "three-custom-shader-material": "^4.0.0",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "eslintConfig": {
     "extends": [
