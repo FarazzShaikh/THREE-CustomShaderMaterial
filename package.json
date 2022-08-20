@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "dev": "preconstruct dev && yarn workspace waves start",
+    "dev": "preconstruct dev && yarn workspace debug start",
     "postinstall": "preconstruct dev && manypkg check",
     "ci": "preconstruct validate && manypkg check && yarn build",
     "release": "yarn ci && yarn changeset publish"
