@@ -9277,6 +9277,15 @@ r3f-perf@^6.4.2:
     "@stitches/react" "^1.2.6"
     zustand "^3.7.1"
 
+r3f-perf@^6.4.4:
+  version "6.4.4"
+  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-6.4.4.tgz#8c76a67717b28306f3040869825e4b404bf653fd"
+  integrity sha512-/z/8pJr3+oUM3+pjybcFJfiNIdFr9yLr0RB3zKVInGDmcJ+yO7jgqOAFlWufJxkZaxUCZK48BbzZ73f+2C+l6w==
+  dependencies:
+    "@radix-ui/react-icons" "^1.0.3"
+    "@stitches/react" "^1.2.6"
+    zustand "^3.7.1"
+
 raf@^3.4.1:
   version "3.4.1"
   resolved "https://registry.npmjs.org/raf/-/raf-3.4.1.tgz"

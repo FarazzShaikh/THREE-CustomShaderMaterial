@@ -1,41 +1,39 @@
 import * as THREE from 'three'
 
-export type AllMaterialParams = THREE.MeshPhongMaterialParameters &
-  THREE.MeshPhysicalMaterialParameters &
-  THREE.MeshToonMaterialParameters &
-  THREE.MeshBasicMaterialParameters &
-  THREE.MeshLambertMaterialParameters &
-  THREE.MeshStandardMaterialParameters &
-  THREE.PointsMaterialParameters
+export type MaterialConstructor = new (opts: { [key: string]: any }) => THREE.Material
+type MaterialParams<T extends MaterialConstructor> = ConstructorParameters<T>[0]
 
-export interface iCSMShader {
-  defines: string
-  header: string
-  main: string
-}
-
-export interface CSMPatchMap {
+export interface iCSMPatchMap {
   [keyword: string]: {
     [toReplace: string]: string
   }
 }
 
-export type CSMBaseMaterial = (new (opts: { [key: string]: any }) => THREE.Material) | THREE.Material
-
-export interface _CSMParam {
-  baseMaterial: CSMBaseMaterial
+export type iCSMParams<T extends MaterialConstructor> = {
+  baseMaterial: T | InstanceType<T>
   vertexShader?: string
   fragmentShader?: string
   cacheKey?: () => string
-  patchMap?: CSMPatchMap
+  patchMap?: iCSMPatchMap
   uniforms?: { [key: string]: THREE.IUniform<any> }
+} & MaterialParams<T>
+
+export type iCSMUpdateParams<T extends MaterialConstructor> = Partial<Omit<iCSMParams<T>, 'base'>>
+
+export interface iCSMInternals<T extends MaterialConstructor> {
+  patchMap: iCSMPatchMap
+  fragmentShader: string
+  vertexShader: string
+  cacheKey: (() => string) | undefined
+  baseMaterial: T | InstanceType<T>
+  instanceID: string
+  type: string
 }
 
-export type iCSMParams = _CSMParam & AllMaterialParams
+export type Uniform = { [key: string]: THREE.IUniform<any> }
 
-export type iCSMUpdateParams = {
-  vertexShader: string
-  fragmentShader: string
-  uniforms: { [key: string]: THREE.IUniform<any> }
-  cacheKey: () => string
+export interface iCSMShader {
+  defines: string
+  header: string
+  main: string
 }

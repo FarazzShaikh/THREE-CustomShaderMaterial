@@ -2,6 +2,7 @@ import { ContactShadows, Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Leva } from 'leva'
 import React, { Suspense } from 'react'
+import { Perf } from 'r3f-perf'
 
 import Copy from './components/Copy'
 import Lights from './components/Lights'
@@ -22,7 +23,7 @@ import { useControls } from 'leva'
 import Tag from './Tag'
 
 export default function App() {
-  const { Base } = useControls(
+  const { Base, visible } = useControls(
     'Material',
     {
       Base: {
@@ -39,7 +40,11 @@ export default function App() {
         },
         value: MeshPhysicalMaterial,
       },
+      visible: {
+        value: true,
+      },
     },
+
     []
   )
 
@@ -61,7 +66,7 @@ export default function App() {
           )}
         </Suspense>
 
-        <Water base={Base} />
+        {visible && <Water base={Base} />}
         <ContactShadows
           position={[0, -0.2, 0]}
           width={10}
@@ -73,6 +78,7 @@ export default function App() {
 
         <Copy base={Base} />
         <OrbitControls />
+        <Perf position="top-left" />
       </Canvas>
     </>
   )

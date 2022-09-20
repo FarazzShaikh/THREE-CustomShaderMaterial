@@ -1,9 +1,6 @@
-import { IUniform, Material, MathUtils } from 'three'
-import hash from 'object-hash'
-import { iCSMUpdateParams, iCSMShader, iCSMParams, CSMPatchMap, CSMBaseMaterial } from './types'
-
+import objectHash from 'object-hash'
+import * as THREE from 'three'
 import { defaultPatchMap, shaderMaterial_PatchMap } from './patchMaps'
-
 // @ts-ignore
 import tokenize from 'glsl-tokenizer'
 // @ts-ignore
@@ -11,40 +8,52 @@ import stringify from 'glsl-token-string'
 // @ts-ignore
 import tokenFunctions from 'glsl-token-functions'
 import { defaultDefinitions } from './shaders'
+import {
+  iCSMPatchMap,
+  iCSMInternals,
+  iCSMParams,
+  iCSMShader,
+  iCSMUpdateParams,
+  MaterialConstructor,
+  Uniform,
+} from './types'
 
 const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
-const escapeRegExpMatch = function (s: string) {
+const escapeRegExpMatch = function(s: string) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 }
 const isExactMatch = (str: string, match: string) => {
   return new RegExp(`\\b${escapeRegExpMatch(match)}\\b`).test(str)
 }
 
-function isConstructor(f: CSMBaseMaterial): f is new (opts: { [key: string]: any }) => THREE.Material {
+// Hacky, yikes!
+function isConstructor<T extends MaterialConstructor>(f: T | InstanceType<T>): f is T {
   try {
     // @ts-ignore
     new f()
-  } catch (err: any) {
-    if (err.message.indexOf('is not a constructor') >= 0) {
+  } catch (err) {
+    if ((err as any).message.indexOf('is not a constructor') >= 0) {
       return false
     }
   }
   return true
 }
 
-export * from './types'
-export default class CustomShaderMaterial extends Material {
-  uniforms: { [key: string]: IUniform<any> }
+export default class CustomShaderMaterial<
+  T extends MaterialConstructor = typeof THREE.Material
+> extends THREE.Material {
+  uniforms: Uniform
+  private __csm: iCSMInternals<T>
 
-  private _customPatchMap: CSMPatchMap
-  private _fs: string
-  private _vs: string
-  private _cacheKey: (() => string) | undefined
-  private _base: CSMBaseMaterial
-  private _instanceID: string
-  private _type: string
-
-  constructor({ baseMaterial, fragmentShader, vertexShader, uniforms, patchMap, cacheKey, ...opts }: iCSMParams) {
+  constructor({
+    baseMaterial, //
+    fragmentShader,
+    vertexShader,
+    uniforms,
+    patchMap,
+    cacheKey,
+    ...opts
+  }: iCSMParams<T>) {
     let base: THREE.Material
     if (isConstructor(baseMaterial)) {
       base = new baseMaterial(opts)
@@ -58,67 +67,58 @@ export default class CustomShaderMaterial extends Material {
     }
 
     super()
+
     this.uniforms = uniforms || {}
-    this._customPatchMap = patchMap || {}
-    this._fs = fragmentShader || ''
-    this._vs = vertexShader || ''
-    this._cacheKey = cacheKey
-    this._base = baseMaterial
-    this._type = base.type
-    this._instanceID = MathUtils.generateUUID()
-
-    for (const key in base) {
-      let k = key
-      if (key.startsWith('_')) {
-        k = key.split('_')[1]
-      }
-
-      // @ts-ignore
-      if (this[k] === undefined) this[k] = 0
-      // @ts-ignore
-      this[k] = base[k]
+    this.__csm = {
+      patchMap: patchMap || {},
+      fragmentShader: fragmentShader || '',
+      vertexShader: vertexShader || '',
+      cacheKey: cacheKey,
+      baseMaterial: baseMaterial,
+      instanceID: THREE.MathUtils.generateUUID(),
+      type: base.type,
     }
-    this.update({ fragmentShader, vertexShader, uniforms, cacheKey })
+
+    Object.assign(this, base)
+
+    {
+      const { fragmentShader, vertexShader, instanceID } = this.__csm
+      const uniforms = this.uniforms
+      this.generateMaterial(fragmentShader, vertexShader, uniforms)
+    }
   }
 
-  update(opts?: Partial<iCSMUpdateParams>) {
-    const uniforms = opts?.uniforms || {}
-    const fragmentShader = opts?.fragmentShader || this._fs
-    const vertexShader = opts?.vertexShader || this._vs
+  update(opts: iCSMUpdateParams<T> = {}) {
+    this.uniforms = opts.uniforms || this.uniforms
+    Object.assign(this.__csm, opts)
+
+    const { fragmentShader, vertexShader, instanceID } = this.__csm
+    const uniforms = this.uniforms
 
     const serializedUniforms = Object.values(uniforms).reduce((prev, { value }) => {
       return prev + JSON.stringify(value)
     }, '')
 
-    this.uuid = opts?.cacheKey?.() || hash([fragmentShader, vertexShader, serializedUniforms, this._instanceID])
-    this.generateMaterial({
-      fragmentShader,
-      vertexShader,
-      uniforms,
-    })
+    this.uuid = opts?.cacheKey?.() || objectHash([fragmentShader, vertexShader, serializedUniforms, instanceID])
+    this.generateMaterial(fragmentShader, vertexShader, uniforms)
   }
 
-  clone(): this {
-    // @ts-ignore
-    const c = new this.constructor({
-      baseMaterial: this._base,
-      fragmentShader: this._fs,
-      vertexShader: this._vs,
-      patchMap: this._customPatchMap,
+  clone() {
+    const opts = {
+      baseMaterial: this.__csm.baseMaterial,
+      fragmentShader: this.__csm.fragmentShader,
+      vertexShader: this.__csm.vertexShader,
       uniforms: this.uniforms,
-      cacheKey: this._cacheKey,
-    })
-
-    for (const key in this) {
-      if (key === 'uuid') continue
-      // @ts-ignore
-      c[key] = this[key]
+      patchMap: this.__csm.patchMap,
+      cacheKey: this.__csm.cacheKey,
     }
 
-    return c
+    const clone = new (this.constructor as new (opts: iCSMParams<T>) => this)(opts)
+    Object.assign(this, clone)
+    return clone
   }
 
-  private generateMaterial({ fragmentShader, vertexShader, uniforms }: Omit<iCSMUpdateParams, 'cacheKey'>) {
+  private generateMaterial(fragmentShader: string, vertexShader: string, uniforms: Uniform) {
     const parsedFragmentShader = this.parseShader(fragmentShader)
     const parsedVertexShader = this.parseShader(vertexShader)
 
@@ -127,7 +127,7 @@ export default class CustomShaderMaterial extends Material {
       return this.uuid
     }
 
-    this.onBeforeCompile = (shader) => {
+    this.onBeforeCompile = shader => {
       if (parsedFragmentShader) {
         const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader)
         shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
@@ -146,11 +146,11 @@ export default class CustomShaderMaterial extends Material {
   }
 
   private getMaterialDefine() {
-    return `#define IS_${this._type.toUpperCase()};\n`
+    return `#define IS_${this.__csm.type.toUpperCase()};\n`
   }
 
   private getPatchMapForMaterial() {
-    switch (this._type) {
+    switch (this.__csm.type) {
       case 'ShaderMaterial':
         return shaderMaterial_PatchMap
 
@@ -162,13 +162,13 @@ export default class CustomShaderMaterial extends Material {
   private patchShader(customShader: iCSMShader, shader: string): string {
     let patchedShader: string = shader
 
-    const patchMap: CSMPatchMap = {
+    const patchMap: iCSMPatchMap = {
       ...this.getPatchMapForMaterial(),
-      ...this._customPatchMap,
+      ...this.__csm.patchMap,
     }
 
     Object.keys(patchMap).forEach((name: string) => {
-      Object.keys(patchMap[name]).forEach((key) => {
+      Object.keys(patchMap[name]).forEach(key => {
         if (isExactMatch(customShader.main, name)) {
           patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
         }
@@ -216,3 +216,5 @@ export default class CustomShaderMaterial extends Material {
     return stringify(tokens.slice(index[0], index[1]))
   }
 }
+
+export * from './types'

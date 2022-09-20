@@ -1,7 +1,7 @@
 import keywords from './keywords'
-import { CSMPatchMap } from './types'
+import { iCSMPatchMap } from './types'
 
-export const defaultPatchMap: CSMPatchMap = {
+export const defaultPatchMap: iCSMPatchMap = {
   // VERT
 
   [`${keywords.normal}`]: {
@@ -67,7 +67,7 @@ export const defaultPatchMap: CSMPatchMap = {
   },
 }
 
-export const shaderMaterial_PatchMap: CSMPatchMap = {
+export const shaderMaterial_PatchMap: iCSMPatchMap = {
   // VERT
   [`${keywords.position}`]: {
     'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );': `

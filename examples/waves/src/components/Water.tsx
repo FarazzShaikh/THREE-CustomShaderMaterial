@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react'
-import CustomShaderMaterial from 'three-custom-shader-material'
+import CustomShaderMaterial, { MaterialConstructor } from 'three-custom-shader-material'
 import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
@@ -10,12 +10,13 @@ import { patchShaders } from 'gl-noise/build/glNoise.m'
 
 import useWaterControls from './useWaterControls'
 import { useControls } from 'leva'
+import { MeshBasicMaterial, MeshPhysicalMaterial } from 'three'
 
-export default function Water({ base }: { base: any }) {
+export default function Water({ base }: { base: MaterialConstructor }) {
   const thickness = 0.2
   const material = useRef<CustomShaderMaterialType | null>(null)
 
-  useFrame((state) => {
+  useFrame(state => {
     if (material?.current) {
       material.current.uniforms.uTime.value = -state.clock.elapsedTime / 5
     }
