@@ -9268,10 +9268,10 @@ quick-lru@^5.1.1:
   resolved "https://registry.npmjs.org/quick-lru/-/quick-lru-5.1.1.tgz"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
-r3f-perf@6.4.2:
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-6.4.2.tgz#bc04d4f0bb6a318bee2fce21382a6ad5f8f1b43b"
-  integrity sha512-DUsNOZhEiqpnyceVD/oCB65nwzS/jN43AAEQWxAt/ijZWKuQLa8Hi/uDHGCdUfZ/mfFVFRmvuPsFJrZZPV6aEg==
+r3f-perf@6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-6.4.1.tgz#945d4ce0967898fb7c4cb97ba017d4d7ef1d64cd"
+  integrity sha512-LkShA/TByUhBdFe+Z4kV3AUBRq1HOAyA2uTNuhlRAionjEGZQ+Z/kjcRCaKdJmgOcPk88YWvtf7VkRRyAztlZA==
   dependencies:
     "@radix-ui/react-icons" "^1.0.3"
     "@stitches/react" "^1.2.6"
