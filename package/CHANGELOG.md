@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0-next.1
+
+### Minor Changes
+
+- Improve types
+
 ## 5.0.0-next.0
 
 ### Major Changes

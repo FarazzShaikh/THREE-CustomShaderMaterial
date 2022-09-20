@@ -11,6 +11,7 @@
     "three-custom-shader-material": "4.0.0"
   },
   "changesets": [
-    "cyan-jokes-camp"
+    "cyan-jokes-camp",
+    "nasty-camels-fix"
   ]
 }
