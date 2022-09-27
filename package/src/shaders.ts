@@ -13,6 +13,7 @@ export const defaultDefinitions = /* glsl */ `
             vec3 csm_Emissive = emissive;
             float csm_Roughness = roughness;
             float csm_Metalness = metalness;
+            float csm_AO = 0.;
         #endif
         
         #ifdef USE_MAP

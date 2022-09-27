@@ -65,6 +65,12 @@ export const defaultPatchMap: iCSMPatchMap = {
     metalnessFactor = ${keywords.metalness};
     `,
   },
+  [`${keywords.ao}`]: {
+    '#include <aomap_fragment>': `
+    #include <aomap_fragment>
+    reflectedLight.indirectDiffuse *= 1. - ${keywords.ao};
+    `,
+  },
 }
 
 export const shaderMaterial_PatchMap: iCSMPatchMap = {

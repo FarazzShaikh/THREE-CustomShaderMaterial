@@ -7,6 +7,7 @@ import tokenize from 'glsl-tokenizer'
 import stringify from 'glsl-token-string'
 // @ts-ignore
 import tokenFunctions from 'glsl-token-functions'
+
 import { defaultDefinitions } from './shaders'
 import {
   iCSMPatchMap,
@@ -160,8 +161,7 @@ export default class CustomShaderMaterial<
   }
 
   private patchShader(customShader: iCSMShader, shader: string): string {
-    let patchedShader: string = shader
-
+    let patchedShader = shader
     const patchMap: iCSMPatchMap = {
       ...this.getPatchMapForMaterial(),
       ...this.__csm.patchMap,
@@ -186,6 +186,7 @@ export default class CustomShaderMaterial<
     )
 
     patchedShader = customShader.defines + patchedShader
+
     return patchedShader
   }
 

@@ -13,7 +13,7 @@ function Thing() {
       <Sphere args={[1, 128, 128]}>
         <CustomShaderMaterial
           baseMaterial={MeshPhysicalMaterial} //
-          color="red"
+          color="white"
           transparent
           vertexShader={
             /* glsl */ `
@@ -33,6 +33,7 @@ function Thing() {
             float noise = gln_normalize(gln_pfbm(vPos * 10., fbmOpts));
             csm_Roughness = pow(noise, 1.) * 0.5;
             csm_Metalness = pow(noise, 1.) * 1.2;
+            csm_AO = pow(noise, 1.) * 1.2;
 
             // csm_DiffuseColor = vec4(vPos, 1);
           }
