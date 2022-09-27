@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0-next.2
+
+### Major Changes
+
+- 01ec3c5: Add csm_AO
+
 ## 5.0.0-next.1
 
 ### Minor Changes
