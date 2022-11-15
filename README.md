@@ -113,16 +113,18 @@ yarn add three-custom-shader-material
 
 CSM provides the following output variables, all of them are optional but you MUST use these variables like you would use standard GLSL output variables to see results.
 
-| Variable         | Type    | Description             | Available In    | Notes                                                                                                                                                          |
-| ---------------- | ------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| csm_Position     | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
-| csm_DiffuseColor | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                                                                                |
-| csm_Normal       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                                                                                |
-| csm_PointSize    | `float` | Custom gl_PointSize.    | Vertex Shader   | Only available in `PointsMaterial`                                                                                                                             |
-| csm_FragColor    | `vec4`  | Custom gl_FragColor.    | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
-| csm_Emissive     | `vec3`  | Custom emissive color.  | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
-| csm_Roughness    | `float` | Custom roughness.       | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
-| csm_Metalness    | `float` | Custom metalness.       | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| Variable         | Type    | Description                              | Available In    | Notes                                                                                                                                                          |
+| ---------------- | ------- | ---------------------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| csm_Position     | `vec3`  | Custom vertex position.                  | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
+| csm_PositionRaw  | `vec4`  | Projected vertex position in clip space. | Vertex Shader   | Use when mutating positon in coordinate spaces outside of local space, this can be seen as a direct equivalent of `gl_Position`.                               |
+| csm_DiffuseColor | `vec4`  | Custom diffuse color.                    | Fragment Shader |                                                                                                                                                                |
+| csm_Normal       | `vec3`  | Custom vertex normals.                   | Vertex Shader   |                                                                                                                                                                |
+| csm_PointSize    | `float` | Custom gl_PointSize.                     | Vertex Shader   | Only available in `PointsMaterial`                                                                                                                             |
+| csm_FragColor    | `vec4`  | Custom gl_FragColor.                     | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
+| csm_Emissive     | `vec3`  | Custom emissive color.                   | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| csm_Roughness    | `float` | Custom roughness.                        | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| csm_Metalness    | `float` | Custom metalness.                        | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+                                                                                 |
 
 ```glsl
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
