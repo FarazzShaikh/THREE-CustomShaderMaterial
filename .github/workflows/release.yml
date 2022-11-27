@@ -31,6 +31,9 @@ jobs:
         run: yarn
 
       - name: Publish package on NPM
-        run: npm publish
+        run: |
+          cd package
+          yarn build
+          npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
