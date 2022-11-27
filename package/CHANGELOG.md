@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0-next.3
+
+- Fix transmission for MeshPhysicalMaterial base
+
 ## 5.0.0-next.2
 
 ### Major Changes

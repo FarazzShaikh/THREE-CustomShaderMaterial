@@ -3,7 +3,8 @@ import { OrbitControls, PerspectiveCamera, Sphere, Environment } from '@react-th
 import { Suspense } from 'react'
 import { Perf } from 'r3f-perf'
 import CustomShaderMaterial from 'three-custom-shader-material'
-import { MeshPhysicalMaterial, MeshStandardMaterial, ShaderMaterial } from 'three'
+import { MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, ShaderMaterial } from 'three'
+// @ts-ignore
 import { patchShaders } from 'gl-noise/build/glNoise.m'
 import { MeshPhongMaterial } from 'three'
 
@@ -14,30 +15,31 @@ function Thing() {
         <CustomShaderMaterial
           baseMaterial={MeshPhysicalMaterial} //
           color="white"
+          roughness={0}
           transparent
           vertexShader={
             /* glsl */ `
-          varying vec3 vPos;
+            varying vec3 vPos;
 
-          void main() {
-            vPos = position;
-          }
-          `
+            void main() {
+              vPos = position;
+            }
+            `
           }
           fragmentShader={patchShaders(/* glsl */ `
-         varying vec3 vPos;
-          
-          void main() {
+           varying vec3 vPos;
 
-            gln_tFBMOpts fbmOpts = gln_tFBMOpts(1.0, 0.4, 2.3, 0.4, 1.0, 5, false, false);
-            float noise = gln_normalize(gln_pfbm(vPos * 10., fbmOpts));
-            csm_Roughness = pow(noise, 1.) * 0.5;
-            csm_Metalness = pow(noise, 1.) * 1.2;
-            csm_AO = pow(noise, 1.) * 1.2;
+            void main() {
 
-            // csm_DiffuseColor = vec4(vPos, 1);
-          }
-          `)}
+              gln_tFBMOpts fbmOpts = gln_tFBMOpts(1.0, 0.4, 2.3, 0.4, 1.0, 5, false, false);
+              float noise = gln_normalize(gln_pfbm(vPos * 10., fbmOpts));
+              csm_Roughness = pow(noise, 1.) * 0.5;
+              csm_Metalness = pow(noise, 1.) * 1.2;
+              csm_AO = pow(noise, 1.) * 1.2;
+
+              csm_DiffuseColor = vec4(vPos, 1);
+            }
+            `)}
         />
       </Sphere>
     </>

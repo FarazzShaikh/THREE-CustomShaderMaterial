@@ -40,6 +40,17 @@ function isConstructor<T extends MaterialConstructor>(f: T | InstanceType<T>): f
   return true
 }
 
+function copyObject(target: any, source: any) {
+  Object.assign(target, source)
+
+  const proto = Object.getPrototypeOf(source)
+  Object.entries(Object.getOwnPropertyDescriptors(proto))
+    .filter((e: any) => typeof e[1].get === 'function' && e[0] !== '__proto__')
+    .forEach(val => {
+      Object.defineProperty(target, val[0], val[1])
+    })
+}
+
 export default class CustomShaderMaterial<
   T extends MaterialConstructor = typeof THREE.Material
 > extends THREE.Material {
@@ -80,7 +91,7 @@ export default class CustomShaderMaterial<
       type: base.type,
     }
 
-    Object.assign(this, base)
+    copyObject(this, base)
 
     {
       const { fragmentShader, vertexShader, instanceID } = this.__csm
@@ -91,7 +102,7 @@ export default class CustomShaderMaterial<
 
   update(opts: iCSMUpdateParams<T> = {}) {
     this.uniforms = opts.uniforms || this.uniforms
-    Object.assign(this.__csm, opts)
+    copyObject(this.__csm, opts)
 
     const { fragmentShader, vertexShader, instanceID } = this.__csm
     const uniforms = this.uniforms
