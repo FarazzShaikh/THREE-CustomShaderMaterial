@@ -10,8 +10,8 @@
     "dist/**",
     "vanilla/**",
     "README.md",
-    "CHANGELOG.md",
-    "LICENSE.md"
+    "LICENSE.md",
+    "package.json"
   ],
   "preconstruct": {
     "entrypoints": [
