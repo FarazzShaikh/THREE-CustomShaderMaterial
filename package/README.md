@@ -72,7 +72,7 @@ import CustomShaderMaterial from 'three-custom-shader-material'
 function Cube() {
   const materialRef = useRef()
 
-  useFrame(state => {
+  useFrame((state) => {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
     }
@@ -113,16 +113,18 @@ yarn add three-custom-shader-material
 
 CSM provides the following output variables, all of them are optional but you MUST use these variables like you would use standard GLSL output variables to see results.
 
-| Variable         | Type    | Description             | Available In    | Notes                                                                                                                                                          |
-| ---------------- | ------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| csm_Position     | `vec3`  | Custom vertex position. | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
-| csm_DiffuseColor | `vec4`  | Custom diffuse color.   | Fragment Shader |                                                                                                                                                                |
-| csm_Normal       | `vec3`  | Custom vertex normals.  | Vertex Shader   |                                                                                                                                                                |
-| csm_PointSize    | `float` | Custom gl_PointSize.    | Vertex Shader   | Only available in `PointsMaterial`                                                                                                                             |
-| csm_FragColor    | `vec4`  | Custom gl_FragColor.    | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
-| csm_Emissive     | `vec3`  | Custom emissive color.  | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
-| csm_Roughness    | `float` | Custom roughness.       | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
-| csm_Metalness    | `float` | Custom metalness.       | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| Variable         | Type    | Description                          | Available In    | Notes                                                                                      |
+| ---------------- | ------- | ------------------------------------ | --------------- | ------------------------------------------------------------------------------------------ |
+| csm_Position     | `vec3`  | Custom vertex position.              | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.  |
+| csm_PositionRaw  | `vec4`  | Direct equivalent of `gl_Position`   | Vertex Shader   |                                                                                            |
+| csm_DiffuseColor | `vec4`  | Custom diffuse color.                | Fragment Shader |                                                                                            |
+| csm_Normal       | `vec3`  | Custom vertex normals.               | Vertex Shader   |                                                                                            |
+| csm_PointSize    | `float` | Custom gl_PointSize.                 | Vertex Shader   | Only available in `PointsMaterial`                                                         |
+| csm_FragColor    | `vec4`  | Direct equivalent of `gl_FragColor`. | Fragment Shader | To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
+| csm_Emissive     | `vec3`  | Custom emissive color.               | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                        |
+| csm_Roughness    | `float` | Custom roughness.                    | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                        |
+| csm_Metalness    | `float` | Custom metalness.                    | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                        |
+|  |
 
 ```glsl
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
@@ -146,39 +148,4 @@ const material = new CustomShaderMaterial({
       }
    }}
 })
-```
-
-## Development
-
-```sh
-git clone https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
-cd THREE-CustomShaderMaterial
-yarn
-yarn dev
-```
-
-## License
-
-```
-MIT License
-
-Copyright (c) 2021 Faraz Shaikh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ```
