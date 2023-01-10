@@ -90,7 +90,11 @@ export default class CustomShaderMaterial<
       instanceID: THREE.MathUtils.generateUUID(),
       type: base.type,
     }
-    this.uniforms = uniforms || {}
+    this.uniforms = {
+      // @ts-ignore
+      ...(this.uniforms || {}),
+      ...(uniforms || {}),
+    }
 
     {
       const { fragmentShader, vertexShader, instanceID } = this.__csm
