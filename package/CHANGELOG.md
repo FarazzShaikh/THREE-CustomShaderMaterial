@@ -1,5 +1,48 @@
 # Changelog
 
+## 5.0.1
+
+### Features
+
+- Now prevent exact match function in `patchMaps` by passing `"*"` as the search keyword.
+
+### Fixes
+
+- Fixed uniforms now injected with a ShaderMaterial as `baseMaterial`
+
+## 5.0.0
+
+### Features
+
+#### Improved types
+
+CSM will now infer options/prop types based on the base material
+
+```tsx
+<CustomShaderMaterial
+    baseMaterial={MeshBasicMaterial}
+    transmission={0} // ❌ TypeError; transmission does not exist on MeshBasicMaterial
+/>
+
+<CustomShaderMaterial
+    baseMaterial={MeshPhysicalMaterial}
+    transmission={0} // ✅ Valid
+/>
+```
+
+#### Added `csm_AO`
+
+Now override AO within your shader. Available in Physical and Standard material
+
+```glsl
+csm_AO = 0.0; // PBR Ambient Occlusion
+```
+
+#### Misc
+
+- FIxed transmission with `MeshPhysicalMaterial` as base
+- Restructure repo and examples
+
 ## 5.0.0-next.3
 
 - Fix transmission for MeshPhysicalMaterial base

@@ -20,7 +20,7 @@ import {
 } from './types'
 
 const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
-const escapeRegExpMatch = function(s: string) {
+const escapeRegExpMatch = function (s: string) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 }
 const isExactMatch = (str: string, match: string) => {
@@ -46,7 +46,7 @@ function copyObject(target: any, source: any) {
   const proto = Object.getPrototypeOf(source)
   Object.entries(Object.getOwnPropertyDescriptors(proto))
     .filter((e: any) => typeof e[1].get === 'function' && e[0] !== '__proto__')
-    .forEach(val => {
+    .forEach((val) => {
       Object.defineProperty(target, val[0], val[1])
     })
 }
@@ -79,8 +79,8 @@ export default class CustomShaderMaterial<
     }
 
     super()
+    copyObject(this, base)
 
-    this.uniforms = uniforms || {}
     this.__csm = {
       patchMap: patchMap || {},
       fragmentShader: fragmentShader || '',
@@ -90,8 +90,7 @@ export default class CustomShaderMaterial<
       instanceID: THREE.MathUtils.generateUUID(),
       type: base.type,
     }
-
-    copyObject(this, base)
+    this.uniforms = uniforms || {}
 
     {
       const { fragmentShader, vertexShader, instanceID } = this.__csm
@@ -139,7 +138,7 @@ export default class CustomShaderMaterial<
       return this.uuid
     }
 
-    this.onBeforeCompile = shader => {
+    this.onBeforeCompile = (shader) => {
       if (parsedFragmentShader) {
         const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader)
         shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
@@ -179,8 +178,8 @@ export default class CustomShaderMaterial<
     }
 
     Object.keys(patchMap).forEach((name: string) => {
-      Object.keys(patchMap[name]).forEach(key => {
-        if (isExactMatch(customShader.main, name)) {
+      Object.keys(patchMap[name]).forEach((key) => {
+        if (name === '*' || isExactMatch(customShader.main, name)) {
           patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
         }
       })
