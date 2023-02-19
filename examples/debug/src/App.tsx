@@ -1,46 +1,48 @@
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, Sphere, Environment } from '@react-three/drei'
-import { Suspense } from 'react'
-import { Perf } from 'r3f-perf'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Environment, MeshTransmissionMaterial, OrbitControls, PerspectiveCamera, Sphere } from '@react-three/drei'
+import Lights from './components/Lights'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import CustomShaderMaterial from 'three-custom-shader-material'
-import { MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, ShaderMaterial } from 'three'
+
 // @ts-ignore
 import { patchShaders } from 'gl-noise/build/glNoise.m'
-import { MeshPhongMaterial } from 'three'
+import { Color, DoubleSide, MathUtils, MeshBasicMaterial, MeshPhysicalMaterial } from 'three'
+import { Perf } from 'r3f-perf'
 
 function Thing() {
+  const uniforms = useMemo(
+    () => ({
+      uColor: { value: new Color('red') },
+    }),
+    []
+  )
+  const uniforms2 = useMemo(
+    () => ({
+      uColor: { value: new Color('red') },
+    }),
+    []
+  )
+
+  const mat = useMemo(() => new MeshBasicMaterial({ color: 'purple' }), [])
+
   return (
     <>
-      <Sphere args={[1, 128, 128]}>
-        <CustomShaderMaterial
-          baseMaterial={MeshPhysicalMaterial} //
-          color="white"
-          roughness={0}
-          transparent
-          vertexShader={
-            /* glsl */ `
-            varying vec3 vPos;
-
-            void main() {
-              vPos = position;
-            }
-            `
-          }
-          fragmentShader={patchShaders(/* glsl */ `
-           varying vec3 vPos;
-
-            void main() {
-
-              gln_tFBMOpts fbmOpts = gln_tFBMOpts(1.0, 0.4, 2.3, 0.4, 1.0, 5, false, false);
-              float noise = gln_normalize(gln_pfbm(vPos * 10., fbmOpts));
-              csm_Roughness = pow(noise, 1.) * 0.5;
-              csm_Metalness = pow(noise, 1.) * 1.2;
-              csm_AO = pow(noise, 1.) * 1.2;
-
-              csm_DiffuseColor = vec4(vPos, 1);
-            }
-            `)}
-        />
+      <Sphere
+        castShadow
+        args={[1, 128, 128]}
+        onPointerEnter={() => (uniforms.uColor.value = new Color('blue'))}
+        onPointerLeave={() => (uniforms.uColor.value = new Color('red'))}
+      >
+        <CustomShaderMaterial baseMaterial={mat} />
+      </Sphere>
+      <Sphere
+        position={[2, 0, 0]}
+        castShadow
+        args={[1, 128, 128]}
+        onPointerEnter={() => (uniforms.uColor.value = new Color('blue'))}
+        onPointerLeave={() => (uniforms.uColor.value = new Color('red'))}
+      >
+        <CustomShaderMaterial baseMaterial={MeshBasicMaterial} />
       </Sphere>
     </>
   )
@@ -50,13 +52,9 @@ export default function App() {
   return (
     <Canvas shadows>
       <OrbitControls makeDefault />
-      <PerspectiveCamera fov={40} position={[-4, 4, 4]} makeDefault />
+      <PerspectiveCamera position={[-5, 5, 5]} makeDefault />
 
-      <Suspense>
-        <Environment preset="sunset" background />
-        <Thing />
-      </Suspense>
-
+      <Thing />
       <Perf />
     </Canvas>
   )

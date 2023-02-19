@@ -28,6 +28,8 @@ export interface iCSMInternals<T extends MaterialConstructor> {
   baseMaterial: T | InstanceType<T>
   instanceID: string
   type: string
+  isAlreadyExtended: boolean
+  cacheHash: string
 }
 
 export type Uniform = { [key: string]: THREE.IUniform<any> }

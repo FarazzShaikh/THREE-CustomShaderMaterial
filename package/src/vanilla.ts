@@ -51,6 +51,16 @@ function copyObject(target: any, source: any) {
     })
 }
 
+function isFunctionEmpty(fn: Function) {
+  const fnString = fn.toString().trim()
+  const fnBody = fnString.substring(fnString.indexOf('{') + 1, fnString.lastIndexOf('}'))
+  return fnBody.trim().length === 0
+}
+
+function stripSpaces(str: string) {
+  return str.replace(/\s/g, '')
+}
+
 export default class CustomShaderMaterial<
   T extends MaterialConstructor = typeof THREE.Material
 > extends THREE.Material {
@@ -89,6 +99,8 @@ export default class CustomShaderMaterial<
       baseMaterial: baseMaterial,
       instanceID: THREE.MathUtils.generateUUID(),
       type: base.type,
+      isAlreadyExtended: !isFunctionEmpty(base.onBeforeCompile),
+      cacheHash: ``,
     }
     this.uniforms = {
       // @ts-ignore
@@ -99,14 +111,13 @@ export default class CustomShaderMaterial<
     {
       const { fragmentShader, vertexShader, instanceID } = this.__csm
       const uniforms = this.uniforms
+
+      this.__csm.cacheHash = this.getCacheHash()
       this.generateMaterial(fragmentShader, vertexShader, uniforms)
     }
   }
 
-  update(opts: iCSMUpdateParams<T> = {}) {
-    this.uniforms = opts.uniforms || this.uniforms
-    copyObject(this.__csm, opts)
-
+  private getCacheHash() {
     const { fragmentShader, vertexShader, instanceID } = this.__csm
     const uniforms = this.uniforms
 
@@ -114,7 +125,17 @@ export default class CustomShaderMaterial<
       return prev + JSON.stringify(value)
     }, '')
 
-    this.uuid = opts?.cacheKey?.() || objectHash([fragmentShader, vertexShader, serializedUniforms, instanceID])
+    return objectHash(stripSpaces(fragmentShader) + stripSpaces(vertexShader) + serializedUniforms)
+  }
+
+  update(opts: iCSMUpdateParams<T> = {}) {
+    this.uniforms = opts.uniforms || this.uniforms
+    copyObject(this.__csm, opts)
+
+    const { fragmentShader, vertexShader } = this.__csm
+    const uniforms = this.uniforms
+
+    this.__csm.cacheHash = this.getCacheHash()
     this.generateMaterial(fragmentShader, vertexShader, uniforms)
   }
 
@@ -139,10 +160,10 @@ export default class CustomShaderMaterial<
 
     this.uniforms = uniforms || {}
     this.customProgramCacheKey = () => {
-      return this.uuid
+      return this.__csm.cacheHash
     }
 
-    this.onBeforeCompile = (shader) => {
+    const customOnBeforeCompile = (shader: THREE.Shader) => {
       if (parsedFragmentShader) {
         const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader)
         shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
@@ -157,11 +178,23 @@ export default class CustomShaderMaterial<
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
       this.uniforms = shader.uniforms
     }
+
+    if (this.__csm.isAlreadyExtended) {
+      const prevOnBeforeCompile = this.onBeforeCompile
+      this.onBeforeCompile = (shader: THREE.Shader, renderer) => {
+        prevOnBeforeCompile(shader, renderer)
+        customOnBeforeCompile(shader)
+      }
+    } else {
+      this.onBeforeCompile = customOnBeforeCompile
+    }
+
     this.needsUpdate = true
   }
 
   private getMaterialDefine() {
-    return `#define IS_${this.__csm.type.toUpperCase()};\n`
+    const type = this.__csm.type
+    return type ? `#define IS_${type.toUpperCase()};\n` : `#define IS_UNKNOWN;\n`
   }
 
   private getPatchMapForMaterial() {
