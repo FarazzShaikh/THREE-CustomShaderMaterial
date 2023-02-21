@@ -72,7 +72,7 @@ import CustomShaderMaterial from 'three-custom-shader-material'
 function Cube() {
   const materialRef = useRef()
 
-  useFrame(state => {
+  useFrame((state) => {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
     }
@@ -149,6 +149,94 @@ const material = new CustomShaderMaterial({
    }}
 })
 ```
+
+## Extending already extended materials
+
+CSM allows you to extend other CSM instances or materials that already use `onBeforeCompile` to extend base functionality such as [`MeshTransmissionMaterial`](https://github.com/pmndrs/drei#meshtransmissionmaterial). It is as simple as passing a ref to that material in as the `baseMaterial`:
+
+<details>
+  <summary>Show Vanilla example</summary>
+
+```js
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+
+function Box() {
+  const material1 = new CustomShaderMaterial({
+    baseMaterial: THREE.MeshPhysicalMaterial,
+    //...Any props
+  })
+  const material2 = new CustomShaderMaterial({
+    baseMaterial: material1,
+    //...Any props
+  })
+
+  // OR
+  const material1 = new MeshTransmissionMaterial()
+  const material2 = new CustomShaderMaterial({
+    baseMaterial: material1,
+    //...Any props
+  })
+}
+```
+
+</details>
+
+<details >
+  <summary>Show React example</summary>
+
+```jsx
+import CustomShaderMaterial from 'three-custom-shader-material'
+import CustomShaderMaterialImpl from 'three-custom-shader-material/vanilla'
+
+function Cube() {
+  const [materialRef, setMaterialRef] = useState()
+  // OR
+  const materialRef = useMemo(
+    () =>
+      new CustomShaderMaterialImpl({
+        baseMaterial: THREE.MeshPhysicalMaterial,
+      }),
+    []
+  )
+
+  return (
+    <>
+      <CustomShaderMaterial
+        ref={setMaterialRef}
+        baseMaterial={THREE.MeshPhysicalMaterial}
+        //...Any props
+      />
+
+      {materialRef && (
+        <CustomShaderMaterial
+          baseMaterial={materialRef}
+          //...Any props
+        />
+      )}
+    </>
+  )
+}
+```
+
+</details>
+
+### Gotchas
+
+- When extending already extended material, variables, uniforms, attributes, varyings and functions are **NOT** scoped to the material they are defined in. Thus, you **WILL** get redefinition errors if you do not manually scope these identifiers.
+- When using an instance of CSM as the baseMaterial, or chining multiple CSM instances, or when extending any material that uses `onBeforeCompile` the injection order is as follows:
+
+  ```glsl
+  void main() {
+    // shader A
+    // shader B
+    // shader C
+    // shader D
+
+    // original shader
+  }
+  ```
+
+  > The last injected shader will contain values set in all the shaders injected before it.
 
 ## Development
 

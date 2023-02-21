@@ -10,6 +10,8 @@ import { Color, DoubleSide, MathUtils, MeshBasicMaterial, MeshPhysicalMaterial }
 import { Perf } from 'r3f-perf'
 
 function Thing() {
+  const [mat2, setMat2] = useState<any>()
+
   const uniforms = useMemo(
     () => ({
       uColor: { value: new Color('red') },
@@ -27,14 +29,27 @@ function Thing() {
 
   return (
     <>
-      <Sphere
-        castShadow
-        args={[1, 128, 128]}
-        onPointerEnter={() => (uniforms.uColor.value = new Color('blue'))}
-        onPointerLeave={() => (uniforms.uColor.value = new Color('red'))}
-      >
-        <CustomShaderMaterial baseMaterial={mat} />
-      </Sphere>
+      {mat2 && (
+        <Sphere
+          castShadow
+          args={[1, 128, 128]}
+          onPointerEnter={() => (uniforms.uColor.value = new Color('blue'))}
+          onPointerLeave={() => (uniforms.uColor.value = new Color('red'))}
+        >
+          <CustomShaderMaterial
+            baseMaterial={mat2}
+            fragmentShader={
+              /* glsl */ `
+              void main() {
+                csm_DiffuseColor = vec4(1., 1., 0., 1.0);
+                csm_Roughness = 0.;
+              }
+            `
+            }
+          />
+        </Sphere>
+      )}
+
       <Sphere
         position={[2, 0, 0]}
         castShadow
@@ -42,7 +57,20 @@ function Thing() {
         onPointerEnter={() => (uniforms.uColor.value = new Color('blue'))}
         onPointerLeave={() => (uniforms.uColor.value = new Color('red'))}
       >
-        <CustomShaderMaterial baseMaterial={MeshBasicMaterial} />
+        <CustomShaderMaterial
+          ref={setMat2}
+          baseMaterial={MeshPhysicalMaterial}
+          roughness={1}
+          uniforms={uniforms}
+          fragmentShader={
+            /* glsl */ `
+            uniform vec3 uColor;
+            void main() {
+              csm_DiffuseColor = vec4(uColor, 1.);
+            }
+          `
+          }
+        />
       </Sphere>
     </>
   )
@@ -56,6 +84,8 @@ export default function App() {
 
       <Thing />
       <Perf />
+
+      <Lights />
     </Canvas>
   )
 }

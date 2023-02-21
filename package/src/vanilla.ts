@@ -225,12 +225,33 @@ export default class CustomShaderMaterial<
     patchedShader = patchedShader.replace(
       'void main() {',
       `
-          ${customShader.header}
+        ${customShader.header}
+        void main() {
+      `
+    )
+
+    const needsCustomInjectionOrder = this.__csm.isAlreadyExtended
+
+    if (needsCustomInjectionOrder) {
+      patchedShader = patchedShader.replace(
+        '// CSM_END',
+        `
+          // CSM_END
+          ${customShader.main}
+          // CSM_END
+        `
+      )
+    } else {
+      patchedShader = patchedShader.replace(
+        'void main() {',
+        `
           void main() {
             ${defaultDefinitions}
             ${customShader.main}
+            // CSM_END
           `
-    )
+      )
+    }
 
     patchedShader = customShader.defines + patchedShader
 
