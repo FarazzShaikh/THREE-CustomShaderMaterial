@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.2.0
+
+- Now extend already extended materials
+  - Extend/chain CSM instances
+  - Extend any other material that uses `onBeforeCompile` internally
+
 ## 5.1.0
 
 ### Features
