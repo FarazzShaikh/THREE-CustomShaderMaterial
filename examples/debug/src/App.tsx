@@ -1,12 +1,10 @@
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Environment, MeshTransmissionMaterial, OrbitControls, PerspectiveCamera, Sphere } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls, PerspectiveCamera, Sphere } from '@react-three/drei'
 import Lights from './components/Lights'
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import CustomShaderMaterial from 'three-custom-shader-material'
 
-// @ts-ignore
-import { patchShaders } from 'gl-noise/build/glNoise.m'
-import { Color, DoubleSide, MathUtils, MeshBasicMaterial, MeshPhysicalMaterial } from 'three'
+import { Color, MeshBasicMaterial, MeshPhysicalMaterial } from 'three'
 import { Perf } from 'r3f-perf'
 
 function Thing() {

@@ -6,6 +6,10 @@ export const defaultDefinitions = /* glsl */ `
         vec4 csm_PositionRaw = vec4(0.);
         vec3 csm_Normal = vec3(0.);
     #else
+        #ifdef IS_POINTSMATERIAL
+            float csm_PointSize = size;
+        #endif
+
         vec3 csm_Position = position;
         vec4 csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
         vec3 csm_Normal = normal;

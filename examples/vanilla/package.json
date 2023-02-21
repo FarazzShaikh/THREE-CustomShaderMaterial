@@ -12,8 +12,10 @@
     "vite": "^3.0.7"
   },
   "dependencies": {
-    "@types/three": "^0.142.0",
-    "three": "^0.142.0",
-    "three-custom-shader-material": "^5.0.0-next.0"
+    "@react-three/drei": "^9.56.25",
+    "@react-three/fiber": "^8.11.2",
+    "@types/three": "^0.149.0",
+    "three": "^0.149.0",
+    "three-custom-shader-material": "^5.2.0"
   }
 }
