@@ -71,6 +71,12 @@ export const defaultPatchMap: iCSMPatchMap = {
     reflectedLight.indirectDiffuse *= 1. - ${keywords.ao};
     `,
   },
+  [`${keywords.bump}`]: {
+    '#include <normal_fragment_maps>': `
+    #include <normal_fragment_maps>
+    normal = normalize(normal - ${keywords.bump});
+    `,
+  },
 }
 
 export const shaderMaterial_PatchMap: iCSMPatchMap = {

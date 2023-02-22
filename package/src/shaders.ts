@@ -15,15 +15,23 @@ export const defaultDefinitions = /* glsl */ `
         vec3 csm_Normal = normal;
     #endif
 #else
-    #if defined IS_UNKNOWN ||defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_SHADOWMATERIAL
+    #if defined IS_UNKNOWN || defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_SHADOWMATERIAL
         vec4 csm_DiffuseColor = vec4(1., 0., 1., 1.);
         vec4 csm_FragColor = vec4(1., 0., 1., 1.);
+        #if defined IS_MESHNORMALMATERIAL
+            vec3 csm_Bump = vec3(0.);
+        #endif
     #else
         #if defined IS_MESHSTANDARDMATERIAL || defined IS_MESHPHYSICALMATERIAL
             vec3 csm_Emissive = emissive;
             float csm_Roughness = roughness;
             float csm_Metalness = metalness;
             float csm_AO = 0.;
+            vec3 csm_Bump = vec3(0.);
+        #endif
+
+        #if defined IS_MESHLAMBERTMATERIAL || defined IS_MESHMATCAPMATERIAL || defined IS_MESHPHONGMATERIAL || defined IS_MESHTOONMATERIAL
+            vec3 csm_Bump = vec3(0.);
         #endif
         
         #ifdef USE_MAP
