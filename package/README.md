@@ -117,14 +117,16 @@ CSM provides the following output variables, all of them are optional but you MU
 | ---------------- | ------- | ------------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | csm_Position     | `vec3`  | Custom vertex position.              | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
 | csm_PositionRaw  | `vec3`  | Direct equivalent of `gl_Position`.  | Vertex Shader   |                                                                                                                                                                |
-| csm_DiffuseColor | `vec4`  | Custom diffuse color.                | Fragment Shader |                                                                                                                                                                |
-| csm_Normal       | `vec3`  | Custom vertex normals.               | Vertex Shader   |                                                                                                                                                                |
+| csm_Normal       | `vec3`  | Custom vertex normals.               | Vertex Shader   |
 | csm_PointSize    | `float` | Custom gl_PointSize.                 | Vertex Shader   | Only available in `PointsMaterial`                                                                                                                             |
+| -                | -       | -                                    | -               | -                                                                                                                                                              |
+| csm_DiffuseColor | `vec4`  | Custom diffuse color.                | Fragment Shader |
 | csm_FragColor    | `vec4`  | Direct equivalent of `gl_FragColor`. | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
 | csm_Emissive     | `vec3`  | Custom emissive color.               | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
 | csm_Roughness    | `float` | Custom roughness.                    | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
 | csm_Metalness    | `float` | Custom metalness.                    | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
-| csm_AO           | `float` | Custom AO.                           | Fragment Shader | Only available in `MeshPhysicalMaterial` and `MeshStandardMaterial`                                                                                            |
+| csm_AO           | `float` | Custom AO.                           | Fragment Shader | Only available in materials with an `aoMap`.                                                                                                                   |
+| csm_Bump         | `vec3`  | Custom Bump.                         | Fragment Shader | Only available in materials with a `bumpMap`.                                                                                                                  |
 
 ```glsl
 // gl_Position = projectionMatrix * modelViewPosition * position * vec3(2.0);
@@ -238,6 +240,26 @@ function Cube() {
 
   > The last injected shader will contain values set in all the shaders injected before it.
 
+## Performance
+
+CSM is great for small overrides. Even though doable, if you find yourself lost in a patchMap, it's often simpler to just make a `ShaderMaterial` with the necessary `#includes`.
+
+CSM has a non-negligible startup cost, i.e it does take more milliseconds than a plain `ShaderMaterial` to load. However, once loaded it is practically free. It also uses caching so reusing materials will not incur any extra cost. Couple important notes about performance:
+
+- Changing these props will rebuild the material
+  - `baseMaterial`
+  - `fragmentShader`
+  - `vertexShader`
+  - `uniforms`
+  - `cacheKey`
+- `<meshPhysicalMaterial />` and `<CSM baseMaterial={meshPhysicalMaterial}>` are the same, and will use the same cached shader program. The default cache key is such:
+
+  ```js
+  hash(stripSpaces(fragmentShader) + stripSpaces(vertexShader) + serializedUniforms)
+  ```
+
+  You can provide your own cache key function via the `cacheKey` prop.
+
 ## Development
 
 ```sh
@@ -246,6 +268,8 @@ cd THREE-CustomShaderMaterial
 yarn
 yarn dev
 ```
+
+Will watch for changes in `package/` and will hot-reload `examples/debug`.
 
 ## License
 
