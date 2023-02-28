@@ -19,13 +19,13 @@ export const defaultPatchMap: iCSMPatchMap = {
   },
   [`${keywords.positionRaw}`]: {
     '#include <begin_vertex>': `
-    vec4 csm_positionUnprojected = ${keywords.positionRaw};
-    mat4x4 csm_unprojectMatrix = projectionMatrix * modelViewMatrix;
+    vec4 csm_internal_positionUnprojected = ${keywords.positionRaw};
+    mat4x4 csm_internal_unprojectMatrix = projectionMatrix * modelViewMatrix;
     #ifdef USE_INSTANCING
-      csm_unprojectMatrix = csm_unprojectMatrix * instanceMatrix;
+      csm_internal_unprojectMatrix = csm_internal_unprojectMatrix * instanceMatrix;
     #endif
-    csm_positionUnprojected = inverse(csm_unprojectMatrix) * csm_positionUnprojected;
-    vec3 transformed = csm_positionUnprojected.xyz;
+    csm_internal_positionUnprojected = inverse(csm_internal_unprojectMatrix) * csm_internal_positionUnprojected;
+    vec3 transformed = csm_internal_positionUnprojected.xyz;
   `,
   },
   [`${keywords.pointSize}`]: {
@@ -69,6 +69,15 @@ export const defaultPatchMap: iCSMPatchMap = {
     '#include <aomap_fragment>': `
     #include <aomap_fragment>
     reflectedLight.indirectDiffuse *= 1. - ${keywords.ao};
+    `,
+  },
+  [`${keywords.bump}`]: {
+    '#include <normal_fragment_maps>': `
+    #include <normal_fragment_maps>
+
+    vec3 csm_internal_orthogonal = ${keywords.bump} - (dot(${keywords.bump}, normal) * normal);
+    vec3 csm_internal_projectedbump = mat3(csm_internal_vModelViewMatrix) * (bumpStrength * csm_internal_orthogonal);
+    normal = normalize(normal - csm_internal_projectedbump);
     `,
   },
 }

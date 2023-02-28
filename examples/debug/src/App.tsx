@@ -1,11 +1,16 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, Sphere } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera, Sphere, Environment } from '@react-three/drei'
 import Lights from './components/Lights'
 import { useMemo, useState } from 'react'
 import CustomShaderMaterial from 'three-custom-shader-material'
 
-import { Color, MeshBasicMaterial, MeshPhysicalMaterial } from 'three'
+import { Color, MeshBasicMaterial, MeshNormalMaterial, MeshPhysicalMaterial, MeshStandardMaterial } from 'three'
 import { Perf } from 'r3f-perf'
+
+// @ts-ignore
+import { patchShaders } from 'gl-noise/build/glNoise.m'
+import common from './shaders/common'
+import psrd from './shaders/psrd'
 
 function Thing() {
   const [mat2, setMat2] = useState<any>()
@@ -35,12 +40,37 @@ function Thing() {
           onPointerLeave={() => (uniforms.uColor.value = new Color('red'))}
         >
           <CustomShaderMaterial
-            baseMaterial={mat2}
+            baseMaterial={MeshStandardMaterial}
             fragmentShader={
+              common +
+              psrd +
               /* glsl */ `
+              varying vec2 csm_vUv;
+              varying vec3 csm_vPosition;
+
               void main() {
-                csm_DiffuseColor = vec4(1., 1., 0., 1.0);
-                csm_Roughness = 0.;
+                // Size of bump, .01 to .20 is sensible in this example
+                float bumpSize = 0.1;
+                // How much it perturbs the normals, looks best between 0 and 0.1
+                float bumpStrength = 0.1;
+
+                gln_PSRDOpts opts = gln_PSRDOpts(1., vec3(0.0), 1.);
+                gln_psrd((1. / bumpSize) * csm_vPosition, opts, csm_Bump);
+
+                // bump more visible with low roughness
+                csm_Roughness = 0.1;
+                csm_DiffuseColor = vec4(1.0, 0., 1., 0.);
+              }
+            `
+            }
+            vertexShader={
+              /* glsl */ `
+              varying vec2 csm_vUv;
+              varying vec3 csm_vPosition;
+
+              void main() {
+                csm_vUv = uv;
+                csm_vPosition = position;
               }
             `
             }
@@ -79,7 +109,7 @@ export default function App() {
     <Canvas shadows>
       <OrbitControls makeDefault />
       <PerspectiveCamera position={[-5, 5, 5]} makeDefault />
-
+      <Environment preset="warehouse" />
       <Thing />
       <Perf />
 

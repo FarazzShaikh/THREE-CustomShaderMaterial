@@ -8,7 +8,13 @@ import stringify from 'glsl-token-string'
 // @ts-ignore
 import tokenFunctions from 'glsl-token-functions'
 
-import { defaultDefinitions } from './shaders'
+import {
+  defaultDefinitions,
+  defaultFragDefinitions,
+  defaultFragMain,
+  defaultVertDefinitions,
+  defaultVertMain,
+} from './shaders'
 import {
   iCSMPatchMap,
   iCSMInternals,
@@ -165,7 +171,7 @@ export default class CustomShaderMaterial<
 
     const customOnBeforeCompile = (shader: THREE.Shader) => {
       if (parsedFragmentShader) {
-        const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader)
+        const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader, true)
         shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
       }
       if (parsedVertexShader) {
@@ -207,7 +213,7 @@ export default class CustomShaderMaterial<
     }
   }
 
-  private patchShader(customShader: iCSMShader, shader: string): string {
+  private patchShader(customShader: iCSMShader, shader: string, isFrag?: boolean): string {
     let patchedShader = shader
     const patchMap: iCSMPatchMap = {
       ...this.getPatchMapForMaterial(),
@@ -226,7 +232,9 @@ export default class CustomShaderMaterial<
       'void main() {',
       `
         ${customShader.header}
+        ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
         void main() {
+          ${isFrag ? defaultFragMain : defaultVertMain}
       `
     )
 
