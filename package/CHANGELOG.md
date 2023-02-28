@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.0
+
+- Add `csm_bump`
+
 ## 5.2.0
 
 - Now extend already extended materials
