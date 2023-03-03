@@ -1,6 +1,6 @@
 <h1 align="center">Custom Shader Material</h1>
 
-<a href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial" target="_blank"><img  src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/hero/thumbnail.png" alt="Hero" /></a>
+<a href="https://codesandbox.io/s/customshadermaterial-hero-19wied" target="_blank"><img  src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/hero/thumbnail.png" alt="Hero" /></a>
 
 <h3 align="center">Extend Three.js standard materials with your own shaders!</h3>
 
