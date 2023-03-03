@@ -10,7 +10,7 @@ import {
   Grid,
 } from '@react-three/drei'
 import { Color } from 'three'
-import { useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef } from 'react'
 
 import CSM from 'three-custom-shader-material'
 import Frag from './shaders/Frag'
@@ -64,10 +64,6 @@ function Thing() {
   const csmRef = useRef()
   const gridRef = useRef()
 
-  useEffect(() => {
-    console.log(csmRef.current)
-  }, [])
-
   useFrame((state, dt) => {
     uniforms.uTime.value += dt
 
@@ -75,6 +71,16 @@ function Thing() {
     csmRef.current.base_update(state, csmRef.current.__r3f.parent)
     gridRef.current.visible = true
   })
+
+  const frag = useMemo(
+    () => `
+      ${common}
+      ${simplex}
+      ${FBM('simplex')}
+      ${Frag}
+    `,
+    [common, simplex, FBM, Frag]
+  )
 
   return (
     <>
@@ -90,15 +96,9 @@ function Thing() {
         <mesh castShadow geometry={nodes.bunny.geometry} position-y={-0.04}>
           <CSM
             ref={csmRef}
-            attach="material" ///
             baseMaterial={MeshTransmissionMaterial}
             uniforms={uniforms}
-            fragmentShader={`
-            ${common}
-            ${simplex}
-            ${FBM('simplex')}
-            ${Frag}
-          `}
+            fragmentShader={frag}
             vertexShader={Vert}
             resolution={128}
             thickness={0.5}
@@ -169,11 +169,13 @@ export default function App() {
           minDistance={1}
         />
 
-        <Thing />
+        <Suspense>
+          <Thing />
 
-        <AccumulativeShadows opacity={0.5} temporal frames={100} scale={10}>
-          <RandomizedLight amount={10} position={[3, 3, -5]} />
-        </AccumulativeShadows>
+          <AccumulativeShadows opacity={0.5} temporal frames={100} scale={10}>
+            <RandomizedLight amount={10} position={[3, 3, -5]} />
+          </AccumulativeShadows>
+        </Suspense>
 
         <UIWrapper />
       </Canvas>

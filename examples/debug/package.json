@@ -1,0 +1,48 @@
+{
+  "name": "debug",
+  "version": "1.0.1-next.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^6.4.5",
+    "@gsimone/suzanne": "^0.0.12",
+    "@react-three/drei": "^9.56.25",
+    "@react-three/fiber": "^8.11.2",
+    "@react-three/postprocessing": "^2.3.2",
+    "@types/three": "^0.149.0",
+    "gl-noise": "^1.6.1",
+    "leva": "^0.9.27",
+    "postprocessing": "^6.27.0",
+    "r3f-perf": "^6.4.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "5.0.1",
+    "three": "^0.149.0",
+    "three-custom-shader-material": "^5.2.0",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "dev": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
