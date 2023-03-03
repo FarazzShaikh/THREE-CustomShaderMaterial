@@ -76,7 +76,7 @@ export const defaultPatchMap: iCSMPatchMap = {
     #include <normal_fragment_maps>
 
     vec3 csm_internal_orthogonal = ${keywords.bump} - (dot(${keywords.bump}, normal) * normal);
-    vec3 csm_internal_projectedbump = mat3(csm_internal_vModelViewMatrix) * (bumpStrength * csm_internal_orthogonal);
+    vec3 csm_internal_projectedbump = mat3(csm_internal_vModelViewMatrix) * csm_internal_orthogonal;
     normal = normalize(normal - csm_internal_projectedbump);
     `,
   },

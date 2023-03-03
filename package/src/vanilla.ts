@@ -51,8 +51,16 @@ function copyObject(target: any, source: any) {
 
   const proto = Object.getPrototypeOf(source)
   Object.entries(Object.getOwnPropertyDescriptors(proto))
-    .filter((e: any) => typeof e[1].get === 'function' && e[0] !== '__proto__')
+    // .filter((e: any) => typeof e[1].get === 'function' && e[0] !== '__proto__')
     .forEach((val) => {
+      // If function exists on target, rename it with "base_" prefix
+      if (typeof target[val[0]] === 'function') {
+        console.warn(`Function ${val[0]} already exists on CSM, renaming to base_${val[0]}`)
+        const baseName = `base_${val[0]}`
+        target[baseName] = val[1].value.bind(target)
+        return
+      }
+
       Object.defineProperty(target, val[0], val[1])
     })
 }
@@ -84,6 +92,7 @@ export default class CustomShaderMaterial<
   }: iCSMParams<T>) {
     let base: THREE.Material
     if (isConstructor(baseMaterial)) {
+      console.log(opts)
       base = new baseMaterial(opts)
     } else {
       base = baseMaterial
@@ -234,7 +243,9 @@ export default class CustomShaderMaterial<
         ${customShader.header}
         ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
         void main() {
+          ${defaultDefinitions}
           ${isFrag ? defaultFragMain : defaultVertMain}
+          // CSM_END
       `
     )
 
@@ -254,7 +265,6 @@ export default class CustomShaderMaterial<
         'void main() {',
         `
           void main() {
-            ${defaultDefinitions}
             ${customShader.main}
             // CSM_END
           `

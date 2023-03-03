@@ -16,6 +16,7 @@ const CustomShaderMaterial = React.forwardRef(
         vertexShader,
         uniforms,
         cacheKey,
+        ...props,
       }),
       [baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey]
     )
