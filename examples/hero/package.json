@@ -11,6 +11,7 @@
     "r3f-perf": "^7.1.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-icons": "^4.8.0",
     "react-scripts": "5.0.1",
     "three": "^0.150.1",
     "three-custom-shader-material": "^5.2.0",
