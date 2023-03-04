@@ -73,14 +73,10 @@
     }
   },
   "dependencies": {
-    "@types/diff": "^5.0.2",
-    "diff": "1.4.0",
     "glsl-token-functions": "^1.0.1",
     "glsl-token-string": "^1.0.1",
     "glsl-tokenizer": "^2.1.5",
-    "object-hash": "^3.0.0",
-    "textdiff-create": "^1.0.9",
-    "textdiff-patch": "^1.0.9"
+    "object-hash": "^3.0.0"
   },
   "babel": {
     "presets": [
