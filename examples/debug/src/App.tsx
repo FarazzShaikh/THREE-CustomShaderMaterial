@@ -147,9 +147,9 @@ export default function App() {
     <Canvas shadows>
       <OrbitControls makeDefault />
       <PerspectiveCamera position={[-5, 5, 5]} makeDefault />
-      {/* <Environment preset="warehouse" /> */}
-      {/* <Thing /> */}
-      <CacheTest />
+      <Environment preset="warehouse" />
+      <Thing />
+      {/* <CacheTest /> */}
 
       <Perf />
 
