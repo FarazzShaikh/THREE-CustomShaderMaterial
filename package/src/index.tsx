@@ -15,22 +15,44 @@ function useDidUpdateEffect(fn: (...opts: any[]) => any, inputs: React.Dependenc
   }, inputs)
 }
 
-const CustomShaderMaterial = React.forwardRef(<T extends MaterialConstructor>(props: iCSMParams<T>, ref: unknown) => {
-  const material = React.useMemo<CustomShaderMaterialType<T>>(
-    () => new CustomShaderMaterialType<T>(props),
-    [props.baseMaterial, props.fragmentShader, props.vertexShader, props.uniforms, props.cacheKey]
-  )
+const CustomShaderMaterial = React.forwardRef(
+  <T extends MaterialConstructor>(
+    // Need to remove non getter-setter properties from props distributed into r3f
+    // to avoid overriding props such as uniforms and other essential internal stuff
+    { baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey, ...props }: iCSMParams<T>,
+    ref: unknown
+  ) => {
+    const updateProps = React.useMemo(
+      () => ({
+        fragmentShader,
+        vertexShader,
+        uniforms,
+        cacheKey,
+      }),
+      [fragmentShader, vertexShader, uniforms, cacheKey]
+    )
 
-  // TODO: Use .update when it stop leaking memory
-  // useDidUpdateEffect(
-  //   () => material.update(props),
-  //   [props.fragmentShader, props.vertexShader, props.uniforms, props.cacheKey]
-  // )
+    const material = React.useMemo<CustomShaderMaterialType<T>>(
+      () =>
+        new CustomShaderMaterialType<T>({
+          baseMaterial,
+          ...updateProps,
+          ...props,
+        }),
+      [updateProps]
+    )
 
-  React.useEffect(() => () => material.dispose(), [material])
+    React.useEffect(() => () => material.dispose(), [material])
 
-  return <primitive object={material} attach="material" ref={ref as CustomShaderMaterialType<T>} {...props} />
-})
+    // TODO: Use .update when it stop leaking memory
+    // useDidUpdateEffect(
+    //   () => material.update(updateProps),
+    //   [updateProps]
+    // )
+
+    return <primitive object={material} ref={ref as CustomShaderMaterialType<T>} {...props} />
+  }
+)
 
 export default CustomShaderMaterial as <T extends MaterialConstructor>(
   props: iCSMParams<T> & { ref?: unknown }

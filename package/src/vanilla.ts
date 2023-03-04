@@ -54,7 +54,7 @@ function copyObject(target: any, source: any) {
     .filter((e: any) => {
       const isGetter = typeof e[1].get === 'function'
       const isSetter = typeof e[1].set === 'function'
-      const isFunction = !(isGetter || isSetter) && typeof e[1].value === 'function'
+      const isFunction = typeof e[1].value === 'function'
       const isConstructor = e[0] === 'constructor'
 
       return (isGetter || isSetter || isFunction) && !isConstructor
@@ -141,7 +141,6 @@ export default class CustomShaderMaterial<
       cacheHash: ``,
     }
 
-    // Patch uniforms
     this.uniforms = {
       // ThreeJS types don't expose uniforms for internal materials however,
       // they still seem to be accessible. This is also important for extending
@@ -160,40 +159,6 @@ export default class CustomShaderMaterial<
       this.__csm.cacheHash = this.getCacheHash()
       this.generateMaterial(fragmentShader, vertexShader, uniforms)
     }
-
-    console.log('Construct')
-  }
-
-  /**
-   * Internally calculates the cache key for this instance of CSM.
-   * If no specific CSM inputs are provided, the cache key is the same as the default
-   * cache key, i.e. `baseMaterial.onBeforeCompile.toString()`. Not meant to be called directly.
-   *
-   * This method is quite expensive owing to the hashing function and string manip.
-   *
-   * TODO:
-   * - Optimize string manip.
-   * - Find faster hash function
-   *
-   * @returns {string} A cache key for this instance of CSM.
-   */
-  private getCacheHash() {
-    // The cache key is a hash of the fragment shader, vertex shader, and uniforms
-    const { fragmentShader, vertexShader } = this.__csm
-    const uniforms = this.uniforms
-
-    const serializedUniforms = Object.values(uniforms).reduce((prev, { value }) => {
-      return prev + JSON.stringify(value)
-    }, '')
-
-    // We strip spaces because whitespace is not significant in GLSL
-    // and we want `blah` and `     blah ` to be the same.
-    const hashInp = stripSpaces(fragmentShader) + stripSpaces(vertexShader) + serializedUniforms
-
-    // If CSM inputs are empty, use default cache key
-    // This means that `<baseMaterial />` and <CSM baseMaterial={baseMaterial} />`
-    // are the same shader program, i.e they share the same cache key
-    return hashInp.trim().length > 0 ? objectHash(hashInp) : this.customProgramCacheKey()
   }
 
   /**
@@ -240,6 +205,38 @@ export default class CustomShaderMaterial<
   }
 
   /**
+   * Internally calculates the cache key for this instance of CSM.
+   * If no specific CSM inputs are provided, the cache key is the same as the default
+   * cache key, i.e. `baseMaterial.onBeforeCompile.toString()`. Not meant to be called directly.
+   *
+   * This method is quite expensive owing to the hashing function and string manip.
+   *
+   * TODO:
+   * - Optimize string manip.
+   * - Find faster hash function
+   *
+   * @returns {string} A cache key for this instance of CSM.
+   */
+  private getCacheHash() {
+    // The cache key is a hash of the fragment shader, vertex shader, and uniforms
+    const { fragmentShader, vertexShader } = this.__csm
+    const uniforms = this.uniforms
+
+    const serializedUniforms = Object.values(uniforms).reduce((prev, { value }) => {
+      return prev + JSON.stringify(value)
+    }, '')
+
+    // We strip spaces because whitespace is not significant in GLSL
+    // and we want `blah` and `     blah ` to be the same.
+    const hashInp = stripSpaces(fragmentShader) + stripSpaces(vertexShader) + serializedUniforms
+
+    // If CSM inputs are empty, use default cache key
+    // This means that `<baseMaterial />` and <CSM baseMaterial={baseMaterial} />`
+    // are the same shader program, i.e they share the same cache key
+    return hashInp.trim().length > 0 ? objectHash(hashInp) : this.customProgramCacheKey()
+  }
+
+  /**
    * Does the internal shader generation. Not meant to be called directly.
    *
    * @param fragmentShader
@@ -251,17 +248,22 @@ export default class CustomShaderMaterial<
     // it's `#define`s, function and var definitions and main separated.
     const parsedFragmentShader = this.parseShader(fragmentShader)
     const parsedVertexShader = this.parseShader(vertexShader)
-
     this.uniforms = uniforms || {}
+
+    // Set material cache key
     this.customProgramCacheKey = () => {
       return this.__csm.cacheHash
     }
 
+    // Set onBeforeCompile
     const customOnBeforeCompile = (shader: THREE.Shader) => {
+      // If Fragment shader is not empty, patch it
       if (parsedFragmentShader) {
         const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader, true)
         shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
       }
+
+      // If Vertex shader is not empty, patch it
       if (parsedVertexShader) {
         const patchedVertexShader = this.patchShader(parsedVertexShader, shader.vertexShader)
 
@@ -269,6 +271,7 @@ export default class CustomShaderMaterial<
         shader.vertexShader = this.getMaterialDefine() + shader.vertexShader
       }
 
+      // Patch uniforms
       shader.uniforms = { ...shader.uniforms, ...this.uniforms }
       this.uniforms = shader.uniforms
     }
@@ -282,6 +285,7 @@ export default class CustomShaderMaterial<
         customOnBeforeCompile(shader)
       }
     } else {
+      // Else just set the onBeforeCompile
       this.onBeforeCompile = customOnBeforeCompile
     }
 
@@ -289,52 +293,43 @@ export default class CustomShaderMaterial<
   }
 
   /**
-   * Gets the material type as a string. Not meant to be called directly.
+   * Patches input shader with custom shader. Not meant to be called directly.
+   * @param customShader
+   * @param shader
+   * @param isFrag
    * @returns
    */
-  private getMaterialDefine() {
-    const type = this.__csm.type
-    return type ? `#define IS_${type.toUpperCase()};\n` : `#define IS_UNKNOWN;\n`
-  }
-
-  /**
-   * Gets the right patch map for the material. Not meant to be called directly.
-   * @returns
-   */
-  private getPatchMapForMaterial() {
-    switch (this.__csm.type) {
-      case 'ShaderMaterial':
-        return shaderMaterial_PatchMap
-
-      default:
-        return defaultPatchMap
-    }
-  }
-
   private patchShader(customShader: iCSMShader, shader: string, isFrag?: boolean): string {
     let patchedShader = shader
+
+    // Get the patch map, its a combination of the default patch map and the
+    // user defined patch map. The user defined map takes precedence.
     const patchMap: iCSMPatchMap = {
       ...this.getPatchMapForMaterial(),
       ...this.__csm.patchMap,
     }
 
+    // Replace all entries in the patch map
     Object.keys(patchMap).forEach((name: string) => {
       Object.keys(patchMap[name]).forEach((key) => {
+        // Only inject keywords that appear in the shader.
+        // If the keyword is '*', then inject the patch regardless.
         if (name === '*' || isExactMatch(customShader.main, name)) {
           patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
         }
       })
     })
 
+    // Inject defaults
     patchedShader = patchedShader.replace(
       'void main() {',
       `
-        ${customShader.header}
-
         #ifndef CSM_IS_HEAD_DEFAULTS_DEFINED
           ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
           #define CSM_IS_HEAD_DEFAULTS_DEFINED 1
         #endif
+
+        ${customShader.header}
         
         void main() {
           #ifndef CSM_IS_DEFAULTS_DEFINED
@@ -355,6 +350,13 @@ export default class CustomShaderMaterial<
     const hasCSMEndMark = patchedShader.includes('// CSM_END')
 
     if (needsCustomInjectionOrder && hasCSMEndMark) {
+      // If the shader has already been extended, and contains the
+      // CSM_END mark, then inject the custom shader after the CSM_END mark.
+      // This ensures that the last shader in the chain receives all the vars and
+      // values of the previous shaders.
+      // This means that any custom materials would have to have the CSM_END mark
+      // injected beforehand but thats the only way to know where the custom material's
+      // main function ends.
       patchedShader = replaceLastOccurrence(
         patchedShader,
         '// CSM_END',
@@ -365,6 +367,7 @@ export default class CustomShaderMaterial<
         `
       )
     } else {
+      // Else inject the custom shader at the start of main
       patchedShader = patchedShader.replace(
         '// CSM_START',
         `
@@ -395,6 +398,7 @@ export default class CustomShaderMaterial<
     // Strip comments
     const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?)\n/gm, '')
 
+    // Tokenize and separate into defines, header and main
     const tokens = tokenize(s)
     const funcs = tokenFunctions(tokens)
     const mainIndex = funcs
@@ -412,6 +416,35 @@ export default class CustomShaderMaterial<
     }
   }
 
+  /**
+   * Gets the material type as a string. Not meant to be called directly.
+   * @returns
+   */
+  private getMaterialDefine() {
+    const type = this.__csm.type
+    return type ? `#define IS_${type.toUpperCase()};\n` : `#define IS_UNKNOWN;\n`
+  }
+
+  /**
+   * Gets the right patch map for the material. Not meant to be called directly.
+   * @returns
+   */
+  private getPatchMapForMaterial() {
+    switch (this.__csm.type) {
+      case 'ShaderMaterial':
+        return shaderMaterial_PatchMap
+
+      default:
+        return defaultPatchMap
+    }
+  }
+
+  /**
+   * Gets the shader from the tokens. Not meant to be called directly.
+   * @param tokens
+   * @param index
+   * @returns
+   */
   private getShaderFromIndex(tokens: any, index: number[]) {
     return stringify(tokens.slice(index[0], index[1]))
   }

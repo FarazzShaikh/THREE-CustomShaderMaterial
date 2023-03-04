@@ -34,9 +34,9 @@ export function Ui3D() {
               MeshTransmissionMaterial
             </a>
             <br />
-            with <strong>color</strong>, <strong>metalness</strong>
+            with <strong>color</strong> and <strong>metalness</strong>
             <br />
-            and <strong>bump</strong> driven by noise.
+            driven by noise.
           </p>
         </div>
       </Html>
