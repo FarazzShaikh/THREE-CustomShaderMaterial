@@ -1,7 +1,5 @@
-import { Logo } from '@pmndrs/branding'
-import { useFrame } from '@react-three/fiber'
-import { forwardRef, useRef } from 'react'
-import { FaGithub } from 'react-icons/fa'
+import { forwardRef } from 'react'
+import { FaGithub, FaCode } from 'react-icons/fa'
 
 export const Ui = forwardRef<HTMLDivElement>((props, ref) => {
   return (
@@ -12,8 +10,8 @@ export const Ui = forwardRef<HTMLDivElement>((props, ref) => {
 
       <div className="my-tag">
         <span>
-          <a target="_blank" href="https://github.com/pmndrs/lamina">
-            <Logo width={24} height={24} />
+          <a target="_blank" href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial">
+            <FaCode size={24} />
           </a>
         </span>
 
