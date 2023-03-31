@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.1
+
+- Fix for Three r0.150.2
+
 ## 5.3.0
 
 - Add `csm_bump`
