@@ -23,7 +23,7 @@ export const defaultDefinitions = /* glsl */ `
         vec4 csm_FragColor = vec4(1., 0., 1., 1.);
     #else
         #ifdef USE_MAP
-            vec4 _csm_sampledDiffuseColor = texture2D(map, vUv);
+            vec4 _csm_sampledDiffuseColor = texture2D(map, vMapUv);
 
             #ifdef DECODE_VIDEO_TEXTURE
             // inline sRGB decode (TODO: Remove this code when https://crbug.com/1256340 is solved)

@@ -50,7 +50,7 @@ const CustomShaderMaterial = React.forwardRef(
     //   [updateProps]
     // )
 
-    return <primitive object={material} ref={ref as CustomShaderMaterialType<T>} {...props} />
+    return <primitive attach="material" object={material} ref={ref as CustomShaderMaterialType<T>} {...props} />
   }
 )
 
