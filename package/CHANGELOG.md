@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.3.1
+## 5.3.4
 
 - Fix for Three r0.150.2
 
