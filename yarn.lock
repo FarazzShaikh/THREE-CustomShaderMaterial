@@ -4529,7 +4529,7 @@
     "react" "^18.0.0"
     "react-dom" "^18.0.0"
     "react-scripts" "5.0.1"
-    "three" "^0.149.0"
+    "three" "^0.151.2"
     "three-custom-shader-material" "^5.2.0"
     "ts-loader" "^9.3.1"
     "typescript" "^4.7.4"
@@ -6084,12 +6084,12 @@
     "@react-three/drei" "^9.56.25"
     "@react-three/fiber" "^8.11.2"
     "@types/three" "^0.149.0"
-    "r3f-perf" "^7.1.2"
+    "r3f-perf" "^6.4.2"
     "react" "^18.0.0"
     "react-dom" "^18.0.0"
-    "react-icons" "^4.8.0"
+    "react-icons" "^4.3.1"
     "react-scripts" "5.0.1"
-    "three" "^0.150.1"
+    "three" "^0.149.0"
     "three-custom-shader-material" "^5.2.0"
     "ts-loader" "^9.3.1"
     "tunnel-rat" "^0.1.1"
@@ -10562,7 +10562,7 @@
 
 "three-custom-shader-material@^5.2.0", "three-custom-shader-material@file:C:\\Users\\Faraz\\Documents\\work\\personal\\THREE-CustomShaderMaterial\\package":
   "resolved" "file:package"
-  "version" "5.3.4"
+  "version" "5.3.5"
   dependencies:
     "glsl-token-functions" "^1.0.1"
     "glsl-token-string" "^1.0.1"
