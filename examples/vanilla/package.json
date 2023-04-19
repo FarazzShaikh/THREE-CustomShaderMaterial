@@ -16,6 +16,6 @@
     "@react-three/fiber": "^8.12.1",
     "@types/three": "^0.150.2",
     "three": "^0.151.3",
-    "three-custom-shader-material": "^5.3.6"
+    "three-custom-shader-material": "^5.3.7"
   }
 }

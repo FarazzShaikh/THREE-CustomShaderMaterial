@@ -15,7 +15,7 @@
     "react-icons": "^4.3.1",
     "react-scripts": "5.0.1",
     "three": "^0.151.3",
-    "three-custom-shader-material": "^5.3.6",
+    "three-custom-shader-material": "^5.3.7",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4"
   },
