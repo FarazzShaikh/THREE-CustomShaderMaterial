@@ -10,6 +10,7 @@
     "@types/three": "^0.150.2",
     "gl-noise": "^1.6.1",
     "leva": "^0.9.27",
+    "r3f-perf": "^7.1.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
