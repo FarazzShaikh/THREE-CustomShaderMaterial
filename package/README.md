@@ -1,15 +1,15 @@
 <h1 align="center">Custom Shader Material</h1>
 
-<a href="https://codesandbox.io/s/customshadermaterial-hero-19wied" target="_blank"><img  src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/hero/thumbnail.png" alt="Hero" /></a>
+<a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/hero" target="_blank"><img  src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/hero/thumbnail.png" alt="Hero" /></a>
 
 <h3 align="center">Extend Three.js standard materials with your own shaders!</h3>
 
 <br>
 
 <p align="center">
-  <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/waves" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/waves/thumbnail.png" alt="Waves" /></a>
-   <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/points" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/points/thumbnail.png" alt="Points" /></a>
-  <a href="https://codesandbox.io/embed/github/farazzshaikh/THREE-CustomShaderMaterial/tree/master/examples/caustics" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/caustics/thumbnail.png" alt="Caustics" /></a>
+  <a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/waves" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/waves/thumbnail.png" alt="Waves" /></a>
+   <a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/points" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/points/thumbnail.png" alt="Points" /></a>
+  <a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/caustics" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/caustics/thumbnail.png" alt="Caustics" /></a>
 </p>
 </p>
 <p align="middle">

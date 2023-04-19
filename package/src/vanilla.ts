@@ -323,7 +323,7 @@ export default class CustomShaderMaterial<
         // Only inject keywords that appear in the shader.
         // If the keyword is '*', then inject the patch regardless.
         if (name === '*' || isExactMatch(customShader.main, name)) {
-          if (Array.isArray(availableIn) ? availableIn.includes(type) : availableIn === '*') {
+          if (!availableIn || (Array.isArray(availableIn) && availableIn.includes(type)) || availableIn === '*') {
             patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
           } else {
             throw new Error(`CSM: ${name} is not available in ${type}. Shader cannot compile.`)
