@@ -24,6 +24,7 @@ import {
   MaterialConstructor,
   Uniform,
 } from './types'
+import { defaultAvailabilityMap } from './availabilityMap'
 
 const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
 const escapeRegExpMatch = function (s: string) {
@@ -257,23 +258,27 @@ export default class CustomShaderMaterial<
 
     // Set onBeforeCompile
     const customOnBeforeCompile = (shader: THREE.Shader) => {
-      // If Fragment shader is not empty, patch it
-      if (parsedFragmentShader) {
-        const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader, true)
-        shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
+      try {
+        // If Fragment shader is not empty, patch it
+        if (parsedFragmentShader) {
+          const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader, true)
+          shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
+        }
+
+        // If Vertex shader is not empty, patch it
+        if (parsedVertexShader) {
+          const patchedVertexShader = this.patchShader(parsedVertexShader, shader.vertexShader)
+
+          shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShader
+          shader.vertexShader = this.getMaterialDefine() + shader.vertexShader
+        }
+
+        // Patch uniforms
+        shader.uniforms = { ...shader.uniforms, ...this.uniforms }
+        this.uniforms = shader.uniforms
+      } catch (error) {
+        console.error(error)
       }
-
-      // If Vertex shader is not empty, patch it
-      if (parsedVertexShader) {
-        const patchedVertexShader = this.patchShader(parsedVertexShader, shader.vertexShader)
-
-        shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShader
-        shader.vertexShader = this.getMaterialDefine() + shader.vertexShader
-      }
-
-      // Patch uniforms
-      shader.uniforms = { ...shader.uniforms, ...this.uniforms }
-      this.uniforms = shader.uniforms
     }
 
     if (this.__csm.isAlreadyExtended) {
@@ -312,10 +317,17 @@ export default class CustomShaderMaterial<
     // Replace all entries in the patch map
     Object.keys(patchMap).forEach((name: string) => {
       Object.keys(patchMap[name]).forEach((key) => {
+        const availableIn = defaultAvailabilityMap[name]
+        const type = this.__csm.type
+
         // Only inject keywords that appear in the shader.
         // If the keyword is '*', then inject the patch regardless.
         if (name === '*' || isExactMatch(customShader.main, name)) {
-          patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
+          if (Array.isArray(availableIn) ? availableIn.includes(type) : availableIn === '*') {
+            patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
+          } else {
+            throw new Error(`CSM: ${name} is not available in ${type}. Shader cannot compile.`)
+          }
         }
       })
     })

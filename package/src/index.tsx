@@ -39,7 +39,7 @@ const CustomShaderMaterial = React.forwardRef(
           ...updateProps,
           ...props,
         }),
-      [updateProps]
+      [baseMaterial, updateProps]
     )
 
     React.useEffect(() => () => material.dispose(), [material])
