@@ -47,7 +47,7 @@ function isConstructor<T extends MaterialConstructor>(f: T | InstanceType<T>): f
   return true
 }
 
-function copyObject(target: any, source: any) {
+function copyObject(target: any, source: any, verbose = true) {
   Object.assign(target, source)
 
   const proto = Object.getPrototypeOf(source)
@@ -63,7 +63,7 @@ function copyObject(target: any, source: any) {
     .forEach((val) => {
       // If function exists on target, rename it with "base_" prefix
       if (typeof target[val[0]] === 'function') {
-        console.warn(`Function ${val[0]} already exists on CSM, renaming to base_${val[0]}`)
+        if (verbose) console.warn(`Function ${val[0]} already exists on CSM, renaming to base_${val[0]}`)
         const baseName = `base_${val[0]}`
         target[baseName] = val[1].value.bind(target)
         return
@@ -99,14 +99,15 @@ export default class CustomShaderMaterial<
   private __csm: iCSMInternals<T>
 
   constructor({
-    baseMaterial, //
-    fragmentShader,
-    vertexShader,
-    uniforms,
-    patchMap,
-    cacheKey,
-    ...opts
-  }: iCSMParams<T>) {
+                baseMaterial, //
+                fragmentShader,
+                vertexShader,
+                uniforms,
+                patchMap,
+                cacheKey,
+                verbose,
+                ...opts
+              }: iCSMParams<T>) {
     let base: THREE.Material
     if (isConstructor(baseMaterial)) {
       // If base material is a constructor, instantiate it
@@ -127,7 +128,7 @@ export default class CustomShaderMaterial<
     // Copy all properties from base material onto this material
     // Rename any functions that already exist on this material with "base_" prefix
     super()
-    copyObject(this, base)
+    copyObject(this, base, verbose)
 
     // Set up private internals
     this.__csm = {
@@ -140,6 +141,7 @@ export default class CustomShaderMaterial<
       type: base.type,
       isAlreadyExtended: !isFunctionEmpty(base.onBeforeCompile),
       cacheHash: ``,
+      verbose: verbose === undefined ? true : verbose,
     }
 
     this.uniforms = {
@@ -196,6 +198,7 @@ export default class CustomShaderMaterial<
       fragmentShader: this.__csm.fragmentShader,
       vertexShader: this.__csm.vertexShader,
       uniforms: this.uniforms,
+      verbose: this.__csm.verbose,
       patchMap: this.__csm.patchMap,
       cacheKey: this.__csm.cacheKey,
     }
