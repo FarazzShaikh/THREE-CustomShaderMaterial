@@ -45,6 +45,7 @@ function Box() {
     baseMaterial: THREE.MeshPhysicalMaterial,
     vertexShader: /* glsl */ ` ... `,
     fragmentShader: /* glsl */ ` ... `,
+    silent: true, // Disables the default warning if true
     uniforms: {
       uTime: {
         value: 0,
@@ -83,6 +84,8 @@ function Cube() {
         baseMaterial={THREE.MeshPhysicalMaterial}
         vertexShader={/* glsl */ ` ... `}
         fragmentShader={/* glsl */ ` ... `}
+        {/*silent parameter to true disables the default warning if needed*/}
+        silent
         uniforms={{
           uTime: {
             value: 0,
