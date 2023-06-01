@@ -15,7 +15,7 @@ export type iCSMParams<T extends MaterialConstructor> = {
   fragmentShader?: string
   cacheKey?: () => string
   patchMap?: iCSMPatchMap
-  verbose?: boolean
+  silent?: boolean
   uniforms?: { [key: string]: THREE.IUniform<any> }
 } & (MaterialParams<T> extends undefined ? {} : MaterialParams<T>)
 
@@ -31,7 +31,7 @@ export interface iCSMInternals<T extends MaterialConstructor> {
   type: string
   isAlreadyExtended: boolean
   cacheHash: string,
-  verbose: boolean
+  silent?: boolean
 }
 
 export type Uniform = { [key: string]: THREE.IUniform<any> }
