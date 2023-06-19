@@ -11,5 +11,5 @@ export default {
   metalness: 'csm_Metalness', // Metalness
   emissive: 'csm_Emissive', // Emissive
   ao: 'csm_AO', // AO
-  bump: 'csm_Bump' // Bump
+  bump: 'csm_Bump', // Bump
 }

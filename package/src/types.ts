@@ -30,7 +30,7 @@ export interface iCSMInternals<T extends MaterialConstructor> {
   instanceID: string
   type: string
   isAlreadyExtended: boolean
-  cacheHash: string,
+  cacheHash: string
   silent?: boolean
 }
 

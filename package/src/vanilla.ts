@@ -99,15 +99,15 @@ export default class CustomShaderMaterial<
   private __csm: iCSMInternals<T>
 
   constructor({
-                baseMaterial, //
-                fragmentShader,
-                vertexShader,
-                uniforms,
-                patchMap,
-                cacheKey,
-                silent,
-                ...opts
-              }: iCSMParams<T>) {
+    baseMaterial, //
+    fragmentShader,
+    vertexShader,
+    uniforms,
+    patchMap,
+    cacheKey,
+    silent,
+    ...opts
+  }: iCSMParams<T>) {
     let base: THREE.Material
     if (isConstructor(baseMaterial)) {
       // If base material is a constructor, instantiate it

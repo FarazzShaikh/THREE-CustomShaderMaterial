@@ -31,7 +31,7 @@ export default function App() {
     <Canvas shadows>
       <OrbitControls makeDefault />
       <PerspectiveCamera position={[-5, 5, 5]} makeDefault />
-      <Environment preset="warehouse" />
+      <Environment files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/empty_warehouse_01_1k.hdr" />
       <Thing />
       {/* <CacheTest /> */}
 
