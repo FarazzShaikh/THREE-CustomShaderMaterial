@@ -8,13 +8,13 @@ import {
   RandomizedLight,
   useGLTF,
   Grid,
+  MeshTransmissionMaterial,
 } from '@react-three/drei'
 import { Color } from 'three'
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useState, useMemo, useRef } from 'react'
 
 import CSM from 'three-custom-shader-material'
 import Frag from './shaders/Frag'
-import { MeshTransmissionMaterial } from './MeshTransmissionMaterial'
 import Vert from './shaders/Vert'
 import common from './shaders/common'
 import simplex from './shaders/simplex'
@@ -25,9 +25,7 @@ import { Ui } from './Ui'
 import { usePerf, PerfHeadless } from 'r3f-perf'
 
 function Thing() {
-  const { nodes } = useGLTF(
-    'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/bunny/model.gltf'
-  )
+  const { nodes } = useGLTF('https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/bunny/model.gltf')
 
   const uniforms = useMemo(
     () => ({
@@ -67,9 +65,9 @@ function Thing() {
   useFrame((state, dt) => {
     uniforms.uTime.value += dt
 
-    gridRef.current.visible = false
-    csmRef.current.base_update(state, csmRef.current.__r3f.parent)
-    gridRef.current.visible = true
+    // gridRef.current.visible = false
+    // csmRef.current.base_update(state, csmRef.current.__r3f.parent)
+    // gridRef.current.visible = true
   })
 
   const frag = useMemo(
@@ -82,32 +80,39 @@ function Thing() {
     [common, simplex, FBM, Frag]
   )
 
+  const [mtmRef, setMtmRef] = useState()
+
   return (
     <>
-      <Caustics
-        color={'#b7dfa5'}
-        backside
-        lightSource={[3, 3, -5]}
-        frames={100}
-        worldRadius={0.05}
-        intensity={0.008}
-        resolution={1024}
-      >
-        <mesh castShadow geometry={nodes.bunny.geometry} position-y={-0.04}>
-          <CSM
-            ref={csmRef}
-            baseMaterial={MeshTransmissionMaterial}
-            uniforms={uniforms}
-            fragmentShader={frag}
-            vertexShader={Vert}
-            resolution={128}
-            thickness={0.5}
-            anisotropy={2}
-            attenuationDistance={1}
-            attenuationColor={new Color('#ffffff')}
-          />
-        </mesh>
-      </Caustics>
+      <MeshTransmissionMaterial ref={(r) => void (r && setMtmRef(r))} />
+
+      {mtmRef && (
+        <Caustics
+          color={'#b7dfa5'}
+          backside
+          lightSource={[3, 3, -5]}
+          frames={100}
+          worldRadius={0.05}
+          intensity={0.008}
+          resolution={1024}
+        >
+          <mesh castShadow geometry={nodes.bunny.geometry} position-y={-0.04}>
+            <CSM
+              // ref={csmRef}
+              baseMaterial={mtmRef}
+              uniforms={uniforms}
+              fragmentShader={frag}
+              vertexShader={Vert}
+              resolution={128}
+              thickness={0.5}
+              // anisotropy={2}
+              attenuationDistance={1}
+              attenuationColor={new Color('#ffffff')}
+              envMapIntensity={2}
+            />
+          </mesh>
+        </Caustics>
+      )}
 
       <Grid
         ref={gridRef}

@@ -12,11 +12,11 @@
     "vite": "^3.0.7"
   },
   "dependencies": {
-    "@react-three/drei": "^9.65.4",
-    "@react-three/fiber": "^8.12.1",
-    "@types/three": "^0.150.2",
+    "@react-three/drei": "^9.78.1",
+    "@react-three/fiber": "^8.13.4",
+    "@types/three": "^0.153.0",
     "r3f-perf": "^7.1.2",
-    "three": "^0.151.3",
-    "three-custom-shader-material": "^5.3.7"
+    "three": "^0.154.0",
+    "three-custom-shader-material": "^5.3.8"
   }
 }

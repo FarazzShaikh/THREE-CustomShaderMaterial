@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "removeComments": false
   },
-  "include": ["packages/**/src/**/*", "packages/**/test/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

@@ -2,7 +2,7 @@ import { OrbitControls } from '@react-three/drei'
 import { Environment } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Suspense, useEffect, useMemo, useRef } from 'react'
-import { IcosahedronBufferGeometry, PointsMaterial } from 'three'
+import { IcosahedronGeometry, PointsMaterial } from 'three'
 
 import CustomShaderMaterial from 'three-custom-shader-material'
 import { patchShaders } from 'gl-noise/build/glNoise.m'
@@ -53,7 +53,7 @@ function Thing() {
   const matRef = useRef()
 
   useEffect(() => {
-    pointsRef.current.geometry = new IcosahedronBufferGeometry(1, 32)
+    pointsRef.current.geometry = new IcosahedronGeometry(1, 32)
   }, [])
 
   useFrame(({ clock }) => {

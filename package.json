@@ -18,11 +18,12 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "dev": "preconstruct dev && yarn workspace debug dev",
+    "dev": "preconstruct dev && yarn workspace waves dev",
     "postinstall": "preconstruct dev && manypkg check",
     "ci": "preconstruct validate && manypkg check && yarn build",
     "release": "chmod +x ./scripts/release.sh && ./scripts/release.sh",
-    "clean": "rm -rf node_modules package/dist examples/*/node_modules"
+    "clean": "rm -rf node_modules package/dist examples/*/node_modules",
+    "update": "./scripts/updateAll.sh"
   },
   "dependencies": {
     "@changesets/cli": "^2.24.3",

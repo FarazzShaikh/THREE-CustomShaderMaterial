@@ -57,7 +57,7 @@ export default function App() {
           position: [4, 4, 4],
         }}
       >
-        <color attach="background" args={['#ebebeb']} />
+        <color attach="background" args={[235, 235, 235]} />
         <Suspense fallback={null}>
           {['MeshPhysicalMaterial', 'MeshStanderedMaterial'].includes(Base.name) ? (
             <Environment files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/venice_sunset_1k.hdr" />

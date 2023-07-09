@@ -15,17 +15,17 @@ export default function App() {
   const material = new CustomShaderMaterial({
     baseMaterial: THREE.MeshBasicMaterial,
     vertexShader: `
-        varying vec2 vUv;
+        varying vec2 custom_vUv;
 
         void main() {
-            vUv = uv;
+          custom_vUv = uv;
         }
     `,
     fragmentShader: `
-        varying vec2 vUv;
+        varying vec2 custom_vUv;
 
         void main() {
-            csm_FragColor = vec4(vUv, 1., 1.);
+            csm_FragColor = vec4(custom_vUv, 1., 1.);
         }
     `,
   })
