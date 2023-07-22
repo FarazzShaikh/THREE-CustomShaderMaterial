@@ -80,6 +80,15 @@ export const defaultPatchMap: iCSMPatchMap = {
     normal = normalize(normal - csm_internal_projectedbump);
     `,
   },
+  [`${keywords.depthAlpha}`]: {
+    'gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );': `
+      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${keywords.depthAlpha} );
+    `,
+    'gl_FragColor = packDepthToRGBA( fragCoordZ );': `
+      gl_FragColor = packDepthToRGBA( fragCoordZ );
+      gl_FragColor.a *= ${keywords.depthAlpha};
+    `,
+  },
 }
 
 export const shaderMaterial_PatchMap: iCSMPatchMap = {

@@ -3,14 +3,17 @@ import { OrbitControls, PerspectiveCamera, Sphere, Environment, useTexture } fro
 import Lights from './components/Lights'
 import { Perf } from 'r3f-perf'
 import CSM from 'three-custom-shader-material'
-import { MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial } from 'three'
+import { MeshBasicMaterial, MeshDepthMaterial, MeshPhysicalMaterial, MeshStandardMaterial } from 'three'
 import { useMemo } from 'react'
+import { Floor } from './components/Floor'
+import * as THREE from 'three'
+import { ContactShadows } from './ContactShadows'
 
 function Thing() {
   const tex = useTexture('/UV_checker_Map_byValle.jpg')
 
   return (
-    <mesh>
+    <mesh castShadow position={[0, 2, 0]}>
       <sphereGeometry />
       <CSM
         baseMaterial={MeshPhysicalMaterial} //
@@ -18,9 +21,23 @@ function Thing() {
           /* glsl */ `
           void main() {
             csm_Roughness = 0.;
+            csm_DiffuseColor.a = 0.5;
           }
         `
         }
+        transparent
+      />
+      <CSM
+        attach="customDepthMaterial"
+        baseMaterial={MeshDepthMaterial} //
+        fragmentShader={
+          /* glsl */ `
+          void main() {
+            csm_DepthAlpha = 1.;
+          }
+        `
+        }
+        transparent
       />
     </mesh>
   )
@@ -31,13 +48,14 @@ export default function App() {
     <Canvas shadows>
       <OrbitControls makeDefault />
       <PerspectiveCamera position={[-5, 5, 5]} makeDefault />
-      <Environment files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/empty_warehouse_01_1k.hdr" />
       <Thing />
-      {/* <CacheTest /> */}
 
+      {/* <Floor /> */}
       <Perf />
 
-      {/* <Lights /> */}
+      <Lights />
+
+      <ContactShadows />
     </Canvas>
   )
 }

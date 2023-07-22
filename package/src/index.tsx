@@ -1,25 +1,32 @@
 import * as React from 'react'
-import '@react-three/fiber'
+import { NodeProps } from '@react-three/fiber'
 import CustomShaderMaterialType from './vanilla'
 import { iCSMParams, MaterialConstructor } from './types'
-import { Material } from 'three'
 
-function useDidUpdateEffect(fn: (...opts: any[]) => any, inputs: React.DependencyList) {
-  const didMountRef = React.useRef(false)
+// function useDidUpdateEffect(fn: (...opts: any[]) => any, inputs: React.DependencyList) {
+//   const didMountRef = React.useRef(false)
 
-  React.useEffect(() => {
-    if (didMountRef.current) {
-      return fn()
-    }
-    didMountRef.current = true
-  }, inputs)
-}
+//   React.useEffect(() => {
+//     if (didMountRef.current) {
+//       return fn()
+//     }
+//     didMountRef.current = true
+//   }, inputs)
+// }
 
 const CustomShaderMaterial = React.forwardRef(
   <T extends MaterialConstructor>(
     // Need to remove non getter-setter properties from props distributed into r3f
     // to avoid overriding props such as uniforms and other essential internal stuff
-    { baseMaterial, fragmentShader, vertexShader, uniforms, cacheKey, ...props }: iCSMParams<T>,
+    {
+      baseMaterial,
+      fragmentShader,
+      vertexShader,
+      uniforms,
+      cacheKey,
+      attach = 'material',
+      ...props
+    }: iCSMParams<T> & { attach: string },
     ref: unknown
   ) => {
     const updateProps = React.useMemo(
@@ -50,12 +57,12 @@ const CustomShaderMaterial = React.forwardRef(
     //   [updateProps]
     // )
 
-    return <primitive attach="material" object={material} ref={ref as CustomShaderMaterialType<T>} {...props} />
+    return <primitive object={material} ref={ref as CustomShaderMaterialType<T>} attach={attach} {...props} />
   }
 )
 
 export default CustomShaderMaterial as <T extends MaterialConstructor>(
-  props: iCSMParams<T> & { ref?: unknown }
+  props: iCSMParams<T> & { ref?: unknown; attach?: string }
 ) => JSX.Element
 
 export * from './types'

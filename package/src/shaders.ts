@@ -3,9 +3,9 @@ export const defaultDefinitions = /* glsl */ `
 #ifdef IS_VERTEX
     // csm_Position & csm_PositionRaw
     #ifdef IS_UNKNOWN
-        vec3 csm_Position = vec3(0.);
-        vec4 csm_PositionRaw = vec4(0.);
-        vec3 csm_Normal = vec3(0.);
+        vec3 csm_Position = vec3(0.0);
+        vec4 csm_PositionRaw = vec4(0.0);
+        vec3 csm_Normal = vec3(0.0);
     #else
         vec3 csm_Position = position;
         vec4 csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(position, 1.);
@@ -19,8 +19,8 @@ export const defaultDefinitions = /* glsl */ `
 #else
     // csm_DiffuseColor & csm_FragColor
     #if defined IS_UNKNOWN || defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_SHADOWMATERIAL
-        vec4 csm_DiffuseColor = vec4(1., 0., 1., 1.);
-        vec4 csm_FragColor = vec4(1., 0., 1., 1.);
+        vec4 csm_DiffuseColor = vec4(1.0, 0.0, 1.0, 1.0);
+        vec4 csm_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
     #else
         #ifdef USE_MAP
             vec4 _csm_sampledDiffuseColor = texture2D(map, vMapUv);
@@ -47,13 +47,15 @@ export const defaultDefinitions = /* glsl */ `
 
     // csm_AO
     #if defined IS_MESHSTANDARDMATERIAL || defined IS_MESHPHYSICALMATERIAL || defined IS_MESHBASICMATERIAL || defined IS_MESHLAMBERTMATERIAL || defined IS_MESHPHONGMATERIAL || defined IS_MESHTOONMATERIAL
-        float csm_AO = 0.;
+        float csm_AO = 0.0;
     #endif
 
     // csm_Bump
     #if defined IS_MESHLAMBERTMATERIAL || defined IS_MESHMATCAPMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_MESHPHONGMATERIAL || defined IS_MESHPHYSICALMATERIAL || defined IS_MESHSTANDARDMATERIAL || defined IS_MESHTOONMATERIAL || defined IS_SHADOWMATERIAL 
-        vec3 csm_Bump = vec3(0.);
+        vec3 csm_Bump = vec3(0.0);
     #endif
+
+    float csm_DepthAlpha = 1.0;
 #endif
 `
 

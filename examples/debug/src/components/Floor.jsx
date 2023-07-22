@@ -1,5 +1,4 @@
-import { Reflector, useTexture } from '@react-three/drei'
-import { useEffect, useRef } from 'react'
+import { useTexture } from '@react-three/drei'
 import { RepeatWrapping } from 'three'
 
 export function Floor({ size = 30, ...props }) {
@@ -12,25 +11,10 @@ export function Floor({ size = 30, ...props }) {
     }
   )
 
-  const [Albedo, AO, Displacement, Normal, Roughness] = useTexture([
-    '/pooltiles/tlfmffydy_4K_Albedo.jpg',
-    '/pooltiles/tlfmffydy_4K_AO.jpg',
-    '/pooltiles/tlfmffydy_4K_Displacement.jpg',
-    '/pooltiles/tlfmffydy_4K_Normal.jpg',
-    '/pooltiles/tlfmffydy_4K_Roughness.jpg',
-  ])
-
   return (
-    <mesh castShadow receiveShadow {...props}>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow {...props}>
       <planeGeometry args={[size, size, 256, 256]} />
-      <meshPhysicalMaterial
-        map={Albedo}
-        aoMap={AO}
-        // displacementMap={Displacement}
-        normalMap={Normal}
-        roughness={0.0}
-        roughnessMap={Roughness}
-      />
+      <meshStandardMaterial map={tex} />
     </mesh>
   )
 }

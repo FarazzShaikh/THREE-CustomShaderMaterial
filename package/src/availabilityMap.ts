@@ -29,4 +29,5 @@ export const defaultAvailabilityMap = {
     'MeshToonMaterial',
     'ShadowMaterial',
   ],
+  [`${keywords.depthAlpha}`]: '*',
 }

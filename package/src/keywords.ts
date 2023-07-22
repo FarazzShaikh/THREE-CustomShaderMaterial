@@ -12,4 +12,5 @@ export default {
   emissive: 'csm_Emissive', // Emissive
   ao: 'csm_AO', // AO
   bump: 'csm_Bump', // Bump
+  depthAlpha: 'csm_DepthAlpha', // Depth
 }
