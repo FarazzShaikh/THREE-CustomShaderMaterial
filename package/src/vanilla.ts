@@ -1,30 +1,17 @@
 import objectHash from 'object-hash'
 import * as THREE from 'three'
 import { defaultPatchMap, shaderMaterial_PatchMap } from './patchMaps'
-// @ts-ignore
-import tokenize from 'glsl-tokenizer'
-// @ts-ignore
-import stringify from 'glsl-token-string'
-// @ts-ignore
-import tokenFunctions from 'glsl-token-functions'
 
+import { defaultAvailabilityMap } from './availabilityMap'
 import {
-  defaultDefinitions,
+  defaultCsmDefinitions,
+  defaultCsmMainDefinitions,
   defaultFragDefinitions,
   defaultFragMain,
   defaultVertDefinitions,
   defaultVertMain,
 } from './shaders'
-import {
-  iCSMPatchMap,
-  iCSMInternals,
-  iCSMParams,
-  iCSMShader,
-  iCSMUpdateParams,
-  MaterialConstructor,
-  Uniform,
-} from './types'
-import { defaultAvailabilityMap } from './availabilityMap'
+import { MaterialConstructor, Uniform, iCSMInternals, iCSMParams, iCSMPatchMap, iCSMUpdateParams } from './types'
 
 const replaceAll = (str: string, find: string, rep: string) => str.split(find).join(rep)
 const escapeRegExpMatch = function (s: string) {
@@ -63,9 +50,9 @@ function copyObject(target: any, source: any, silent = false) {
     .forEach((val) => {
       // If function exists on target, rename it with "base_" prefix
       if (typeof target[val[0]] === 'function') {
-        if (!silent) console.warn(`Function ${val[0]} already exists on CSM, renaming to base_${val[0]}`)
-        const baseName = `base_${val[0]}`
-        target[baseName] = val[1].value.bind(target)
+        if (!silent) {
+          console.warn(`Function ${val[0]} already exists on CSM. Overriding.`)
+        }
         return
       }
 
@@ -250,8 +237,6 @@ export default class CustomShaderMaterial<
   private generateMaterial(fragmentShader: string, vertexShader: string, uniforms: Uniform) {
     // Get parsed shaders. A Parsed shader is a shader with
     // it's `#define`s, function and var definitions and main separated.
-    const parsedFragmentShader = this.parseShader(fragmentShader)
-    const parsedVertexShader = this.parseShader(vertexShader)
     this.uniforms = uniforms || {}
 
     // Set material cache key
@@ -263,14 +248,14 @@ export default class CustomShaderMaterial<
     const customOnBeforeCompile = (shader: THREE.Shader) => {
       try {
         // If Fragment shader is not empty, patch it
-        if (parsedFragmentShader) {
-          const patchedFragmentShader = this.patchShader(parsedFragmentShader, shader.fragmentShader, true)
+        if (fragmentShader) {
+          const patchedFragmentShader = this.patchShader(fragmentShader, shader.fragmentShader, true)
           shader.fragmentShader = this.getMaterialDefine() + patchedFragmentShader
         }
 
         // If Vertex shader is not empty, patch it
-        if (parsedVertexShader) {
-          const patchedVertexShader = this.patchShader(parsedVertexShader, shader.vertexShader)
+        if (vertexShader) {
+          const patchedVertexShader = this.patchShader(vertexShader, shader.vertexShader)
 
           shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShader
           shader.vertexShader = this.getMaterialDefine() + shader.vertexShader
@@ -307,8 +292,8 @@ export default class CustomShaderMaterial<
    * @param isFrag
    * @returns
    */
-  private patchShader(customShader: iCSMShader, shader: string, isFrag?: boolean): string {
-    let patchedShader = shader
+  private patchShader(customShader: string, currentShader: string, isFrag?: boolean): string {
+    let patchedShader = currentShader
 
     // Get the patch map, its a combination of the default patch map and the
     // user defined patch map. The user defined map takes precedence.
@@ -325,7 +310,7 @@ export default class CustomShaderMaterial<
 
         // Only inject keywords that appear in the shader.
         // If the keyword is '*', then inject the patch regardless.
-        if (name === '*' || isExactMatch(customShader.main, name)) {
+        if (name === '*' || isExactMatch(customShader, name)) {
           if (!availableIn || (Array.isArray(availableIn) && availableIn.includes(type)) || availableIn === '*') {
             patchedShader = replaceAll(patchedShader, key, patchMap[name][key])
           } else {
@@ -335,100 +320,68 @@ export default class CustomShaderMaterial<
       })
     })
 
-    // Inject defaults
-    patchedShader = patchedShader.replace(
-      'void main() {',
-      `
-        #ifndef CSM_IS_HEAD_DEFAULTS_DEFINED
-          ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
-          #define CSM_IS_HEAD_DEFAULTS_DEFINED 1
-        #endif
+    // Rename main in customShader to csm__main
+    const csmMainFunctionName = '_csm_main_' + this.__csm.instanceID.replace(/-/g, '_')
+    const renamedCustomShader = customShader.replace(/void\s+main\s*\(\s*\)/g, `void ${csmMainFunctionName}()`)
 
-        ${customShader.header}
-        
-        void main() {
-          #ifndef CSM_IS_DEFAULTS_DEFINED
-            ${defaultDefinitions}
-            #define CSM_IS_DEFAULTS_DEFINED 1
-          #endif
+    const isAlreadyExtendedByCSM = patchedShader.includes('// #_CSM_#')
+
+    if (isAlreadyExtendedByCSM && this.__csm.isAlreadyExtended) {
+      // Inject defaults
+      // If the shader has already been extended by CSM
+      // then we don't need to inject the defaults again.
+      patchedShader = patchedShader.replace(
+        'void main() {',
+        `
+          ${renamedCustomShader}
           
-          #ifndef CSM_IS_MAIN_DEFAULTS_DEFINED
-            ${isFrag ? defaultFragMain : defaultVertMain}
-            #define CSM_IS_MAIN_DEFAULTS_DEFINED 1
-          #endif
+          void main() {
+        `
+      )
 
-          // CSM_START
-      `
-    )
-
-    const needsCustomInjectionOrder = this.__csm.isAlreadyExtended
-    const hasCSMEndMark = patchedShader.includes('// CSM_END')
-
-    if (needsCustomInjectionOrder && hasCSMEndMark) {
-      // If the shader has already been extended, and contains the
-      // CSM_END mark, then inject the custom shader after the CSM_END mark.
-      // This ensures that the last shader in the chain receives all the vars and
-      // values of the previous shaders.
-      // This means that any custom materials would have to have the CSM_END mark
-      // injected beforehand but thats the only way to know where the custom material's
-      // main function ends.
+      // Find the end of the previously injected main call
+      // and add the new main call after it.
       patchedShader = replaceLastOccurrence(
         patchedShader,
-        '// CSM_END',
+        '// #_CSM_#',
         `
-          // CSM_END
-          ${customShader.main}
-          // CSM_END
+          ${csmMainFunctionName}();
+          // #_CSM_#
         `
       )
     } else {
-      // Else inject the custom shader at the start of main
+      // If this is the first time the shader is being extended by CSM
+      // Add the default definitions and main call
       patchedShader = patchedShader.replace(
-        '// CSM_START',
+        'void main() {',
         `
-        // CSM_START
-        ${customShader.main}
-        // CSM_END
-          `
+          #ifndef CSM_IS_HEAD_DEFAULTS_DEFINED
+            ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
+            #define CSM_IS_HEAD_DEFAULTS_DEFINED 1
+          #endif
+  
+          ${defaultCsmDefinitions}
+  
+          ${renamedCustomShader}
+          
+          void main() {
+            #ifndef CSM_IS_DEFAULTS_DEFINED
+              ${defaultCsmMainDefinitions}
+              #define CSM_IS_DEFAULTS_DEFINED 1
+            #endif
+            
+            #ifndef CSM_IS_MAIN_DEFAULTS_DEFINED
+              ${isFrag ? defaultFragMain : defaultVertMain}
+              #define CSM_IS_MAIN_DEFAULTS_DEFINED 1
+            #endif
+
+            ${csmMainFunctionName}();
+            // #_CSM_#
+        `
       )
     }
 
-    patchedShader = customShader.defines + patchedShader
-
     return patchedShader
-  }
-
-  /**
-   * This method is expensive owing to the tokenization and parsing of the shader.
-   *
-   * TODO:
-   * - Replace tokenization with regex
-   *
-   * @param shader
-   * @returns
-   */
-  private parseShader(shader?: string): iCSMShader | undefined {
-    if (!shader) return
-
-    // Strip comments
-    const s = shader.replace(/\/\*\*(.*?)\*\/|\/\/(.*?)\n/gm, '')
-
-    // Tokenize and separate into defines, header and main
-    const tokens = tokenize(s)
-    const funcs = tokenFunctions(tokens)
-    const mainIndex = funcs
-      .map((e: any) => {
-        return e.name
-      })
-      .indexOf('main')
-    const variables = stringify(tokens.slice(0, mainIndex >= 0 ? funcs[mainIndex].outer[0] : undefined))
-    const mainBody = mainIndex >= 0 ? this.getShaderFromIndex(tokens, funcs[mainIndex].body) : ''
-
-    return {
-      defines: '',
-      header: variables,
-      main: mainBody,
-    }
   }
 
   /**
@@ -452,16 +405,6 @@ export default class CustomShaderMaterial<
       default:
         return defaultPatchMap
     }
-  }
-
-  /**
-   * Gets the shader from the tokens. Not meant to be called directly.
-   * @param tokens
-   * @param index
-   * @returns
-   */
-  private getShaderFromIndex(tokens: any, index: number[]) {
-    return stringify(tokens.slice(index[0], index[1]))
   }
 }
 

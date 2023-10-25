@@ -1,13 +1,11 @@
+import { OrbitControls, PerspectiveCamera, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, Sphere, Environment, useTexture } from '@react-three/drei'
-import Lights from './components/Lights'
 import { Perf } from 'r3f-perf'
+import { MeshPhysicalMaterial } from 'three'
 import CSM from 'three-custom-shader-material'
-import { MeshBasicMaterial, MeshDepthMaterial, MeshPhysicalMaterial, MeshStandardMaterial } from 'three'
-import { useMemo } from 'react'
-import { Floor } from './components/Floor'
-import * as THREE from 'three'
 import { ContactShadows } from './ContactShadows'
+import Lights from './components/Lights'
+import React from 'react'
 
 function Thing() {
   const tex = useTexture('/UV_checker_Map_byValle.jpg')
@@ -20,20 +18,8 @@ function Thing() {
         fragmentShader={
           /* glsl */ `
           void main() {
-            csm_Roughness = 0.;
-            csm_DiffuseColor.a = 0.5;
-          }
-        `
-        }
-        transparent
-      />
-      <CSM
-        attach="customDepthMaterial"
-        baseMaterial={MeshDepthMaterial} //
-        fragmentShader={
-          /* glsl */ `
-          void main() {
-            csm_DepthAlpha = 1.;
+            csm_DiffuseColor.rgb = vec3(1.0, 0.0, 1.0);
+            csm_Roughness = 0.0;
           }
         `
         }
