@@ -104,6 +104,8 @@ function Cube() {
 <details>
   <summary>Show Vue (Tresjs) example</summary>
 
+*You need to have installed [Cientos](https://cientos.tresjs.org/) pkg to use this component.*
+
 ```vue
 <script setup>
 import { CustomShaderMaterial } from '@tresjs/cientos'
@@ -280,8 +282,8 @@ const materialBase = ref()
 </template>
 ```
 
-  </details
-
+  </details>
+ 
 ### Gotchas
 
 - When extending already extended material, variables, uniforms, attributes, varyings and functions are **NOT** scoped to the material they are defined in. Thus, you **WILL** get redefinition errors if you do not manually scope these identifiers.
