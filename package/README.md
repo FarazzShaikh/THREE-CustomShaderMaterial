@@ -322,6 +322,10 @@ CSM has a non-negligible startup cost, i.e it does take more milliseconds than a
 
   You can provide your own cache key function via the `cacheKey` prop.
 
+> Note: CSM will only rebuild if the **reference** to the above props change, for example, in React, doing `uniforms={{...}}` means that the uniforms object is unstable, i.e. it is re-created, with a **new** reference every render. Instead, condsider memoizing the uniforms prop `const uniforms = useMemo(() -> ({...}));`. The uniforms object will then have the same refrence on every render. 
+
+> If the uniforms are memoized, changing their value by doing `uniforms.foo.value = ...` will not cause CSM to rebuild, as the refrence of `uniforms` does not change.
+
 ## Development
 
 ```sh
