@@ -26,6 +26,7 @@ function Thing() {
       <CSM
         metalness={1}
         roughness={1}
+        clearcoat={1}
         clearcoatRoughness={roughness}
         color={'#650000'}
         baseMaterial={MeshPhysicalMaterial} //
@@ -49,6 +50,7 @@ function Thing() {
             // csm_ClearcoatNormal = orangePeelFactor * 0.01;
           
             csm_Clearcoat = 1.0;
+            csm_ClearcoatRoughness = 0.5;
           }
         `)}
         transparent

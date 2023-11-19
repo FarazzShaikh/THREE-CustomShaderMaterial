@@ -1,10 +1,10 @@
 import { keywordMap } from './keywordMap'
 
-// Map of defines to their keywords
+// Map of props to their keywords
 // this is because Three only injects some defines
 // if certain properties are set in the material options.
-// We need to add these defines manually if for example
+// We need to enforce these props on the material. For example
 // the user uses csm_Clearcoat but does not set clearcoat on the material.
-export const defineMap = {
-  CSM_USE_CLEARCOAT: [keywordMap.clearcoat, keywordMap.clearcoatNormal, keywordMap.clearcoatRoughness],
+export const requiredPropsMap = {
+  clearcoat: [keywordMap.clearcoat, keywordMap.clearcoatNormal, keywordMap.clearcoatRoughness],
 }

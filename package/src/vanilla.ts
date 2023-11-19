@@ -1,7 +1,13 @@
 import objectHash from 'object-hash'
 import * as THREE from 'three'
 
-import { defaultAvailabilityMap, defaultPatchMap, expansionMaps, keywordMap, shaderMaterial_PatchMap } from './maps'
+import {
+  defaultAvailabilityMap,
+  defaultPatchMap,
+  expansionMaps,
+  requiredPropsMap,
+  shaderMaterial_PatchMap,
+} from './maps'
 import {
   defaultCsmDefinitions,
   defaultCsmMainDefinitions,
@@ -74,6 +80,10 @@ function stripSpaces(str?: string) {
   return str ? str.replace(/\s/g, '') : undefined
 }
 
+function stripComments(str: string) {
+  return str.replace(/\/\*\*(.*?)\*\/|\/\/(.*?)\n/gm, '')
+}
+
 function replaceLastOccurrence(str: string, find: string, rep: string) {
   const index = str.lastIndexOf(find)
   if (index === -1) {
@@ -97,26 +107,6 @@ export default class CustomShaderMaterial<T extends MaterialConstructor> extends
     silent,
     ...opts
   }: iCSMParams<T>) {
-    // Find if the shader includes clearcoatKeywords
-    // if it does we need to set clearcoat to 0
-    // as that makes Three append the USE_CLEARCOAT define
-    const clearcoatKeywords = [keywordMap.clearcoat, keywordMap.clearcoatNormal, keywordMap.clearcoatRoughness]
-    const hasClearcoatKeywords =
-      clearcoatKeywords.some((keyword) => {
-        return (
-          (fragmentShader && isExactMatch(fragmentShader, keyword)) ||
-          (vertexShader && isExactMatch(vertexShader, keyword))
-        )
-      }) &&
-      // @ts-ignore
-      opts.clearcoat === undefined
-
-    if (hasClearcoatKeywords) {
-      Object.assign(opts, {
-        clearcoat: 0.00001,
-      })
-    }
-
     let base: THREE.Material
     if (isConstructor(baseMaterial)) {
       // If base material is a constructor, instantiate it
@@ -271,13 +261,13 @@ export default class CustomShaderMaterial<T extends MaterialConstructor> extends
 
         // If Fragment shader is not empty, patch it
         if (fragmentShader) {
-          const patchedFragmentShader = this._patchShader(fragmentShader, shader.fragmentShader, true)
+          const patchedFragmentShader = this._patchShader(stripComments(fragmentShader), shader.fragmentShader, true)
           shader.fragmentShader = materialDefine + patchedFragmentShader
         }
 
         // If Vertex shader is not empty, patch it
         if (vertexShader) {
-          const patchedVertexShader = this._patchShader(vertexShader, shader.vertexShader)
+          const patchedVertexShader = this._patchShader(stripComments(vertexShader), shader.vertexShader)
 
           shader.vertexShader = '#define IS_VERTEX;\n' + patchedVertexShader
           shader.vertexShader = materialDefine + shader.vertexShader
@@ -324,6 +314,17 @@ export default class CustomShaderMaterial<T extends MaterialConstructor> extends
       ...this.__csm.patchMap,
     }
 
+    // Enforce requiredPropsMap
+    Object.entries(requiredPropsMap).forEach(([prop, keywords]) => {
+      const key = keywords.find((keyword) => isExactMatch(customShader, keyword))
+      if (key) {
+        // @ts-ignore
+        if (!this[prop]) {
+          throw new Error(`CSM: Property "${prop}" is required to use output "${key}". Shader cannot compile.`)
+        }
+      }
+    })
+
     // Apply expansion maps as some substitutions require 2 replacements within
     // one include, which is not possible without expanding the includes.
     Object.entries(expansionMaps).forEach(([key, value]) => {
@@ -349,64 +350,67 @@ export default class CustomShaderMaterial<T extends MaterialConstructor> extends
     })
 
     // Rename main in customShader to csm__main
-    const csmMainFunctionName = '_csm_main_' + this.__csm.instanceID.replace(/-/g, '_')
+    const csmMainFunctionName = 'csm_main_' + this.__csm.instanceID.replace(/-/g, '_')
     const renamedCustomShader = customShader.replace(/void\s+main\s*\(\s*\)/g, `void ${csmMainFunctionName}()`)
+    const hasMain = customShader.includes('void main()')
 
     const isAlreadyExtendedByCSM = patchedShader.includes('// #_CSM_#')
 
-    if (isAlreadyExtendedByCSM && this.__csm.isAlreadyExtended) {
-      // Inject defaults
-      // If the shader has already been extended by CSM
-      // then we don't need to inject the defaults again.
-      patchedShader = patchedShader.replace(
-        'void main() {',
-        `
-          ${renamedCustomShader}
-          
-          void main() {
-        `
-      )
-
-      // Find the end of the previously injected main call
-      // and add the new main call after it.
-      patchedShader = replaceLastOccurrence(
-        patchedShader,
-        '// #_CSM_#',
-        `
-          ${csmMainFunctionName}();
-          // #_CSM_#
-        `
-      )
-    } else {
-      // If this is the first time the shader is being extended by CSM
-      // Add the default definitions and main call
-      patchedShader = patchedShader.replace(
-        'void main() {',
-        `
-          #ifndef CSM_IS_HEAD_DEFAULTS_DEFINED
-            ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
-            #define CSM_IS_HEAD_DEFAULTS_DEFINED 1
-          #endif
-  
-          ${defaultCsmDefinitions}
-  
-          ${renamedCustomShader}
-          
-          void main() {
-            #ifndef CSM_IS_DEFAULTS_DEFINED
-              ${defaultCsmMainDefinitions}
-              #define CSM_IS_DEFAULTS_DEFINED 1
-            #endif
+    if (hasMain) {
+      if (isAlreadyExtendedByCSM && this.__csm.isAlreadyExtended) {
+        // Inject defaults
+        // If the shader has already been extended by CSM
+        // then we don't need to inject the defaults again.
+        patchedShader = patchedShader.replace(
+          'void main() {',
+          `
+            ${renamedCustomShader}
             
-            #ifndef CSM_IS_MAIN_DEFAULTS_DEFINED
-              ${isFrag ? defaultFragMain : defaultVertMain}
-              #define CSM_IS_MAIN_DEFAULTS_DEFINED 1
-            #endif
+            void main() {
+          `
+        )
 
+        // Find the end of the previously injected main call
+        // and add the new main call after it.
+        patchedShader = replaceLastOccurrence(
+          patchedShader,
+          '// #_CSM_#',
+          `
             ${csmMainFunctionName}();
             // #_CSM_#
-        `
-      )
+          `
+        )
+      } else {
+        // If this is the first time the shader is being extended by CSM
+        // Add the default definitions and main call
+        patchedShader = patchedShader.replace(
+          'void main() {',
+          `
+            #ifndef CSM_IS_HEAD_DEFAULTS_DEFINED
+              ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
+              #define CSM_IS_HEAD_DEFAULTS_DEFINED 1
+            #endif
+    
+            ${defaultCsmDefinitions}
+    
+            ${renamedCustomShader}
+            
+            void main() {
+              #ifndef CSM_IS_DEFAULTS_DEFINED
+                ${defaultCsmMainDefinitions}
+                #define CSM_IS_DEFAULTS_DEFINED 1
+              #endif
+              
+              #ifndef CSM_IS_MAIN_DEFAULTS_DEFINED
+                ${isFrag ? defaultFragMain : defaultVertMain}
+                #define CSM_IS_MAIN_DEFAULTS_DEFINED 1
+              #endif
+  
+              ${csmMainFunctionName}();
+              // #_CSM_#
+          `
+        )
+      }
     }
 
     return patchedShader
