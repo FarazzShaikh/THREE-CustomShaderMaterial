@@ -101,6 +101,31 @@ function Cube() {
 ```
 
 </details>
+<details>
+  <summary>Show Vue (Tresjs) example</summary>
+
+*You need to have installed [Cientos](https://cientos.tresjs.org/) pkg to use this component.*
+
+```vue
+<script setup>
+import { CustomShaderMaterial } from '@tresjs/cientos'
+
+</script>
+<template>
+  <TresMesh>
+    <TresTorusKnotGeometry :args="[1, 0.3, 512, 32]" />
+    <CustomShaderMaterial
+      :baseMaterial="THREE.MeshPhysicalMaterial"
+      :vertexShader="yourGLSLVertex"
+      :fragmentShader="yourGLSLFragment"
+      :uniforms="yourUniforms"
+      silent
+    />
+  </TresMesh>
+</template>
+```
+
+</details>
 
 ## Installation
 
@@ -223,6 +248,43 @@ function Cube() {
 
 </details>
 
+<details >
+  <summary>Show Vue (Tresjs) example</summary>
+
+```vue
+<script setup>
+import {ref } from 'vue'
+import { CustomShaderMaterial } from '@tresjs/cientos'
+
+const materialBase = ref()
+</script>
+
+<template>
+  <TresMesh>
+    <TresTorusKnotGeometry :args="[1, 0.3, 512, 32]" />
+    <CustomShaderMaterial
+        ref="materialBase"
+        :baseMaterial="THREE.MeshPhysicalMaterial"
+        :vertexShader="yourGLSLVertex"
+        :fragmentShader="yourGLSLFragment"
+        :uniforms="yourUniforms"
+        silent
+        />
+  </TresMesh>
+
+  <TresMesh v-if="materialBase">
+    <TresSphereGeometry :args="[0.5, 16, 16]" />
+    <CustomShaderMaterial
+      :base-material="new CustomShaderMaterialImpl({
+        baseMaterial: materialBase.value,
+      })"
+    />
+  </TresMesh>
+</template>
+```
+
+  </details>
+ 
 ### Gotchas
 
 - When extending already extended material, variables, uniforms, attributes, varyings and functions are **NOT** scoped to the material they are defined in. Thus, you **WILL** get redefinition errors if you do not manually scope these identifiers.
@@ -260,6 +322,10 @@ CSM has a non-negligible startup cost, i.e it does take more milliseconds than a
   ```
 
   You can provide your own cache key function via the `cacheKey` prop.
+
+> Note: CSM will only rebuild if the **reference** to the above props change, for example, in React, doing `uniforms={{...}}` means that the uniforms object is unstable, i.e. it is re-created, with a **new** reference every render. Instead, condsider memoizing the uniforms prop `const uniforms = useMemo(() -> ({...}));`. The uniforms object will then have the same refrence on every render. 
+
+> If the uniforms are memoized, changing their value by doing `uniforms.foo.value = ...` will not cause CSM to rebuild, as the refrence of `uniforms` does not change.
 
 ## Development
 
