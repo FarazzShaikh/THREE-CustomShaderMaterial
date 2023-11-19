@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.5.0
+
+- **[BREAKING]**: Your shader code is now scoped!
+  - Now you will not have token redefinition errors within your shader when using tokens already used by Three. For example `mvPosition`.
+  - Please note that attributes, uniforms and varying cannot be scoped and will still cause errors if redefined. For example `vUv`
+  - Shader code should not be broken. However, `patchMaps` might be, depending on your implementation. Please open an issue and I may help you fix it.
+- **[BREAKING]**: Made generic type T required for vanilla `CustomShaderMaterial<T>` class.
+
+  - This facilitates better type inference for the base material props in vanilla contexts. React remains unchanged.
+
+- Add `csm_Clearcoat`
+  - Clearcoat factor
+- Add `csm_ClearcoatRoughness`
+  - Clearcoat roughness factor
+- Add `csm_ClearcoatNormal`
+
+  - Perturbation to the fragment normal used for clearcoat shading
+
+- Refactor out string manipulations using `glsl-tokenizer`, `glsl-token-functions` and `glsl-token-string` making recompilation more performant and less error-prone.
+
 ## 5.3.4
 
 - Fix for Three r0.150.2
