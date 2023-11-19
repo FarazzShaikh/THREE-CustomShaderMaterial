@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "dev": "preconstruct dev && yarn workspace debug dev",
+    "dev": "preconstruct dev && yarn workspace waves dev",
     "postinstall": "preconstruct dev && manypkg check",
     "ci": "preconstruct validate && manypkg check && yarn build",
     "release": "chmod +x ./scripts/release.sh && ./scripts/release.sh",

@@ -87,8 +87,13 @@ export const defaultCsmMainDefinitions = /* glsl */ `
         csm_Metalness = metalness;
 
         #if defined IS_MESHPHYSICALMATERIAL
-            csm_Clearcoat = clearcoat;
-            csm_ClearcoatRoughness = clearcoatRoughness;
+            #ifdef USE_CLEARCOAT
+                csm_Clearcoat = clearcoat;
+                csm_ClearcoatRoughness = clearcoatRoughness;
+            #else
+                csm_Clearcoat = 0.0;
+                csm_ClearcoatRoughness = 0.0;
+            #endif
         #endif
     #endif
 

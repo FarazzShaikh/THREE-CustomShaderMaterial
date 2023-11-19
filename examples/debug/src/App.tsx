@@ -7,9 +7,18 @@ import { ContactShadows } from './ContactShadows'
 import Lights from './components/Lights'
 // @ts-ignore
 import { patchShaders } from 'gl-noise/build/glNoise.m'
+import { useControls } from 'leva'
 
 function Thing() {
   const tex = useTexture('/UV_checker_Map_byValle.jpg')
+
+  const { roughness } = useControls({
+    roughness: {
+      value: 0,
+      min: 0,
+      max: 1,
+    },
+  })
 
   return (
     <mesh castShadow position={[0, 2, 0]}>
@@ -17,7 +26,7 @@ function Thing() {
       <CSM
         metalness={1}
         roughness={1}
-        // clearcoatRoughness={1}
+        clearcoatRoughness={roughness}
         color={'#650000'}
         baseMaterial={MeshPhysicalMaterial} //
         vertexShader={
@@ -56,7 +65,7 @@ export default function App() {
       <Thing />
 
       {/* <Floor /> */}
-      <Perf />
+      <Perf position="top-left" />
 
       <Lights />
       <Environment preset="sunset" background />
