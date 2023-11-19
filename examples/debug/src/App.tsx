@@ -1,11 +1,12 @@
-import { OrbitControls, PerspectiveCamera, useTexture } from '@react-three/drei'
+import { Environment, OrbitControls, PerspectiveCamera, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Perf } from 'r3f-perf'
 import { MeshPhysicalMaterial } from 'three'
 import CSM from 'three-custom-shader-material'
 import { ContactShadows } from './ContactShadows'
 import Lights from './components/Lights'
-import React from 'react'
+// @ts-ignore
+import { patchShaders } from 'gl-noise/build/glNoise.m'
 
 function Thing() {
   const tex = useTexture('/UV_checker_Map_byValle.jpg')
@@ -14,15 +15,33 @@ function Thing() {
     <mesh castShadow position={[0, 2, 0]}>
       <sphereGeometry />
       <CSM
+        metalness={1}
+        roughness={1}
+        // clearcoatRoughness={1}
+        color={'#650000'}
         baseMaterial={MeshPhysicalMaterial} //
-        fragmentShader={
+        vertexShader={
           /* glsl */ `
+          varying vec3 csm_vPosition;
+
           void main() {
-            csm_DiffuseColor.rgb = vec3(1.0, 0.0, 1.0);
-            csm_Roughness = 0.0;
+            csm_vPosition = position;
           }
         `
         }
+        fragmentShader={patchShaders(/* glsl */ `
+          varying vec3 csm_vPosition;
+
+          void main() {
+            // float orangePeelFactorX = gln_simplex(csm_vPosition * 1000.0);
+            // float orangePeelFactorY = gln_simplex(csm_vPosition * 1000.0 + 100.0);
+            // float orangePeelFactorZ = gln_simplex(csm_vPosition * 1000.0 + 200.0);
+            // vec3 orangePeelFactor = vec3(orangePeelFactorX, orangePeelFactorY, orangePeelFactorZ);
+            // csm_ClearcoatNormal = orangePeelFactor * 0.01;
+          
+            csm_Clearcoat = 1.0;
+          }
+        `)}
         transparent
       />
     </mesh>
@@ -40,6 +59,7 @@ export default function App() {
       <Perf />
 
       <Lights />
+      <Environment preset="sunset" background />
 
       <ContactShadows />
     </Canvas>

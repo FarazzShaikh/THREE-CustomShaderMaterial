@@ -18,6 +18,12 @@ export const defaultCsmDefinitions = /* glsl */ `
         vec3 csm_Emissive;
         float csm_Roughness;
         float csm_Metalness;
+        
+        #if defined IS_MESHPHYSICALMATERIAL
+            float csm_Clearcoat;
+            float csm_ClearcoatRoughness;
+            vec3 csm_ClearcoatNormal;
+        #endif
     #endif
 
     // csm_AO
@@ -79,6 +85,11 @@ export const defaultCsmMainDefinitions = /* glsl */ `
         csm_Emissive = emissive;
         csm_Roughness = roughness;
         csm_Metalness = metalness;
+
+        #if defined IS_MESHPHYSICALMATERIAL
+            csm_Clearcoat = clearcoat;
+            csm_ClearcoatRoughness = clearcoatRoughness;
+        #endif
     #endif
 
     // csm_AO

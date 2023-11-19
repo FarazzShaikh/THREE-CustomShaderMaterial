@@ -13,4 +13,9 @@ export default {
   ao: 'csm_AO', // AO
   bump: 'csm_Bump', // Bump
   depthAlpha: 'csm_DepthAlpha', // Depth
+
+  // Clearcoat
+  clearcoat: 'csm_Clearcoat', // Clearcoat factor
+  clearcoatRoughness: 'csm_ClearcoatRoughness', // Clearcoat roughness
+  clearcoatNormal: 'csm_ClearcoatNormal', // Clearcoat normals
 }

@@ -76,7 +76,8 @@
     "glsl-token-functions": "^1.0.1",
     "glsl-token-string": "^1.0.1",
     "glsl-tokenizer": "^2.1.5",
-    "object-hash": "^3.0.0"
+    "object-hash": "^3.0.0",
+    "three": "^0.158.0"
   },
   "babel": {
     "presets": [

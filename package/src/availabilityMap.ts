@@ -1,5 +1,7 @@
 import keywords from './keywords'
 
+// Map of CSM keywords to the materials they are available in
+// Some keywords are only available in certain materials
 export const defaultAvailabilityMap = {
   [`${keywords.position}`]: '*',
   [`${keywords.positionRaw}`]: '*',
@@ -29,5 +31,8 @@ export const defaultAvailabilityMap = {
     'MeshToonMaterial',
     'ShadowMaterial',
   ],
-  [`${keywords.depthAlpha}`]: '*',
+  [`${keywords.depthAlpha}`]: ['MeshDepthMaterial'],
+  [`${keywords.clearcoat}`]: ['MeshPhysicalMaterial'],
+  [`${keywords.clearcoatRoughness}`]: ['MeshPhysicalMaterial'],
+  [`${keywords.clearcoatNormal}`]: ['MeshPhysicalMaterial'],
 }

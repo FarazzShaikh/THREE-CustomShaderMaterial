@@ -1,6 +1,7 @@
 import keywords from './keywords'
 import { iCSMPatchMap } from './types'
 
+// Map of CSM keywords to their substitutions
 export const defaultPatchMap: iCSMPatchMap = {
   // VERT
 
@@ -87,6 +88,19 @@ export const defaultPatchMap: iCSMPatchMap = {
     'gl_FragColor = packDepthToRGBA( fragCoordZ );': `
       gl_FragColor = packDepthToRGBA( fragCoordZ );
       gl_FragColor.a *= ${keywords.depthAlpha};
+    `,
+  },
+  [`${keywords.clearcoat}`]: {
+    'material.clearcoat = clearcoat;': `material.clearcoat = ${keywords.clearcoat};`,
+  },
+  [`${keywords.clearcoatRoughness}`]: {
+    'material.clearcoatRoughness = clearcoatRoughness;': `material.clearcoatRoughness = ${keywords.clearcoatRoughness};`,
+  },
+  [`${keywords.clearcoatNormal}`]: {
+    '#include <clearcoat_normal_fragment_begin>': `
+      vec3 csm_coat_internal_orthogonal = csm_ClearcoatNormal - (dot(csm_ClearcoatNormal, nonPerturbedNormal) * nonPerturbedNormal);
+      vec3 csm_coat_internal_projectedbump = mat3(csm_internal_vModelViewMatrix) * csm_coat_internal_orthogonal;
+      vec3 clearcoatNormal = normalize(nonPerturbedNormal - csm_coat_internal_projectedbump);
     `,
   },
 }
