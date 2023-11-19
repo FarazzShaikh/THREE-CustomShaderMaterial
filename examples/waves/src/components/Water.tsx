@@ -1,22 +1,21 @@
-import React, { useMemo, useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useRef } from 'react'
+import * as THREE from 'three'
 import CustomShaderMaterial, { MaterialConstructor } from 'three-custom-shader-material'
 import CustomShaderMaterialType from 'three-custom-shader-material/vanilla'
-import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber'
 
 import * as oceanShader from './shaders'
 // @ts-ignore
 import { patchShaders } from 'gl-noise/build/glNoise.m'
 
-import useWaterControls from './useWaterControls'
 import { useControls } from 'leva'
-import { MeshBasicMaterial, MeshPhysicalMaterial } from 'three'
+import useWaterControls from './useWaterControls'
 
 export default function Water({ base }: { base: MaterialConstructor }) {
   const thickness = 0.2
-  const material = useRef<CustomShaderMaterialType | null>(null)
+  const material = useRef<CustomShaderMaterialType<any> | null>(null)
 
-  useFrame(state => {
+  useFrame((state) => {
     if (material?.current) {
       material.current.uniforms.uTime.value = -state.clock.elapsedTime / 5
     }
