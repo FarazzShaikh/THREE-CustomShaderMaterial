@@ -1,10 +1,7 @@
 import objectHash from 'object-hash'
 import * as THREE from 'three'
-import { defaultPatchMap, shaderMaterial_PatchMap } from './patchMaps'
 
-import { defaultAvailabilityMap } from './availabilityMap'
-import { expansionMaps } from './expansionMaps'
-import keywords from './keywords'
+import { defaultAvailabilityMap, defaultPatchMap, expansionMaps, keywordMap, shaderMaterial_PatchMap } from './maps'
 import {
   defaultCsmDefinitions,
   defaultCsmMainDefinitions,
@@ -86,9 +83,7 @@ function replaceLastOccurrence(str: string, find: string, rep: string) {
   return str.substring(0, index) + rep + str.substring(index + find.length)
 }
 
-export default class CustomShaderMaterial<
-  T extends MaterialConstructor = typeof THREE.Material
-> extends THREE.Material {
+export default class CustomShaderMaterial<T extends MaterialConstructor> extends THREE.Material {
   uniforms: Uniform
   private __csm: iCSMInternals<T>
 
@@ -105,7 +100,7 @@ export default class CustomShaderMaterial<
     // Find if the shader includes clearcoatKeywords
     // if it does we need to set clearcoat to 0
     // as that makes Three append the USE_CLEARCOAT define
-    const clearcoatKeywords = [keywords.clearcoat, keywords.clearcoatNormal, keywords.clearcoatRoughness]
+    const clearcoatKeywords = [keywordMap.clearcoat, keywordMap.clearcoatNormal, keywordMap.clearcoatRoughness]
     const hasClearcoatKeywords =
       clearcoatKeywords.some((keyword) => {
         return (

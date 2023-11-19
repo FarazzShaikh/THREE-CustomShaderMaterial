@@ -1,10 +1,13 @@
-import CSM, { MaterialConstructor, iCSMParams, iCSMPatchMap } from 'three-custom-shader-material/vanilla'
 import * as THREE from 'three'
+import CSM from 'three-custom-shader-material/vanilla'
 
-export class Vanilla extends CSM {
+const base = THREE.MeshPhysicalMaterial
+
+export class Vanilla extends CSM<typeof base> {
   constructor() {
     super({
-      baseMaterial: THREE.MeshPhysicalMaterial,
+      baseMaterial: base,
+      clearcoat: 1,
     })
   }
 }

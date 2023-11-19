@@ -1,26 +1,26 @@
-import keywords from './keywords'
-import { iCSMPatchMap } from './types'
+import { iCSMPatchMap } from '../types'
+import { keywordMap } from './keywordMap'
 
 // Map of CSM keywords to their substitutions
 export const defaultPatchMap: iCSMPatchMap = {
   // VERT
 
-  [`${keywords.normal}`]: {
+  [`${keywordMap.normal}`]: {
     '#include <beginnormal_vertex>': `
-    vec3 objectNormal = ${keywords.normal};
+    vec3 objectNormal = ${keywordMap.normal};
     #ifdef USE_TANGENT
 	    vec3 objectTangent = vec3( tangent.xyz );
     #endif
     `,
   },
-  [`${keywords.position}`]: {
+  [`${keywordMap.position}`]: {
     '#include <begin_vertex>': `
-    vec3 transformed = ${keywords.position};
+    vec3 transformed = ${keywordMap.position};
   `,
   },
-  [`${keywords.positionRaw}`]: {
+  [`${keywordMap.positionRaw}`]: {
     '#include <begin_vertex>': `
-    vec4 csm_internal_positionUnprojected = ${keywords.positionRaw};
+    vec4 csm_internal_positionUnprojected = ${keywordMap.positionRaw};
     mat4x4 csm_internal_unprojectMatrix = projectionMatrix * modelViewMatrix;
     #ifdef USE_INSTANCING
       csm_internal_unprojectMatrix = csm_internal_unprojectMatrix * instanceMatrix;
@@ -29,74 +29,74 @@ export const defaultPatchMap: iCSMPatchMap = {
     vec3 transformed = csm_internal_positionUnprojected.xyz;
   `,
   },
-  [`${keywords.pointSize}`]: {
+  [`${keywordMap.pointSize}`]: {
     'gl_PointSize = size;': `
-    gl_PointSize = ${keywords.pointSize};
+    gl_PointSize = ${keywordMap.pointSize};
     `,
   },
 
   // FRAG
 
-  [`${keywords.diffuseColor}`]: {
+  [`${keywordMap.diffuse}`]: {
     '#include <color_fragment>': `
     #include <color_fragment>
-    diffuseColor = ${keywords.diffuseColor};
+    diffuseColor = ${keywordMap.diffuse};
   `,
   },
-  [`${keywords.fragColor}`]: {
+  [`${keywordMap.fragColor}`]: {
     '#include <dithering_fragment>': `
     #include <dithering_fragment>
-    gl_FragColor  = ${keywords.fragColor};
+    gl_FragColor  = ${keywordMap.fragColor};
   `,
   },
-  [`${keywords.emissive}`]: {
+  [`${keywordMap.emissive}`]: {
     'vec3 totalEmissiveRadiance = emissive;': `
-    vec3 totalEmissiveRadiance = ${keywords.emissive};
+    vec3 totalEmissiveRadiance = ${keywordMap.emissive};
     `,
   },
-  [`${keywords.roughness}`]: {
+  [`${keywordMap.roughness}`]: {
     '#include <roughnessmap_fragment>': `
     #include <roughnessmap_fragment>
-    roughnessFactor = ${keywords.roughness};
+    roughnessFactor = ${keywordMap.roughness};
     `,
   },
-  [`${keywords.metalness}`]: {
+  [`${keywordMap.metalness}`]: {
     '#include <metalnessmap_fragment>': `
     #include <metalnessmap_fragment>
-    metalnessFactor = ${keywords.metalness};
+    metalnessFactor = ${keywordMap.metalness};
     `,
   },
-  [`${keywords.ao}`]: {
+  [`${keywordMap.ao}`]: {
     '#include <aomap_fragment>': `
     #include <aomap_fragment>
-    reflectedLight.indirectDiffuse *= 1. - ${keywords.ao};
+    reflectedLight.indirectDiffuse *= 1. - ${keywordMap.ao};
     `,
   },
-  [`${keywords.bump}`]: {
+  [`${keywordMap.bump}`]: {
     '#include <normal_fragment_maps>': `
     #include <normal_fragment_maps>
 
-    vec3 csm_internal_orthogonal = ${keywords.bump} - (dot(${keywords.bump}, normal) * normal);
+    vec3 csm_internal_orthogonal = ${keywordMap.bump} - (dot(${keywordMap.bump}, normal) * normal);
     vec3 csm_internal_projectedbump = mat3(csm_internal_vModelViewMatrix) * csm_internal_orthogonal;
     normal = normalize(normal - csm_internal_projectedbump);
     `,
   },
-  [`${keywords.depthAlpha}`]: {
+  [`${keywordMap.depthAlpha}`]: {
     'gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );': `
-      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${keywords.depthAlpha} );
+      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${keywordMap.depthAlpha} );
     `,
     'gl_FragColor = packDepthToRGBA( fragCoordZ );': `
       gl_FragColor = packDepthToRGBA( fragCoordZ );
-      gl_FragColor.a *= ${keywords.depthAlpha};
+      gl_FragColor.a *= ${keywordMap.depthAlpha};
     `,
   },
-  [`${keywords.clearcoat}`]: {
-    'material.clearcoat = clearcoat;': `material.clearcoat = ${keywords.clearcoat};`,
+  [`${keywordMap.clearcoat}`]: {
+    'material.clearcoat = clearcoat;': `material.clearcoat = ${keywordMap.clearcoat};`,
   },
-  [`${keywords.clearcoatRoughness}`]: {
-    'material.clearcoatRoughness = clearcoatRoughness;': `material.clearcoatRoughness = ${keywords.clearcoatRoughness};`,
+  [`${keywordMap.clearcoatRoughness}`]: {
+    'material.clearcoatRoughness = clearcoatRoughness;': `material.clearcoatRoughness = ${keywordMap.clearcoatRoughness};`,
   },
-  [`${keywords.clearcoatNormal}`]: {
+  [`${keywordMap.clearcoatNormal}`]: {
     '#include <clearcoat_normal_fragment_begin>': `
       vec3 csm_coat_internal_orthogonal = csm_ClearcoatNormal - (dot(csm_ClearcoatNormal, nonPerturbedNormal) * nonPerturbedNormal);
       vec3 csm_coat_internal_projectedbump = mat3(csm_internal_vModelViewMatrix) * csm_coat_internal_orthogonal;
@@ -107,26 +107,26 @@ export const defaultPatchMap: iCSMPatchMap = {
 
 export const shaderMaterial_PatchMap: iCSMPatchMap = {
   // VERT
-  [`${keywords.position}`]: {
+  [`${keywordMap.position}`]: {
     'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );': `
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( ${keywords.position}, 1.0 );
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( ${keywordMap.position}, 1.0 );
   `,
   },
-  [`${keywords.positionRaw}`]: {
+  [`${keywordMap.positionRaw}`]: {
     'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );': `
-    gl_Position = ${keywords.position};
+    gl_Position = ${keywordMap.position};
   `,
   },
 
   // FRAG
-  [`${keywords.diffuseColor}`]: {
+  [`${keywordMap.diffuse}`]: {
     'gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );': `
-    gl_FragColor = ${keywords.diffuseColor};
+    gl_FragColor = ${keywordMap.diffuse};
   `,
   },
-  [`${keywords.fragColor}`]: {
+  [`${keywordMap.fragColor}`]: {
     'gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );': `
-    gl_FragColor = ${keywords.fragColor};
+    gl_FragColor = ${keywordMap.fragColor};
   `,
   },
 }
