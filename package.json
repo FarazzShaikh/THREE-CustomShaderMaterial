@@ -10,6 +10,9 @@
   "workspaces": [
     "example"
   ],
+  "main": "dist/entry/cjs/react.cjs",
+  "module": "dist/entry/es/react.js",
+  "types": "dist/React/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/entry/es/react.js",
