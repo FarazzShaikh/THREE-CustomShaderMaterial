@@ -1,0 +1,31 @@
+.code-editor {
+  height: 90%;
+  width: 100%;
+  overflow: scroll !important;
+
+  font-size: 1rem;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Consolas, Liberation Mono,
+    Menlo, monospace;
+
+  /* Dark gradient on right and bottom edge to indicate scroll */
+}
+
+.code-editor .token.punctuation {
+  color: white !important;
+}
+
+/* make thin scroll bar */
+.code-editor::-webkit-scrollbar {
+  width: 5px;
+}
+.code-editor::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.code-editor::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.code-editor::-webkit-scrollbar-track {
+  background: #555;
+}

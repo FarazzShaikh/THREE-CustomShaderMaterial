@@ -1,36 +1,60 @@
 {
-  "name": "three-custom-shader-material-monorepo",
+  "name": "three-custom-shader-material",
   "private": true,
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Faraz Shaikh <farazzshaikh@gmail.com>",
-  "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "package",
-      "examples/*"
-    ]
-  },
-  "preconstruct": {
-    "packages": [
-      "package"
-    ]
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "example"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/entry/es/react.js",
+      "require": "./dist/entry/cjs/react.cjs",
+      "types": "./dist/React/index.d.ts"
+    },
+    "./vanilla": {
+      "import": "./dist/entry/es/vanilla.js",
+      "require": "./dist/entry/cjs/vanilla.cjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
-    "build": "preconstruct build",
-    "dev": "preconstruct dev && yarn workspace clearcoat dev",
-    "postinstall": "preconstruct dev && manypkg check",
-    "ci": "preconstruct validate && manypkg check && yarn build",
-    "release": "chmod +x ./scripts/release.sh && ./scripts/release.sh",
-    "clean": "rm -rf node_modules package/dist examples/*/node_modules",
-    "update": "./scripts/updateAll.sh"
+    "dev": "yarn workspace example dev",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
-  "dependencies": {
-    "@changesets/cli": "^2.24.3",
-    "@manypkg/cli": "^0.19.1",
-    "@preconstruct/cli": "^2.1.5"
+  "devDependencies": {
+    "@react-three/fiber": "^8.16.1",
+    "@types/node": "^20.12.2",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/three": "^0.163.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.163.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vite-plugin-dts": "^3.8.1"
   },
-  "stackblitz": {
-    "startCommand": "cd examples/waves && yarn start"
-  }
+  "peerDependencies": {
+    "@react-three/fiber": ">=8.0",
+    "react": ">=18.0",
+    "three": ">=0.163"
+  },
+  "peerDependenciesMeta": {
+    "@react-three/fiber": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "dependencies": {}
 }
