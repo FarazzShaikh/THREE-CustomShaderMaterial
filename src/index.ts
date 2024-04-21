@@ -122,6 +122,8 @@ export default class CustomShaderMaterial<
       prevShader = prevShader.replace(
         "void main() {",
         `
+        // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
+
         ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
         ${defaultCsmDefinitions}
 

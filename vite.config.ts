@@ -1,7 +1,20 @@
 import react from "@vitejs/plugin-react";
+import fs from "fs/promises";
 import path from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+
+/**
+ * Copies LICENSE.md to the dist folder
+ */
+function copyLicensePlugin() {
+  return {
+    name: "copy-license",
+    closeBundle: async () => {
+      await fs.copyFile("LICENSE.md", "dist/LICENSE.md");
+    },
+  };
+}
 
 export default defineConfig({
   build: {
@@ -28,5 +41,5 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
   },
-  plugins: [react(), dts()],
+  plugins: [react(), dts(), copyLicensePlugin()],
 });
