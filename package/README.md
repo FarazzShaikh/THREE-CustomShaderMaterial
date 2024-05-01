@@ -167,14 +167,14 @@ You can define any custom overrides you'd like using the `patchMap` prop. The pr
 const material = new CustomShaderMaterial({
    baseMaterial: THREE.MeshPhysicalMaterial,
    vertexShader: ` ... `,
-   fragmentShader: ... `,
+   fragmentShader: ` ... `,
    uniforms: {...},
-   patchMap={{
+   patchMap={
       "<KEYWORD>": {        // The keyword you will assign to in your custom shader
         "TO_REPLACE":       // The chunk you'd like to replace.
-          "REPLACED_WITH"   // The chunk you'd like put in place of `TO_REPLACE`
+          "REPLACED_WITH"   // The chunk you'd like to put in place of `TO_REPLACE`
       }
-   }}
+   }
 })
 ```
 
