@@ -83,7 +83,7 @@ declare global {
   }
 }
 
-class MeshTransmissionMaterialImpl extends THREE.MeshPhysicalMaterial {
+export class MeshTransmissionMaterialImpl extends THREE.MeshPhysicalMaterial {
   uniforms: {
     chromaticAberration: Uniform<number>;
     transmission: Uniform<number>;

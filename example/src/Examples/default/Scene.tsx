@@ -1,10 +1,57 @@
 import { OrbitControls, Sphere } from "@react-three/drei";
-import * as THREE from "three";
 
 import { useControls } from "leva";
-import CSM from "three-custom-shader-material";
+import { useMemo } from "react";
+import { MeshPhysicalMaterial } from "three";
+import CSM from "three-custom-shader-material/vanilla";
 import { useShader } from "../../pages/Root";
 import { Stage } from "./Stage";
+
+class PreviousCSM extends CSM {
+  constructor() {
+    super({
+      baseMaterial: MeshPhysicalMaterial,
+      vertexShader: /* glsl */ `
+        varying vec2 vUv1;
+
+        void main() {
+          vUv1 = uv;
+        }`,
+      fragmentShader: /* glsl */ `
+        varying vec2 vUv1;
+
+        void main() {
+          csm_DiffuseColor = vec4(vUv1, 0.0, 1.0);
+        }`,
+    });
+  }
+}
+
+class CustomMaterial extends CSM {
+  constructor() {
+    super({
+      baseMaterial: PreviousCSM,
+      vertexShader: /* glsl */ `
+        varying vec2 vUv;
+
+        void main() {
+          vUv = uv;
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        varying vec2 vUv;
+
+        void func1() {
+          csm_DiffuseColor *= 2.0;
+        }
+
+        void main() {
+          func1();
+        }
+      `,
+    });
+  }
+}
 
 export function Scene() {
   const { vs, fs } = useShader();
@@ -19,6 +66,8 @@ export function Scene() {
       label: "Flat Shading",
     },
   });
+
+  const mat = useMemo(() => new CustomMaterial(), []);
 
   return (
     <>
@@ -41,18 +90,7 @@ export function Scene() {
           radius: 3,
         }}
       >
-        <Sphere castShadow args={[1, 32, 32]}>
-          <CSM
-            baseMaterial={THREE.MeshPhysicalMaterial}
-            vertexShader={vs}
-            fragmentShader={fs}
-            transmission={1}
-            roughness={0.2}
-            color={color}
-            flatShading={flatShading}
-            thickness={2}
-          />
-        </Sphere>
+        <Sphere castShadow args={[1, 32, 32]} material={mat}></Sphere>
       </Stage>
     </>
   );

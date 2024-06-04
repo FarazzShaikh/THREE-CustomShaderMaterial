@@ -27,7 +27,6 @@ export type CustomShaderMaterialBaseParameters<T extends MaterialConstructor> =
     uniforms?: Uniform;
     patchMap?: CSMPatchMap;
     cacheKey?: () => string;
-    globals?: string;
   };
 
 export type CustomShaderMaterialParameters<T extends MaterialConstructor> =
@@ -35,12 +34,14 @@ export type CustomShaderMaterialParameters<T extends MaterialConstructor> =
     (MaterialParams<T> extends undefined ? any : MaterialParams<T>);
 
 export type CSMProxy<T extends MaterialConstructor> = InstanceType<T> & {
-  update: (
-    opts: Omit<CustomShaderMaterialBaseParameters<T>, "baseMaterial">
-  ) => void;
+  vertexShader: string;
+  fragmentShader: string;
   uniforms: Uniform;
   __csm: {
     baseMaterial: THREE.Material;
     patchMap?: CSMPatchMap;
   };
+  update: (
+    opts: Omit<CustomShaderMaterialBaseParameters<T>, "baseMaterial">
+  ) => void;
 };

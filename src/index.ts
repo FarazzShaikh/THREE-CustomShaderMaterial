@@ -7,16 +7,23 @@ import {
   defaultVertDefinitions,
   defaultVertMain,
 } from "./defaults";
-import hash from "./fnv1a";
 import { availabilityMap, defaultPatchMap } from "./maps";
 import { requiredPropsMap } from "./maps/requiredPropsMap";
+import hash from "./sdbm";
 import * as TYPES from "./types";
-import { deepMergeObjects, isConstructor, stripComments } from "./utils";
+import {
+  deepMergeObjects,
+  isConstructor,
+  isEmptyFunction,
+  stripComments,
+} from "./utils";
 
 export default class CustomShaderMaterial<
   T extends TYPES.MaterialConstructor = typeof THREE.Material
 > extends THREE.Material {
   uniforms: TYPES.Uniform = {};
+  vertexShader: string = "";
+  fragmentShader: string = "";
 
   constructor({
     baseMaterial,
@@ -25,9 +32,12 @@ export default class CustomShaderMaterial<
     uniforms,
     patchMap,
     cacheKey,
-    globals,
     ...opts
   }: TYPES.CustomShaderMaterialParameters<T>) {
+    if (!baseMaterial) {
+      throw new Error("CustomShaderMaterial: baseMaterial is required.");
+    }
+
     let base: THREE.Material;
     if (isConstructor(baseMaterial)) {
       // If base material is a constructor, instantiate it
@@ -35,12 +45,13 @@ export default class CustomShaderMaterial<
       const isEmptyOpts = Object.keys(opts).length === 0;
       base = new baseMaterial(isEmptyOpts ? undefined : opts);
     } else {
-      // Else, copy options onto base material and use the already create
-      // instance as the base material
+      // Else, use the already created instance as the base material
+      // and copy options onto it
       base = baseMaterial;
       Object.assign(base, opts);
     }
 
+    // Blacklist some materials that are not supported
     const blackList = ["ShaderMaterial", "RawShaderMaterial"];
     if (blackList.includes(base.type)) {
       throw new Error(
@@ -49,19 +60,22 @@ export default class CustomShaderMaterial<
     }
 
     super();
-    console.log("NEW");
 
+    // Return a proxy to the base material with CSM types and methods
     const extendedBase = base as typeof base & TYPES.CSMProxy<T>;
+    extendedBase.name = `CustomShaderMaterial<${base.name}>`;
     extendedBase.update = this.update.bind(extendedBase);
     extendedBase.uniforms = this.uniforms = uniforms || {};
-    extendedBase.__csm = { baseMaterial: base, patchMap };
+    extendedBase.vertexShader = this.vertexShader = vertexShader || "";
+    extendedBase.fragmentShader = this.fragmentShader = fragmentShader || "";
+
+    // Initialize custom shaders
     extendedBase.update({
       fragmentShader,
       vertexShader,
       uniforms,
       patchMap,
       cacheKey,
-      globals,
     });
 
     return extendedBase;
@@ -72,19 +86,22 @@ export default class CustomShaderMaterial<
     vertexShader: _vs,
     uniforms,
     cacheKey,
-    globals,
     patchMap,
   }: Omit<TYPES.CustomShaderMaterialBaseParameters<T>, "baseMaterial">) {
-    console.log("UPDATE");
-
+    // Strip comments from shaders, makes it so that commented keywords are not detected
     const vertexShader = stripComments(_vs || "");
     const fragmentShader = stripComments(_fs || "");
 
+    // Get typed `this` for the proxy
     const self = this as typeof this & TYPES.CSMProxy<T>;
-    if (uniforms) {
-      self.uniforms = uniforms;
-    }
 
+    // Replace the shaders if they are provided
+    if (uniforms) self.uniforms = uniforms;
+    if (_vs) self.vertexShader = _vs;
+    if (_fs) self.fragmentShader = _fs;
+
+    // Some keywords require certain properties to be set for their chunks to be included via #ifdef
+    // so we must check if the shaders contain these keywords and set the properties accordingly
     Object.entries(requiredPropsMap).forEach(([prop, matchKeywords]) => {
       for (const keyword in matchKeywords) {
         const matchKeyword = matchKeywords[keyword];
@@ -101,54 +118,93 @@ export default class CustomShaderMaterial<
       }
     });
 
+    // Check it the previous onBeforeCompile exists
+    const prevOnBeforeCompile = self.onBeforeCompile;
+    const doesHavePreviousBeforeCompile = !isEmptyFunction(prevOnBeforeCompile);
+
+    // Helper function to extend the shader
     const extendShader = (
       prevShader: string,
       newShader?: string,
       isFrag?: boolean
     ) => {
-      let mainBody,
-        beforeMain = "";
+      let mainBody: string | undefined;
+      let beforeMain: string = "";
 
+      // Prepare the main body and beforeMain
       if (newShader) {
         const mainBodyRegex =
           /void\s+main\s*\(\s*\)[^{]*{((?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*})*})*})/gm;
         const mainBodyMatches = newShader.matchAll(mainBodyRegex);
         mainBody = mainBodyMatches.next().value?.[1];
+        if (mainBody) mainBody = mainBody.slice(0, -1);
 
         const mainIndex = newShader.indexOf("void main() {");
         beforeMain = newShader.slice(0, mainIndex);
       }
 
-      prevShader = prevShader.replace(
-        "void main() {",
-        `
-        // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
+      // Inject
+      if (doesHavePreviousBeforeCompile) {
+        prevShader = prevShader.replace(
+          "void main() {",
+          `
+          // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
+  
+          ${beforeMain}
+          
+          void main() {
+          `
+        );
 
-        ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
-        ${defaultCsmDefinitions}
+        const lastMainEndIndex = prevShader.lastIndexOf("//~CSM_MAIN_END");
 
-        ${beforeMain}
-        
-        void main() {
-          ${defaultCsmMainDefinitions}
-          ${isFrag ? defaultFragMain : defaultVertMain}
+        if (lastMainEndIndex !== -1) {
+          const toAppend = `
+            ${mainBody ? `${mainBody}` : ""}
+            //~CSM_MAIN_END
+          `;
+          prevShader =
+            prevShader.slice(0, lastMainEndIndex) +
+            toAppend +
+            prevShader.slice(lastMainEndIndex);
+        }
+      } else {
+        prevShader = prevShader.replace(
+          "void main() {",
+          `
+          // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
+  
+          ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
+          ${defaultCsmDefinitions}
+  
+          ${beforeMain}
+          
+          void main() {
+            ${defaultCsmMainDefinitions}
+            ${isFrag ? defaultFragMain : defaultVertMain}
 
-          ${globals ? globals : ""}
-          ${mainBody ? `{${mainBody}` : ""}
-        `
-      );
+            ${mainBody ? `${mainBody}` : ""}
+            //~CSM_MAIN_END
+          `
+        );
+      }
 
       return prevShader;
     };
 
+    // Override onBeforeCompile
     self.onBeforeCompile = (
       shader: THREE.WebGLProgramParametersWithUniforms,
       renderer: THREE.WebGLRenderer
     ) => {
+      // Apply previous onBeforeCompile
+      prevOnBeforeCompile?.(shader, renderer);
+
       const userPatchMap = patchMap || {};
       const mergedPatchMap = deepMergeObjects(defaultPatchMap, userPatchMap);
 
-      const type = self.__csm.baseMaterial.type;
+      // Append some defines
+      const type = self.type;
       const typeDefine = type
         ? `#define IS_${type.toUpperCase()};\n`
         : `#define IS_UNKNOWN;\n`;
@@ -157,6 +213,7 @@ export default class CustomShaderMaterial<
       shader.fragmentShader =
         typeDefine + "#define IS_FRAGMENT\n" + shader.fragmentShader;
 
+      // Check if the keyword is available in the current material type
       for (const keyword in mergedPatchMap) {
         const doesIncludeInVert =
           keyword === "*" || (vertexShader && vertexShader.includes(keyword));
@@ -213,6 +270,7 @@ export default class CustomShaderMaterial<
         }
       }
 
+      // Extend the shaders
       shader.vertexShader = extendShader(
         shader.vertexShader,
         vertexShader,
@@ -232,13 +290,16 @@ export default class CustomShaderMaterial<
       self.uniforms = shader.uniforms;
     };
 
-    this.customProgramCacheKey = () => {
+    const prevCacheKey = self.customProgramCacheKey;
+
+    self.customProgramCacheKey = () => {
       return (
-        cacheKey?.() || hash((vertexShader || "") + (fragmentShader || ""))
+        (cacheKey?.() || hash((vertexShader || "") + (fragmentShader || ""))) +
+        prevCacheKey?.call(self)
       );
     };
 
-    this.needsUpdate = true;
+    self.needsUpdate = true;
   }
 }
 
