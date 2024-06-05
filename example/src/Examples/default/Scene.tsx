@@ -55,24 +55,40 @@ class CustomMaterial extends CSM {
         uCsmColor: { value: new Color("#ff00ff") },
       },
     });
+
+    Object.defineProperties(this, {
+      uniformColor: {
+        get: () => {
+          return this.uniforms.uCsmColor.value.getHex();
+        },
+        set: (v: string) => {
+          this.uniforms.uCsmColor.value.set(v);
+        },
+      },
+    });
   }
+
+  declare uniformColor: string;
 }
 
 export function Scene() {
   const { vs, fs } = useShader();
 
-  const { color, flatShading } = useControls({
+  const mat = useMemo(() => new CustomMaterial(), []);
+
+  const { flatShading } = useControls({
     color: {
       value: "#ff0000",
       label: "Color",
+      onChange: (v: string) => {
+        mat.uniformColor = v;
+      },
     },
     flatShading: {
       value: false,
       label: "Flat Shading",
     },
   });
-
-  const mat = useMemo(() => new CustomMaterial(), []);
 
   return (
     <>

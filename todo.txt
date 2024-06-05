@@ -1,3 +1,0 @@
-
-- Fix getters and setters not reaching uniforms if CSM class is extended 
-- Uniforms not set if CSM class extends other CSM class
