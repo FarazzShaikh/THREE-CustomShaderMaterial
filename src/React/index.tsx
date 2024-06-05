@@ -25,7 +25,6 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
     uniforms,
     cacheKey,
     patchMap,
-    globals,
     ...opts
   }: CustomShaderMaterialProps<T>,
   ref: React.Ref<InstanceType<T>>
@@ -38,7 +37,6 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
       uniforms,
       cacheKey,
       patchMap,
-      globals,
       ...opts,
     });
   }, [baseMaterial]);
@@ -50,9 +48,8 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
       uniforms,
       patchMap,
       cacheKey,
-      globals,
     });
-  }, [vertexShader, fragmentShader, uniforms, patchMap, cacheKey, globals]);
+  }, [vertexShader, fragmentShader, uniforms, patchMap, cacheKey]);
 
   React.useEffect(() => () => material.dispose(), [material]);
 
