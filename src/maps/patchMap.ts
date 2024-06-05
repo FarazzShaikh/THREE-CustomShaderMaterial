@@ -49,8 +49,8 @@ export const defaultPatchMap: CSMPatchMap = {
   `,
   },
   [`${keywordMap.fragColor}`]: {
-    "#include <dithering_fragment>": `
-    #include <dithering_fragment>
+    "#include <opaque_fragment>": `
+    #include <opaque_fragment>
     gl_FragColor = mix(gl_FragColor, ${keywordMap.fragColor}, ${keywordMap.fragColorInfluence});
   `,
   },
