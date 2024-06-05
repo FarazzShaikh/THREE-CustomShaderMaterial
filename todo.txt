@@ -1,0 +1,2 @@
+
+- Fix getters and setters not reaching uniforms if CSM class is extended 
