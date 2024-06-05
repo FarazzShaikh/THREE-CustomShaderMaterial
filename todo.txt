@@ -1,0 +1,6 @@
+
+- Test CSM react
+- Test mixing lit and unlit materials
+- Test all base materials
+- Polish csm_FragColorInfluence
+- Strip comments from shader but keep CSM end markers
