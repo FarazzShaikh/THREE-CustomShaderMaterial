@@ -7,9 +7,6 @@
   "files": [
     "dist/**"
   ],
-  "workspaces": [
-    "example"
-  ],
   "main": "dist/entry/cjs/react.cjs",
   "module": "dist/entry/es/react.js",
   "types": "dist/React/index.d.ts",
@@ -26,7 +23,7 @@
     }
   },
   "scripts": {
-    "dev": "yarn workspace example dev",
+    "dev": "cd example && yarn dev",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },

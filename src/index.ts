@@ -65,15 +65,20 @@ export default class CustomShaderMaterial<
     const extendedBase = base as typeof base & TYPES.CSMProxy<T>;
     extendedBase.name = `CustomShaderMaterial<${base.name}>`;
     extendedBase.update = this.update.bind(extendedBase);
-    extendedBase.uniforms = this.uniforms = uniforms || {};
+
+    const prevUniforms = extendedBase.uniforms || {};
+    const newUniforms = uniforms || {};
+    const mergedUniforms = { ...prevUniforms, ...newUniforms };
+
+    extendedBase.uniforms = this.uniforms = mergedUniforms;
     extendedBase.vertexShader = this.vertexShader = vertexShader || "";
     extendedBase.fragmentShader = this.fragmentShader = fragmentShader || "";
 
     // Initialize custom shaders
     extendedBase.update({
-      fragmentShader,
-      vertexShader,
-      uniforms,
+      fragmentShader: extendedBase.fragmentShader,
+      vertexShader: extendedBase.vertexShader,
+      uniforms: extendedBase.uniforms,
       patchMap,
       cacheKey,
     });

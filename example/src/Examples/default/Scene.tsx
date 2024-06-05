@@ -2,7 +2,7 @@ import { OrbitControls, Sphere } from "@react-three/drei";
 
 import { useControls } from "leva";
 import { useMemo } from "react";
-import { MeshPhysicalMaterial } from "three";
+import { Color, MeshPhysicalMaterial } from "three";
 import CSM from "three-custom-shader-material/vanilla";
 import { useShader } from "../../pages/Root";
 import { Stage } from "./Stage";
@@ -41,14 +41,19 @@ class CustomMaterial extends CSM {
       fragmentShader: /* glsl */ `
         varying vec2 vUv;
 
+        uniform vec3 uCsmColor;
+
         void func1() {
-          csm_DiffuseColor *= 2.0;
+          csm_DiffuseColor = vec4(uCsmColor, 1.0);
         }
 
         void main() {
           func1();
         }
       `,
+      uniforms: {
+        uCsmColor: { value: new Color("#ff00ff") },
+      },
     });
   }
 }
