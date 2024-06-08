@@ -66,7 +66,7 @@ export const defaultCsmMainDefinitions = /* glsl */ `
     csm_FragColorInfluence = 0.0;
 
     // csm_DiffuseColor & csm_FragColor
-    #if defined IS_UNKNOWN || defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_SHADOWMATERIAL
+    #if defined IS_UNKNOWN || defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHDISTANCEMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_SHADOWMATERIAL
         csm_DiffuseColor = vec4(1.0, 0.0, 1.0, 1.0);
         csm_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
     #else

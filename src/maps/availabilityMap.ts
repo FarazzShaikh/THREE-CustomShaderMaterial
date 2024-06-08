@@ -6,6 +6,7 @@ export const availabilityMap = {
   [`${keywordMap.position}`]: "*",
   [`${keywordMap.positionRaw}`]: "*",
   [`${keywordMap.normal}`]: "*",
+  [`${keywordMap.depthAlpha}`]: "*",
   [`${keywordMap.pointSize}`]: ["PointsMaterial"],
 
   [`${keywordMap.diffuse}`]: "*",
@@ -36,7 +37,6 @@ export const availabilityMap = {
     "MeshToonMaterial",
     "ShadowMaterial",
   ],
-  [`${keywordMap.depthAlpha}`]: ["MeshDepthMaterial"],
   [`${keywordMap.clearcoat}`]: ["MeshPhysicalMaterial"],
   [`${keywordMap.clearcoatRoughness}`]: ["MeshPhysicalMaterial"],
   [`${keywordMap.clearcoatNormal}`]: ["MeshPhysicalMaterial"],

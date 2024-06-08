@@ -37,11 +37,11 @@ export type CSMProxy<T extends MaterialConstructor> = InstanceType<T> & {
   vertexShader: string;
   fragmentShader: string;
   uniforms: Uniform;
-  __csm: {
-    baseMaterial: THREE.Material;
-    patchMap?: CSMPatchMap;
-  };
   update: (
     opts: Omit<CustomShaderMaterialBaseParameters<T>, "baseMaterial">
   ) => void;
+
+  __csm: {
+    prevOnBeforeCompile: THREE.Material["onBeforeCompile"];
+  };
 };

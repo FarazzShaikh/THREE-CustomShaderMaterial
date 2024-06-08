@@ -91,8 +91,12 @@ export const defaultPatchMap: CSMPatchMap = {
       gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${keywordMap.depthAlpha} );
     `,
     "gl_FragColor = packDepthToRGBA( fragCoordZ );": `
-      gl_FragColor = packDepthToRGBA( fragCoordZ );
-      gl_FragColor.a *= ${keywordMap.depthAlpha};
+      if(${keywordMap.depthAlpha} > 0.0) discard;
+      gl_FragColor = packDepthToRGBA( dist );
+    `,
+    "gl_FragColor = packDepthToRGBA( dist );": `
+      if(${keywordMap.depthAlpha} > 0.0) discard;
+      gl_FragColor = packDepthToRGBA( dist );
     `,
   },
   [`${keywordMap.clearcoat}`]: {

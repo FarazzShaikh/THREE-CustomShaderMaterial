@@ -22,6 +22,10 @@ import { Scene as PointsScene } from "./Points/Scene";
 import fs_points from "./Points/fs.glsl?raw";
 import vs_points from "./Points/vs.glsl?raw";
 
+import { Scene as ShadowsScene } from "./Shadows/Scene";
+import fs_shadows from "./Shadows/fs.glsl?raw";
+import vs_shadows from "./Shadows/vs.glsl?raw";
+
 export interface ExampleSceneProps {
   fs: string;
   vs: string;
@@ -83,6 +87,14 @@ export const SHADERS: {
     slug: "points",
     Component: PointsScene,
     label: "Points",
+    category: "Tech Demos",
+  },
+  SHADOWS: {
+    fs: fs_shadows,
+    vs: vs_shadows,
+    slug: "shadows",
+    Component: ShadowsScene,
+    label: "Shadows",
     category: "Tech Demos",
   },
   // METAL_BUNNY: {

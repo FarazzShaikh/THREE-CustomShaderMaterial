@@ -65,6 +65,7 @@ export default class CustomShaderMaterial<
     const extendedBase = base as typeof base & TYPES.CSMProxy<T>;
     extendedBase.name = `CustomShaderMaterial<${base.name}>`;
     extendedBase.update = this.update.bind(extendedBase);
+    extendedBase.__csm = { prevOnBeforeCompile: base.onBeforeCompile };
 
     const prevUniforms = extendedBase.uniforms || {};
     const newUniforms = uniforms || {};
@@ -124,7 +125,7 @@ export default class CustomShaderMaterial<
     });
 
     // Check it the previous onBeforeCompile exists
-    const prevOnBeforeCompile = self.onBeforeCompile;
+    const prevOnBeforeCompile = self.__csm.prevOnBeforeCompile;
     const doesHavePreviousBeforeCompile = !isEmptyFunction(prevOnBeforeCompile);
 
     // Helper function to extend the shader
@@ -174,8 +175,10 @@ export default class CustomShaderMaterial<
             prevShader.slice(lastMainEndIndex);
         }
       } else {
+        const regex = /void\s*main\s*\(\s*\)\s*{/gm;
+
         prevShader = prevShader.replace(
-          "void main() {",
+          regex,
           `
           // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
   

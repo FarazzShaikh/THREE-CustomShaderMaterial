@@ -1,3 +1,4 @@
+import { AttachType } from "@react-three/fiber/dist/declarations/src/core/renderer";
 import * as React from "react";
 import { Material } from "three";
 import CustomShaderMaterialImpl, { MaterialConstructor } from "../index";
@@ -25,6 +26,7 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
     uniforms,
     cacheKey,
     patchMap,
+    attach,
     ...opts
   }: CustomShaderMaterialProps<T>,
   ref: React.Ref<InstanceType<T>>
@@ -53,7 +55,14 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
 
   React.useEffect(() => () => material.dispose(), [material]);
 
-  return <primitive ref={ref} attach="material" object={material} {...opts} />;
+  return (
+    <primitive
+      ref={ref}
+      attach={attach ?? "material"}
+      object={material}
+      {...opts}
+    />
+  );
 }
 
 // export default React.forwardRef(CustomShaderMaterial) as <
@@ -61,11 +70,13 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
 // >(
 //   props: CustomShaderMaterialProps<T> & { ref?: React.Ref<InstanceType<T>> }
 // ) => React.ReactElement;
+
 export default React.forwardRef(CustomShaderMaterial) as <
   T extends MaterialConstructor = typeof Material
 >(
   props: CustomShaderMaterialProps<T> & {
     ref?: React.Ref<CustomShaderMaterialImpl<T>>;
+    attach?: AttachType;
   }
 ) => React.ReactElement;
 

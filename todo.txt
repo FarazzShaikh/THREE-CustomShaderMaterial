@@ -4,3 +4,4 @@
 - Test all base materials
 - Polish csm_FragColorInfluence
 - Strip comments from shader but keep CSM end markers
+- Make docs website (three-custom-shader-material.farazshaikh.com)
