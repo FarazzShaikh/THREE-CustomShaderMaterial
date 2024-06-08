@@ -15,7 +15,7 @@ import {
 import CSM from "three-custom-shader-material";
 
 export function Scene() {
-  const map = useTexture("/Shadows/react.png");
+  const map = useTexture(import.meta.env.BASE_URL + "Shadows/react.png");
 
   const vertexShader = useMemo(
     () => /* glsl */ `
