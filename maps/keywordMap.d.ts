@@ -1,0 +1,21 @@
+export declare const keywordMap: {
+    diffuse: string;
+    normal: string;
+    roughness: string;
+    metalness: string;
+    emissive: string;
+    ao: string;
+    bump: string;
+    clearcoat: string;
+    clearcoatRoughness: string;
+    clearcoatNormal: string;
+    transmission: string;
+    thickness: string;
+    iridescence: string;
+    pointSize: string;
+    fragColor: string;
+    depthAlpha: string;
+    fragColorInfluence: string;
+    position: string;
+    positionRaw: string;
+};
