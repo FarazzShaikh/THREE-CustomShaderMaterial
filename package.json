@@ -26,7 +26,7 @@
   "scripts": {
     "dev": "cd example && yarn dev",
     "build:examples": "cd example && yarn build",
-    "deploy:pages": "yarn build:examples && gh-pages -d dist",
+    "deploy:pages": "yarn build:examples && gh-pages -d example/dist",
     "prepack": "yarn build",
     "build": "tsc && vite build",
     "predeploy": "yarn build",
