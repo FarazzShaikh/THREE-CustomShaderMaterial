@@ -7,6 +7,7 @@
   "files": [
     "dist/**"
   ],
+  "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "main": "dist/entry/cjs/react.cjs",
   "module": "dist/entry/es/react.js",
   "types": "dist/React/index.d.ts",
@@ -25,7 +26,10 @@
   "scripts": {
     "dev": "cd example && yarn dev",
     "build:example": "cd example && yarn build",
+    "prepack": "yarn build",
     "build": "tsc && vite build",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
@@ -41,6 +45,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.163.0",
