@@ -389,6 +389,7 @@ export class MeshTransmissionMaterialImpl extends THREE.MeshPhysicalMaterial {
   }
 }
 
+// @ts-ignore
 export const MeshTransmissionMaterial: ForwardRefComponent<
   MeshTransmissionMaterialProps,
   JSX.IntrinsicElements["meshTransmissionMaterial"]

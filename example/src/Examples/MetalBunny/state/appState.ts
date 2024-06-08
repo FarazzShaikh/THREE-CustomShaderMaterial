@@ -1,10 +1,10 @@
-import { create } from 'zustand'
+import create from "zustand";
 
 interface AppState {
-  isMetallic: boolean
-  isBump: boolean
-  setMetallic: (isMetallic: boolean) => void
-  setBump: (isBump: boolean) => void
+  isMetallic: boolean;
+  isBump: boolean;
+  setMetallic: (isMetallic: boolean) => void;
+  setBump: (isBump: boolean) => void;
 }
 
 export default create<AppState>((set) => ({
@@ -13,4 +13,4 @@ export default create<AppState>((set) => ({
 
   setMetallic: (isMetallic: boolean) => set({ isMetallic }),
   setBump: (isBump: boolean) => set({ isBump }),
-}))
+}));
