@@ -17,7 +17,6 @@ function copyLicensePlugin() {
 }
 
 export default defineConfig({
-  base: "/THREE-CustomShaderMaterial/",
   build: {
     lib: {
       entry: {
