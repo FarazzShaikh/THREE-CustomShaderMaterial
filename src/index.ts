@@ -11,12 +11,7 @@ import { availabilityMap, defaultPatchMap } from "./maps";
 import { requiredPropsMap } from "./maps/requiredPropsMap";
 import hash from "./sdbm";
 import * as TYPES from "./types";
-import {
-  deepMergeObjects,
-  isConstructor,
-  isEmptyFunction,
-  stripComments,
-} from "./utils";
+import { deepMergeObjects, isConstructor, stripComments } from "./utils";
 
 export default class CustomShaderMaterial<
   T extends TYPES.MaterialConstructor = typeof THREE.Material
@@ -126,7 +121,6 @@ export default class CustomShaderMaterial<
 
     // Check it the previous onBeforeCompile exists
     const prevOnBeforeCompile = self.__csm.prevOnBeforeCompile;
-    const doesHavePreviousBeforeCompile = !isEmptyFunction(prevOnBeforeCompile);
 
     // Helper function to extend the shader
     const extendShader = (
@@ -149,8 +143,10 @@ export default class CustomShaderMaterial<
         beforeMain = newShader.slice(0, mainIndex);
       }
 
+      const defaultsAlreadyIncluded = prevShader.includes("//~CSM_DEFAULTS");
+
       // Inject
-      if (doesHavePreviousBeforeCompile) {
+      if (defaultsAlreadyIncluded) {
         prevShader = prevShader.replace(
           "void main() {",
           `
@@ -182,6 +178,7 @@ export default class CustomShaderMaterial<
           `
           // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
   
+          //~CSM_DEFAULTS
           ${isFrag ? defaultFragDefinitions : defaultVertDefinitions}
           ${defaultCsmDefinitions}
   

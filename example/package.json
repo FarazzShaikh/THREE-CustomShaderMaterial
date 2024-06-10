@@ -25,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
+    "three": "^0.165.0",
     "three-stdlib": "^2.29.6"
   },
   "devDependencies": {

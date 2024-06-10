@@ -11,36 +11,16 @@ import {
   MeshDepthMaterial,
   MeshDistanceMaterial,
   MeshStandardMaterial,
+  PlaneGeometry,
 } from "three";
 import CSM from "three-custom-shader-material";
+import { useShader } from "../../pages/Root";
 
 export function Scene() {
   const map = useTexture(import.meta.env.BASE_URL + "Shadows/react.png");
 
-  const vertexShader = useMemo(
-    () => /* glsl */ `
-    varying vec2 vUv;
+  const { vs, fs } = useShader();
 
-    void main() {
-      vUv = uv;
-    }
-  `,
-    []
-  );
-  const fragmentShader = useMemo(
-    () => /* glsl */ `
-    uniform sampler2D uMap;
-
-    varying vec2 vUv;
-
-    void main() {
-      vec4 color = texture2D(uMap, vUv);
-      csm_DiffuseColor = color;
-      csm_DepthAlpha = 1.0 - color.a;
-    }
-  `,
-    []
-  );
   const uniforms = useMemo(
     () => ({
       uMap: { value: map },
@@ -78,9 +58,9 @@ export function Scene() {
               <directionalLight
                 castShadow
                 position={[0, 2, 2]}
-                intensity={4}
-                shadow-mapSize-width={2096}
-                shadow-mapSize-height={2096}
+                intensity={2}
+                shadow-mapSize-width={4098}
+                shadow-mapSize-height={4098}
               />
             );
 
@@ -93,11 +73,15 @@ export function Scene() {
         <meshStandardMaterial color="white" />
       </Plane>
 
-      <Plane position={[0, 0.5, 0]} castShadow>
+      <instancedMesh
+        position={[0, 0.5, 0]}
+        castShadow
+        args={[new PlaneGeometry(), undefined, 1]}
+      >
         <CSM
           baseMaterial={MeshStandardMaterial}
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
+          vertexShader={vs}
+          fragmentShader={fs}
           uniforms={uniforms}
           side={DoubleSide}
           transparent
@@ -105,18 +89,18 @@ export function Scene() {
         <CSM
           attach="customDistanceMaterial"
           baseMaterial={MeshDistanceMaterial}
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
+          vertexShader={vs}
+          fragmentShader={fs}
           uniforms={uniforms}
         />
         <CSM
           attach="customDepthMaterial"
           baseMaterial={MeshDepthMaterial}
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
+          vertexShader={vs}
+          fragmentShader={fs}
           uniforms={uniforms}
         />
-      </Plane>
+      </instancedMesh>
 
       <axesHelper />
     </>

@@ -1,10 +1,9 @@
+uniform sampler2D uMap;
 
 varying vec2 vUv;
 
-void func1() {
-    csm_DiffuseColor = vec4(1.0, 0.0, 1.0, 1.0);
-}
-
 void main() {
-    func1();
+    vec4 color = texture2D(uMap, vUv);
+    csm_DiffuseColor = color;
+    csm_DepthAlpha = 1.0 - color.a;
 }

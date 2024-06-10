@@ -34,16 +34,3 @@ export function deepMergeObjects<T extends Record<string, any>>(
 export function stripComments(str: string) {
   return str.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "");
 }
-
-export function stripNewLines(str: string) {
-  return str.replace(/\n/g, "");
-}
-
-export function stripSpaces(str: string) {
-  return str.replace(/\s/g, "");
-}
-
-export function isEmptyFunction(func: Function) {
-  const funcName = func.name;
-  return stripSpaces(stripNewLines(func.toString())) === `${funcName}(){}`;
-}
