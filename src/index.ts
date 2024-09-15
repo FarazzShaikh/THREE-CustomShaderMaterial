@@ -143,6 +143,8 @@ export default class CustomShaderMaterial<
         beforeMain = newShader.slice(0, mainIndex);
       }
 
+      // Set csm_UnlitFac if csm_FragColor is used to preserve
+      // legacy behavior.
       if (isFrag) {
         const hasFragColor = newShader
           ? newShader.includes(keywordMap.fragColor)

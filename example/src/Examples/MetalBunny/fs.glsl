@@ -3,7 +3,7 @@ uniform float uTime;
 
 varying vec3 csm_vPosition;
 
-gln_FBMOpts opts = gln_FBMOpts(1., 0.3, 2.0, 5);
+gln_tFBMOpts opts = gln_tFBMOpts(0.0, 0.3, 2.0, 0.5, 1.0, 5, false, false);
 
 float domainWarp(vec3 uv) {
     float scale = 2.;
@@ -18,15 +18,15 @@ float domainWarp(vec3 uv) {
         );
 
         vec3 dUv = vec3(
-        gln_simplex_fbm((scale * uv) + outUv, opts),
-        gln_simplex_fbm((scale * uv) + outUv, opts),
-        gln_simplex_fbm((scale * uv) + outUv, opts)
+            gln_sfbm((scale * uv) + outUv, opts),
+            gln_sfbm((scale * uv) + outUv, opts),
+            gln_sfbm((scale * uv) + outUv, opts)
         );
 
         outUv = falloff * dUv + offset;
     }
 
-    return gln_simplex_fbm(uv + scale * outUv, opts);
+    return gln_sfbm(uv + scale * outUv, opts);
 }
 
 vec3 saturateColor(vec3 v, float s) {

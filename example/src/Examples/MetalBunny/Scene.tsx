@@ -12,6 +12,7 @@ import { useFrame } from "@react-three/fiber";
 import { Suspense, useMemo, useRef, useState } from "react";
 import { Color } from "three";
 
+import { patchShaders } from "gl-noise/build/glNoise.m";
 import CSM from "three-custom-shader-material";
 import { useShader } from "../../pages/Root";
 import { MeshTransmissionMaterial } from "./MeshTransmissionMaterial";
@@ -85,15 +86,14 @@ function Thing() {
               attach="material"
               // ref={csmRef}
               baseMaterial={mtmRef}
-              // uniforms={uniforms}
-              // fragmentShader={patchShaders(fs)}
-              // vertexShader={vs}
-              // resolution={128}
-              // thickness={0.5}
-              // anisotropy={2}
-              // attenuationDistance={1}
-              // attenuationColor={new Color("#ffffff")}
-              // envMapIntensity={2}
+              uniforms={uniforms}
+              vertexShader={vs}
+              fragmentShader={patchShaders(fs)}
+              resolution={128}
+              thickness={0.5}
+              attenuationDistance={1}
+              attenuationColor={new Color("#ffffff")}
+              envMapIntensity={2}
             />
           )}
         </mesh>

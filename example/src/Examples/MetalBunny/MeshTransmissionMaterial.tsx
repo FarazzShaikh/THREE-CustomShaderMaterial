@@ -242,6 +242,7 @@ export class MeshTransmissionMaterialImpl extends THREE.MeshPhysicalMaterial {
           // Transmission code is based on glTF-Sampler-Viewer
           // https://github.com/KhronosGroup/glTF-Sample-Viewer
           uniform float _transmission;
+          float transmission = 0.0;
           uniform float thickness;
           uniform float attenuationDistance;
           uniform vec3 attenuationColor;
@@ -401,7 +402,7 @@ export const MeshTransmissionMaterial: ForwardRefComponent<
       backside = false,
       side = THREE.FrontSide,
       transmission = 1,
-      thickness = 0,
+      thickness = 2,
       backsideThickness = 0,
       backsideEnvMapIntensity = 1,
       samples = 10,
