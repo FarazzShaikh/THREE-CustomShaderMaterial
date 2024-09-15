@@ -11,7 +11,7 @@ import { availabilityMap, defaultPatchMap, keywordMap } from "./maps";
 import { requiredPropsMap } from "./maps/requiredPropsMap";
 import hash from "./sdbm";
 import * as TYPES from "./types";
-import { deepMergeObjects, isConstructor, stripComments } from "./utils";
+import { isConstructor, stripComments } from "./utils";
 
 export default class CustomShaderMaterial<
   T extends TYPES.MaterialConstructor = typeof THREE.Material
@@ -215,7 +215,7 @@ export default class CustomShaderMaterial<
       prevOnBeforeCompile?.(shader, renderer);
 
       const userPatchMap = patchMap || {};
-      const mergedPatchMap = deepMergeObjects(defaultPatchMap, userPatchMap);
+      const mergedPatchMap = { ...defaultPatchMap, ...userPatchMap };
 
       // Append some defines
       const type = self.type;

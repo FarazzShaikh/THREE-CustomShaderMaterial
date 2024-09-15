@@ -9,6 +9,11 @@ uniform vec3 uScale;
 uniform float uTime;
 uniform float uAngle;
 
+#ifdef IS_MESHBASICMATERIAL
+#include <packing>
+#include <shadowmap_pars_fragment>
+const bool receiveShadow = true;
+#endif
 #include <shadowmask_pars_fragment>
 
 mat4 rotationMatrix(vec3 axis, float angle) {
@@ -33,7 +38,7 @@ float sdBox(vec3 p, vec3 b) {
     return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
 
-vec4 getFogColor(vec4 color) {
+vec4 getCausticsColor(vec4 color) {
     vec3 scale = uScale;
     vec3 p = csm_vWorldPosition;
     p.x -= uPosition.x;
@@ -81,8 +86,4 @@ vec4 getFogColor(vec4 color) {
     return mix(color, vec4(c, 1.), fac);
     // return vec4(vec3(n), 1.);
 
-}
-
-void main() {
-    vec4 csm_FogColor;
 }

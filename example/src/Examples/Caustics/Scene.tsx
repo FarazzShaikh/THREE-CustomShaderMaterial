@@ -1,30 +1,22 @@
+import suzanne from "@gsimone/suzanne";
 import {
   OrbitControls,
   PerspectiveCamera,
   TransformControls,
   useGLTF,
 } from "@react-three/drei";
-import { Perf } from "r3f-perf";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { MathUtils } from "three";
 import Caustics from "./Caustics";
 import { Floor } from "./components/Floor";
-import Lights from "./components/Lights";
-
-import suzanne from "@gsimone/suzanne";
-import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
 function Thing() {
-  const [transform, setTransfrom] = useState<TransformControlsImpl>(null!);
   const size = 5;
   const { nodes } = useGLTF(suzanne);
 
   return (
     <>
-      <Lights ref={(r) => void (r && setTransfrom(r))} />
-
-      {/* @ts-ignore */}
-      <Caustics target={transform?.object}>
+      <Caustics>
         <Floor size={size} rotation-x={-Math.PI / 2} />
         <Floor size={size} position={[0, size / 2, -size / 2]} />
         <Floor
@@ -45,8 +37,6 @@ function Thing() {
           </group>
         </TransformControls>
       </Caustics>
-
-      <Perf />
     </>
   );
 }
