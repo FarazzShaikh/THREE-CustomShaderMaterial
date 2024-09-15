@@ -7,7 +7,7 @@ import {
   defaultVertDefinitions,
   defaultVertMain,
 } from "./defaults";
-import { availabilityMap, defaultPatchMap } from "./maps";
+import { availabilityMap, defaultPatchMap, keywordMap } from "./maps";
 import { requiredPropsMap } from "./maps/requiredPropsMap";
 import hash from "./sdbm";
 import * as TYPES from "./types";
@@ -141,6 +141,15 @@ export default class CustomShaderMaterial<
 
         const mainIndex = newShader.indexOf("void main() {");
         beforeMain = newShader.slice(0, mainIndex);
+      }
+
+      if (isFrag) {
+        const hasFragColor = newShader
+          ? newShader.includes(keywordMap.fragColor)
+          : false;
+        if (hasFragColor && mainBody) {
+          mainBody = "csm_UnlitFac = 1.0;\n" + mainBody;
+        }
       }
 
       const defaultsAlreadyIncluded = prevShader.includes("//~CSM_DEFAULTS");

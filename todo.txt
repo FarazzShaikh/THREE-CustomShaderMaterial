@@ -6,6 +6,6 @@
 - Strip comments from shader but keep CSM end markers
 - Make docs website (three-custom-shader-material.farazshaikh.com)
 
-- invert csm_DepthAlpha
+
 - Fix not working with instance of base material
 - Fix keywords in comments counting

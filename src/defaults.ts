@@ -12,7 +12,7 @@ export const defaultCsmDefinitions = /* glsl */ `
 #else
     vec4 csm_DiffuseColor;
     vec4 csm_FragColor;
-    float csm_FragColorInfluence;
+    float csm_UnlitFac;
 
     // csm_Emissive, csm_Roughness, csm_Metalness
     #if defined IS_MESHSTANDARDMATERIAL || defined IS_MESHPHYSICALMATERIAL
@@ -63,7 +63,7 @@ export const defaultCsmMainDefinitions = /* glsl */ `
         csm_PointSize = size;
     #endif
 #else
-    csm_FragColorInfluence = 0.0;
+    csm_UnlitFac = 0.0;
 
     // csm_DiffuseColor & csm_FragColor
     #if defined IS_UNKNOWN || defined IS_SHADERMATERIAL || defined IS_MESHDEPTHMATERIAL || defined IS_MESHDISTANCEMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_SHADOWMATERIAL

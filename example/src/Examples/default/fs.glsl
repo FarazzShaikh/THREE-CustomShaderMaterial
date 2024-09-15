@@ -6,5 +6,6 @@ void func1() {
 }
 
 void main() {
+    csm_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
     func1();
 }

@@ -44,10 +44,12 @@ class CustomMaterial extends CSM {
         uniform vec3 uCsmColor;
 
         void func1() {
+          csm_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
           csm_DiffuseColor = vec4(uCsmColor, 1.0);
         }
 
         void main() {
+          csm_UnlitFac = smoothstep(0.2, 0.3, vUv.x);
           func1();
         }
       `,

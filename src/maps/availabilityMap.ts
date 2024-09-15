@@ -11,7 +11,7 @@ export const availabilityMap = {
 
   [`${keywordMap.diffuse}`]: "*",
   [`${keywordMap.fragColor}`]: "*",
-  [`${keywordMap.fragColorInfluence}`]: ["*"],
+  [`${keywordMap.unlitFac}`]: ["*"],
   [`${keywordMap.emissive}`]: ["MeshStandardMaterial", "MeshPhysicalMaterial"],
   [`${keywordMap.roughness}`]: ["MeshStandardMaterial", "MeshPhysicalMaterial"],
   [`${keywordMap.metalness}`]: ["MeshStandardMaterial", "MeshPhysicalMaterial"],

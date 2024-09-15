@@ -18,7 +18,7 @@ export const keywordMap = {
   pointSize: "csm_PointSize",
   fragColor: "csm_FragColor",
   depthAlpha: "csm_DepthAlpha", // Depth
-  fragColorInfluence: "csm_FragColorInfluence", // Unlit factor
+  unlitFac: "csm_UnlitFac", // Unlit factor
 
   // Vert
   position: "csm_Position",
