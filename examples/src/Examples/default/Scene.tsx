@@ -3,7 +3,7 @@ import { OrbitControls, Sphere } from "@react-three/drei";
 import { useControls } from "leva";
 import { useMemo } from "react";
 import { Color, MeshPhysicalMaterial } from "three";
-import CSM from "three-custom-shader-material/vanilla";
+import CSM from "../../../../package/src";
 import { useShader } from "../../pages/Root";
 import { Stage } from "./Stage";
 

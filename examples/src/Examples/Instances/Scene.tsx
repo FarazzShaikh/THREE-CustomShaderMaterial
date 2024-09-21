@@ -13,8 +13,8 @@ import {
 } from "three";
 
 import { patchShaders } from "gl-noise/build/glNoise.m";
-import CustomShaderMaterial from "three-custom-shader-material";
-import CustomShaderMaterialType from "three-custom-shader-material/vanilla";
+import CustomShaderMaterialType from "../../../../package/src";
+import CustomShaderMaterial from "../../../../package/src/React";
 import { useShader } from "../../pages/Root";
 
 const amount = 150;

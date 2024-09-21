@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { patchShaders } from "gl-noise/build/glNoise.m";
 import { useEffect, useMemo, useRef } from "react";
 import { Box3Helper, Material, MathUtils, Vector3 } from "three";
-import CustomShaderMaterial from "three-custom-shader-material/vanilla";
+import CustomShaderMaterial from "../../../../package/src";
 import { useShader } from "../../pages/Root";
 import Lights from "./components/Lights";
 

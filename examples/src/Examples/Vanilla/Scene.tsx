@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import { useControls } from "leva";
 import { useEffect, useMemo } from "react";
-import CSM, { CSMProxy } from "three-custom-shader-material/vanilla";
+import CSM, { CSMProxy } from "../../../../package/src";
 import { useShader } from "../../pages/Root";
 import { Stage } from "./Stage";
 

@@ -9,11 +9,11 @@ export default defineConfig({
     alias: {
       "three-custom-shader-material/vanilla": path.resolve(
         __dirname,
-        "../src/index.ts"
+        "../package/src/index.ts"
       ),
       "three-custom-shader-material": path.resolve(
         __dirname,
-        "../src/React/index.tsx"
+        "../package/src/React/index.tsx"
       ),
     },
   },

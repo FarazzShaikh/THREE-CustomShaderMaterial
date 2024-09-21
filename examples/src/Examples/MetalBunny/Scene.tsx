@@ -13,7 +13,7 @@ import { Suspense, useMemo, useRef, useState } from "react";
 import { Color } from "three";
 
 import { patchShaders } from "gl-noise/build/glNoise.m";
-import CSM from "three-custom-shader-material";
+import CSM from "../../../../package/src/React";
 import { useShader } from "../../pages/Root";
 import { MeshTransmissionMaterial } from "./MeshTransmissionMaterial";
 

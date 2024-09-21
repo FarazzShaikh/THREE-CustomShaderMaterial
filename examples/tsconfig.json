@@ -16,8 +16,8 @@
     "allowJs": true,
     "preserveSymlinks": true,
     "paths": {
-      "three-custom-shader-material": ["../src/React"],
-      "three-custom-shader-material/vanilla": ["../src"]
+      "three-custom-shader-material": ["../package/src/React"],
+      "three-custom-shader-material/vanilla": ["../package/src"]
     }
   },
   "include": ["src"],

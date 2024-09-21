@@ -1,7 +1,7 @@
 import { useControls } from "leva";
 import React from "react";
 import { Color } from "three";
-import CustomShaderMaterialType from "three-custom-shader-material/vanilla";
+import CustomShaderMaterialType from "../../../../package/src";
 
 export default function useWaterControls(
   material: React.RefObject<CustomShaderMaterialType<any>>

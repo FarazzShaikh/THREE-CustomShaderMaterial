@@ -17,12 +17,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
 
-      - name: Install dependencies
-        run: |
-          cd examples
-          npm install
-          npm install three-custom-shader-material@next
-          npm run build
+      - name: Build
+        run: yarn build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3

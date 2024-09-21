@@ -10,8 +10,8 @@ import { patchShaders } from "gl-noise/build/glNoise.m";
 import { useControls } from "leva";
 import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
-import CSM from "three-custom-shader-material";
-import CSMType from "three-custom-shader-material/vanilla";
+import CSMType from "../../../../package/src";
+import CSM from "../../../../package/src/React";
 import { useShader } from "../../pages/Root";
 import Lights from "./Lights";
 

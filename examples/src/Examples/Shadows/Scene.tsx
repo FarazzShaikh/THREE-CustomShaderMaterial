@@ -13,7 +13,7 @@ import {
   MeshStandardMaterial,
   PlaneGeometry,
 } from "three";
-import CSM from "three-custom-shader-material";
+import CSM from "../../../../package/src/React";
 import { useShader } from "../../pages/Root";
 
 export function Scene() {
