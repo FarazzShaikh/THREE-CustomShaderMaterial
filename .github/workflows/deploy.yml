@@ -18,8 +18,10 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Install dependencies
-        working-directory: ./examples
         run: |
+          npm install
+          npm run build
+          cd examples
           npm install
           npm run build
 
