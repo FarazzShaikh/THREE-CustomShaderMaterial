@@ -133,7 +133,7 @@ export const defaultCsmMainDefinitions = /* glsl */ `
         #else
             csm_FragNormal = normalize(vNormal);
             #ifdef DOUBLE_SIDED
-                csm_FragNormal *= faceDirection;
+                csm_FragNormal *= gl_FrontFacing ? 1.0 : - 1.0;
             #endif
         #endif
     #endif

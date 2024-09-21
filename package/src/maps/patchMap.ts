@@ -94,7 +94,7 @@ export const defaultPatchMap: CSMPatchMap = {
   },
   [`${keywordMap.depthAlpha}`]: {
     "gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );": `
-      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${keywordMap.depthAlpha} );
+      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * 1.0 - ${keywordMap.depthAlpha} );
     `,
     "gl_FragColor = packDepthToRGBA( fragCoordZ );": `
       if(${keywordMap.depthAlpha} < 1.0) discard;
