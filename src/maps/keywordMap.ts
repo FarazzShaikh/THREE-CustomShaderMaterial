@@ -1,7 +1,6 @@
 export const keywordMap = {
-  // PBR
+  // PBR (frag)
   diffuse: "csm_DiffuseColor", // Color + alpha
-  normal: "csm_Normal", // Vertex Normal
   roughness: "csm_Roughness", // Roughness
   metalness: "csm_Metalness", // Metalness
   emissive: "csm_Emissive", // Emissive
@@ -16,12 +15,13 @@ export const keywordMap = {
   iridescence: "csm_Iridescence", // Iridescence
 
   // Extras
-  pointSize: "csm_PointSize",
-  fragColor: "csm_FragColor",
-  depthAlpha: "csm_DepthAlpha", // Depth
-  unlitFac: "csm_UnlitFac", // Unlit factor
+  pointSize: "csm_PointSize", // gl_PointSize (Frag)
+  fragColor: "csm_FragColor", // gl_FragColor (Frag)
+  depthAlpha: "csm_DepthAlpha", // Depth (MeshDepthMaterial)
+  unlitFac: "csm_UnlitFac", // Unlit factor (mix between csm_FragColor and csm_DiffuseColor)
 
   // Vert
-  position: "csm_Position",
-  positionRaw: "csm_PositionRaw",
+  position: "csm_Position", // gl_Position
+  positionRaw: "csm_PositionRaw", // gl_Position (without projection)
+  normal: "csm_Normal", // Vertex Normal
 };
