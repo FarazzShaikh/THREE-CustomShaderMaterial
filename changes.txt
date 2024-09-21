@@ -1,7 +1,0 @@
-
-- Getter and setters need to be defined via Object.defineProperties and typed via declare
-- Multiple CSM instances can be chained.
-- Cannot extend ShaderMaterial or RawShaderMaterial directly
-- "this" context is set to an instance of the base material in CSM or any class that extends it
-- Cache key calculation takes into account base material's cache key. Useful for propagating changes across multiple chained CSM instances.
-- use `csm_UnlitFac` to control the mix between lit and unlit materials. Unlit material color defined by `csm_FragColor`
