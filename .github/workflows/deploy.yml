@@ -19,10 +19,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
-          npm run build
           cd examples
           npm install
+          npm install three-custom-shader-material@next
           npm run build
 
       - name: Upload production-ready build files
