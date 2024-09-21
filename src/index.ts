@@ -196,7 +196,9 @@ export default class CustomShaderMaterial<
           ${beforeMain}
           
           void main() {
-            ${defaultCsmMainDefinitions}
+            {
+              ${defaultCsmMainDefinitions}
+            }
             ${isFrag ? defaultFragMain : defaultVertMain}
 
             ${mainBody ? `${mainBody}` : ""}

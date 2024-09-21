@@ -86,6 +86,12 @@ export const defaultPatchMap: CSMPatchMap = {
     normal = normalize(normal - csm_internal_projectedbump);
     `,
   },
+  [`${keywordMap.fragNormal}`]: {
+    "#include <normal_fragment_maps>": `
+      #include <normal_fragment_maps>
+      normal = ${keywordMap.fragNormal};
+    `,
+  },
   [`${keywordMap.depthAlpha}`]: {
     "gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );": `
       gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${keywordMap.depthAlpha} );

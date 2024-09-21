@@ -38,6 +38,7 @@ export const defaultCsmDefinitions = /* glsl */ `
     // csm_Bump
     #if defined IS_MESHLAMBERTMATERIAL || defined IS_MESHMATCAPMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_MESHPHONGMATERIAL || defined IS_MESHPHYSICALMATERIAL || defined IS_MESHSTANDARDMATERIAL || defined IS_MESHTOONMATERIAL || defined IS_SHADOWMATERIAL 
         vec3 csm_Bump;
+        vec3 csm_FragNormal;
     #endif
 
     float csm_DepthAlpha;
@@ -125,6 +126,16 @@ export const defaultCsmMainDefinitions = /* glsl */ `
     // csm_Bump
     #if defined IS_MESHLAMBERTMATERIAL || defined IS_MESHMATCAPMATERIAL || defined IS_MESHNORMALMATERIAL || defined IS_MESHPHONGMATERIAL || defined IS_MESHPHYSICALMATERIAL || defined IS_MESHSTANDARDMATERIAL || defined IS_MESHTOONMATERIAL || defined IS_SHADOWMATERIAL 
         csm_Bump = vec3(0.0);
+        #ifdef FLAT_SHADED
+            vec3 fdx = dFdx( vViewPosition );
+            vec3 fdy = dFdy( vViewPosition );
+            csm_FragNormal = normalize( cross( fdx, fdy ) );
+        #else
+            csm_FragNormal = normalize(vNormal);
+            #ifdef DOUBLE_SIDED
+                csm_FragNormal *= faceDirection;
+            #endif
+        #endif
     #endif
 
     csm_DepthAlpha = 1.0;
