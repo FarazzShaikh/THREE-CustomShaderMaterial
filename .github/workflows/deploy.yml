@@ -18,7 +18,9 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn
+          yarn build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
