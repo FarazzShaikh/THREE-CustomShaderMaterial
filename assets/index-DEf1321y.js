@@ -4836,7 +4836,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         #else
             csm_FragNormal = normalize(vNormal);
             #ifdef DOUBLE_SIDED
-                csm_FragNormal *= faceDirection;
+                csm_FragNormal *= gl_FrontFacing ? 1.0 : - 1.0;
             #endif
         #endif
     #endif
@@ -4895,7 +4895,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       #include <normal_fragment_maps>
       normal = ${zt.fragNormal};
     `},[`${zt.depthAlpha}`]:{"gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );":`
-      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * ${zt.depthAlpha} );
+      gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity * 1.0 - ${zt.depthAlpha} );
     `,"gl_FragColor = packDepthToRGBA( fragCoordZ );":`
       if(${zt.depthAlpha} < 1.0) discard;
       gl_FragColor = packDepthToRGBA( dist );
