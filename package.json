@@ -27,7 +27,6 @@
     "dev": "cd example && yarn dev",
     "prepack": "yarn build",
     "build": "tsc && vite build",
-    "build:examples": "cd example && yarn build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
