@@ -24,8 +24,7 @@
     }
   },
   "scripts": {
-    "build": "tsc && vite build",
-    "release": "yarn build && npm version prerelease --preid=rc"
+    "build": "tsc && vite build"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
