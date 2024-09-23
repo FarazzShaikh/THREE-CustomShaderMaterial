@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
+  "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "repository": "git@github.com:FarazzShaikh/THREE-CustomShaderMaterial.git",
   "author": "Faraz Shaikh <farazzshaikh@gmail.com>",
   "license": "MIT",

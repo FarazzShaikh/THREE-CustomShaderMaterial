@@ -4,16 +4,15 @@
 <br>
 
 <p align="center">
-  <a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/waves" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/waves/thumbnail.png" alt="Waves" /></a>
-   <a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/points" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/points/thumbnail.png" alt="Points" /></a>
-  <a href="https://codesandbox.io/s/github/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/caustics" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/caustics/thumbnail.png" alt="Caustics" /></a>
+  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/waves" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/waves/thumbnail.png" alt="Waves" /></a>
+   <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/points" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/points/thumbnail.png" alt="Points" /></a>
+  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/caustics" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/caustics/thumbnail.png" alt="Caustics" /></a>
 </p>
 </p>
 <p align="middle">
   <i>These demos are real, you can click them! They contains full code, too. 📦</i>
 </p>
 <br />
-
 <p align="center">
  
   <a href="https://www.npmjs.com/package/three-custom-shader-material" target="_blank">
@@ -30,7 +29,9 @@
     <img src="https://img.shields.io/twitter/follow/CantBeFaraz?style=for-the-badge&logo=x" alt="Chat on Twitter">
   </a>
 </p>
-
+<p align="middle">
+  [More Demos here!](https://farazzshaikh.github.io/THREE-CustomShaderMaterial/caustics)
+</p>
 <br>
 
 Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders. **_It Supports both Vanilla and React!_**
@@ -121,31 +122,31 @@ yarn add three-custom-shader-material
 
 CSM provides the following output variables, all of them are optional but you MUST use these variables like you would use standard GLSL output variables to see results.
 
-| Variable         | Type    | Description                                                                                                           | Available In    | Notes                                                                                                                                                          |
-| ---------------- | ------- | --------------------------------------------------------------------------------------------------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <h3>Vertex Shader</h3>           | -       | -                                                                                                                     | -               | -                                                       
-| csm_Position     | `vec3`  | Custom vertex position.                                                                                               | Vertex Shader   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
-| csm_PositionRaw  | `vec4`  | Direct equivalent of `gl_Position`.                                                                                   | Vertex Shader   |                                                                                                                                                                |
-| csm_Normal       | `vec3`  | Custom vertex normals.                                                                                                | Vertex Shader   |
-| csm_PointSize    | `float` | Direct equivalent of `gl_PointSize`.                                                                                                  | Vertex Shader   | Only available in `PointsMaterial`                                                                                                                             |
-|  <h3>Fragmet Shader</h3>     | -       | -                                                                                                                     | -               | -                                                                                                                                                              |
-| csm_DiffuseColor | `vec4`  | Custom diffuse color.                                                                                                 | Fragment Shader | Base material's shading will be applied to this color.
-| csm_FragColor    | `vec4`  | Direct equivalent of `gl_FragColor`.                                                                                  | Fragment Shader | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
-| csm_Roughness    | `float` | Custom roughness.                                                                                                     | Fragment Shader | Only available in materials with an `roughnessMap`.                                                                                            |
-| csm_Metalness    | `float` | Custom metalness.                                                                                                     | Fragment Shader | Only available in materials with an `metalnessMap`.                                                                                           |
-| csm_AO           | `float` | Custom AO.                                                                                                            | Fragment Shader | Only available in materials with an `aoMap`.                                                                                                                   |
-| csm_Bump         | `vec3`  | Custom bump as perturbation to fragment normals.                                                                                                          | Fragment Shader | Only available in materials with a `bumpMap`.                                                                                                                  |
-| csm_Clearcoat   | `float`  | Custom clearcoat factor.                                                                                               | Fragment Shader | Only available in materials with a `clearcoat`.                                                                                                                  |
-| csm_ClearcoatRoughness | `float`  | Custom clearcoat roughenss factor.                                                                                                          | Fragment Shader | Only available in materials with a `clearcoat`.                                                                                                                  |
-| csm_ClearcoatNormal         | `vec3`  | Custom clearcoat normal.                                                                                                          | Fragment Shader | Only available in materials with a `clearcoat`.                                                                                                                  |
-| csm_Transmission         | `float`  | Custom transmission factor.                                                                                                          | Fragment Shader | Only available in materials with a `transmission`.                                                                                                                  |
-| csm_Thickness         | `float`  | Custom transmission thickness.                                                                                                          | Fragment Shader | Only available in materials with a `transmission`.                                                                                                                  |
-| csm_Iridescence         | `float`  | Custom iridescence factor.                                                                                                          | Fragment Shader | Only available in materials with a `iridescence`.                                                                                                                  |
-| csm_Emissive     | `vec3`  | Custom emissive color.                                                                                                | Fragment Shader | Only available in materials with a `emissive`.                                                                                            |
-| csm_FragNormal     | `vec3`  | Custom fragment normal.                                                                                                | Only available in materials with a `normalMap`.                                                                                            |
-|  <h3>Fragmet Shader (Special)</h3>     | -       | -                                                                                                                     | -               | -      
-| csm_DepthAlpha     | `vec3`  | Custom alpha for `MeshDepthMaterial`.    | Fragment Shader | Useful for controlling `customDepthMaterial` with same shader as the shader material.       |
-| csm_UnlitFac     | `vec3`  | Custom mix between `csm_DiffuseColor` and `csm_FragColor`.    | Fragment Shader | Can be used to mix lit and unlit materials. Set to `1.0` by default if `csm_FragColor` is found in shader string.       |
+| Variable                          | Type    | Description                                                | Available In                                    | Notes                                                                                                                                                          |
+| --------------------------------- | ------- | ---------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <h3>Vertex Shader</h3>            | -       | -                                                          | -                                               | -                                                                                                                                                              |
+| csm_Position                      | `vec3`  | Custom vertex position.                                    | Vertex Shader                                   | csm_Position will be projected furthur down the line. Thus, no projection is needed here.                                                                      |
+| csm_PositionRaw                   | `vec4`  | Direct equivalent of `gl_Position`.                        | Vertex Shader                                   |                                                                                                                                                                |
+| csm_Normal                        | `vec3`  | Custom vertex normals.                                     | Vertex Shader                                   |
+| csm_PointSize                     | `float` | Direct equivalent of `gl_PointSize`.                       | Vertex Shader                                   | Only available in `PointsMaterial`                                                                                                                             |
+| <h3>Fragmet Shader</h3>           | -       | -                                                          | -                                               | -                                                                                                                                                              |
+| csm_DiffuseColor                  | `vec4`  | Custom diffuse color.                                      | Fragment Shader                                 | Base material's shading will be applied to this color.                                                                                                         |
+| csm_FragColor                     | `vec4`  | Direct equivalent of `gl_FragColor`.                       | Fragment Shader                                 | csm_FragColor will override any shading applied by a base material. To preserve shading and other effects like roughness and metalness, use `csm_DiffuseColor` |
+| csm_Roughness                     | `float` | Custom roughness.                                          | Fragment Shader                                 | Only available in materials with an `roughnessMap`.                                                                                                            |
+| csm_Metalness                     | `float` | Custom metalness.                                          | Fragment Shader                                 | Only available in materials with an `metalnessMap`.                                                                                                            |
+| csm_AO                            | `float` | Custom AO.                                                 | Fragment Shader                                 | Only available in materials with an `aoMap`.                                                                                                                   |
+| csm_Bump                          | `vec3`  | Custom bump as perturbation to fragment normals.           | Fragment Shader                                 | Only available in materials with a `bumpMap`.                                                                                                                  |
+| csm_Clearcoat                     | `float` | Custom clearcoat factor.                                   | Fragment Shader                                 | Only available in materials with a `clearcoat`.                                                                                                                |
+| csm_ClearcoatRoughness            | `float` | Custom clearcoat roughenss factor.                         | Fragment Shader                                 | Only available in materials with a `clearcoat`.                                                                                                                |
+| csm_ClearcoatNormal               | `vec3`  | Custom clearcoat normal.                                   | Fragment Shader                                 | Only available in materials with a `clearcoat`.                                                                                                                |
+| csm_Transmission                  | `float` | Custom transmission factor.                                | Fragment Shader                                 | Only available in materials with a `transmission`.                                                                                                             |
+| csm_Thickness                     | `float` | Custom transmission thickness.                             | Fragment Shader                                 | Only available in materials with a `transmission`.                                                                                                             |
+| csm_Iridescence                   | `float` | Custom iridescence factor.                                 | Fragment Shader                                 | Only available in materials with a `iridescence`.                                                                                                              |
+| csm_Emissive                      | `vec3`  | Custom emissive color.                                     | Fragment Shader                                 | Only available in materials with a `emissive`.                                                                                                                 |
+| csm_FragNormal                    | `vec3`  | Custom fragment normal.                                    | Only available in materials with a `normalMap`. |
+| <h3>Fragmet Shader (Special)</h3> | -       | -                                                          | -                                               | -                                                                                                                                                              |
+| csm_DepthAlpha                    | `vec3`  | Custom alpha for `MeshDepthMaterial`.                      | Fragment Shader                                 | Useful for controlling `customDepthMaterial` with same shader as the shader material.                                                                          |
+| csm_UnlitFac                      | `vec3`  | Custom mix between `csm_DiffuseColor` and `csm_FragColor`. | Fragment Shader                                 | Can be used to mix lit and unlit materials. Set to `1.0` by default if `csm_FragColor` is found in shader string.                                              |
 
 ## Typing getters and setters
 
@@ -210,6 +211,7 @@ const material = new CustomShaderMaterial({
 ```
 
 > Note: If `<KEYWORD>` is not found in shader string, the patch map will not be applied. To ALWAYS apply a patch map, use the special keyword - `*` (star).
+>
 > ```js
 > patchMap={{
 >   "*": { "TO_REPLACE": "REPLACED_WITH" }
@@ -226,17 +228,17 @@ CSM allows you to extend other CSM instances. Values set in the first shader wil
   <summary>Show Vanilla example</summary>
 
 ```js
-import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 
 function Box() {
   const material1 = new CustomShaderMaterial({
     baseMaterial: THREE.MeshPhysicalMaterial,
     //...Any props
-  })
+  });
   const material2 = new CustomShaderMaterial({
     baseMaterial: material1,
     //...Any props
-  })
+  });
 }
 ```
 
@@ -246,11 +248,11 @@ function Box() {
   <summary>Show React example</summary>
 
 ```jsx
-import CustomShaderMaterial from 'three-custom-shader-material'
-import CustomShaderMaterialImpl from 'three-custom-shader-material/vanilla'
+import CustomShaderMaterial from "three-custom-shader-material";
+import CustomShaderMaterialImpl from "three-custom-shader-material/vanilla";
 
 function Cube() {
-  const [materialRef, setMaterialRef] = useState()
+  const [materialRef, setMaterialRef] = useState();
 
   return (
     <>
@@ -267,7 +269,7 @@ function Cube() {
         />
       )}
     </>
-  )
+  );
 }
 ```
 
@@ -291,13 +293,16 @@ function Cube() {
     // original shader
   }
   ```
+
   Where A was the first in the chain.
+
 - Cache key calculation takes into account base material's cache key. Useful for propagating changes across multiple chained CSM instances.
 - If you find yourself lost in a patchMap, it's often simpler to just make a `ShaderMaterial` with the necessary `#includes`.
 
 ## Performance
 
 With v6, CSM's initialization cost is now negligible 🥳 Still, a couple important notes about performance:
+
 - Changing these props will rebuild the material
   - `baseMaterial`
   - `fragmentShader`
@@ -308,12 +313,13 @@ With v6, CSM's initialization cost is now negligible 🥳 Still, a couple import
 - `<meshPhysicalMaterial />` and `<CSM baseMaterial={meshPhysicalMaterial}>` are the same, and will use the same cached shader program. The default cache key is such:
 
   ```js
-  (cacheKey?.() || hash((vertexShader || "") + (fragmentShader || ""))) + baseMaterialCacheKey?.()
+  (cacheKey?.() || hash((vertexShader || "") + (fragmentShader || ""))) +
+    baseMaterialCacheKey?.();
   ```
 
   You can provide your own cache key function via the `cacheKey` prop.
 
-> Note: CSM will only rebuild if the **reference** to the above props change, for example, in React, doing `uniforms={{...}}` means that the uniforms object is unstable, i.e. it is re-created, with a **new** reference every render. Instead, condsider memoizing the uniforms prop `const uniforms = useMemo(() -> ({...}));`. The uniforms object will then have the same refrence on every render. 
+> Note: CSM will only rebuild if the **reference** to the above props change, for example, in React, doing `uniforms={{...}}` means that the uniforms object is unstable, i.e. it is re-created, with a **new** reference every render. Instead, condsider memoizing the uniforms prop `const uniforms = useMemo(() -> ({...}));`. The uniforms object will then have the same refrence on every render.
 
 > If the uniforms are memoized, changing their value by doing `uniforms.foo.value = ...` will not cause CSM to rebuild, as the refrence of `uniforms` does not change.
 
