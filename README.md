@@ -4,9 +4,9 @@
 <br>
 
 <p align="center">
-  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/waves" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/waves/thumbnail.png" alt="Waves" /></a>
-   <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/points" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/points/thumbnail.png" alt="Points" /></a>
-  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/caustics" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/caustics/thumbnail.png" alt="Caustics" /></a>
+  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/#/waves" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/waves/thumbnail.png" alt="Waves" /></a>
+   <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/#/points" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/points/thumbnail.png" alt="Points" /></a>
+  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/#/caustics" target="_blank"><img width="32.3%" src="https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial/main/examples/caustics/thumbnail.png" alt="Caustics" /></a>
 </p>
 </p>
 <p align="middle">
