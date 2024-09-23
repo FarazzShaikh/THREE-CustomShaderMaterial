@@ -1,36 +1,21 @@
 {
   "name": "three-custom-shader-material-monorepo",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
+  "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
+  "repository": "git@github.com:FarazzShaikh/THREE-CustomShaderMaterial.git",
   "author": "Faraz Shaikh <farazzshaikh@gmail.com>",
   "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "package",
-      "examples/*"
-    ]
-  },
-  "preconstruct": {
-    "packages": [
-      "package"
-    ]
-  },
+  "workspaces": [
+    "package",
+    "examples"
+  ],
   "scripts": {
-    "build": "preconstruct build",
-    "dev": "preconstruct dev && yarn workspace clearcoat dev",
-    "postinstall": "preconstruct dev && manypkg check",
-    "ci": "preconstruct validate && manypkg check && yarn build",
-    "release": "chmod +x ./scripts/release.sh && ./scripts/release.sh",
-    "clean": "rm -rf node_modules package/dist examples/*/node_modules",
-    "update": "./scripts/updateAll.sh"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.24.3",
-    "@manypkg/cli": "^0.19.1",
-    "@preconstruct/cli": "^2.1.5"
-  },
-  "stackblitz": {
-    "startCommand": "cd examples/waves && yarn start"
+    "prebuild": "yarn --cwd package build",
+    "build": "yarn --cwd examples build",
+    "preview": "yarn --cwd examples preview",
+    "dev": "yarn --cwd examples dev",
+    "release": "yarn --cwd package release"
   }
 }

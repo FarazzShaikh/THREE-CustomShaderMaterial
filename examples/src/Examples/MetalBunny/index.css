@@ -1,0 +1,135 @@
+/*styles.css*/
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch&family=Rampart+One&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #181818;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto,
+    segoe ui, arial, sans-serif;
+}
+
+.copy {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  pointer-events: none;
+}
+
+.copy svg {
+  width: 32px;
+  fill: white;
+}
+
+.copy > * {
+  padding: 32px;
+}
+
+a {
+  font-style: italic;
+  color: #5387ff;
+  font-weight: bold;
+  text-decoration: underline;
+  pointer-events: all;
+}
+
+canvas {
+  cursor: grab;
+}
+
+canvas:active {
+  cursor: grabbing;
+}
+
+.infoCard {
+  font-size: 8px;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.infoCard p {
+  color: #547561;
+  font-family: 'Cabin Sketch', sans-serif;
+}
+
+.infoCard a {
+  color: #0e1d18;
+  cursor: pointer;
+  font-family: 'Rampart One', sans-serif;
+  text-decoration: none;
+  pointer-events: all;
+}
+
+.infoCard a:hover {
+  text-decoration: underline;
+}
+
+.fps {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  font-family: 'Rampart One', sans-serif;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.my-tag {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  pointer-events: none;
+
+  font-family: 'Cabin Sketch', sans-serif;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.my-tag svg {
+  width: 32px;
+  fill: black;
+}
+
+.my-tag > * {
+  padding: 32px;
+  padding-bottom: 64px;
+}
+
+.my-tag a {
+  color: #0e1d18;
+  cursor: pointer;
+  font-family: 'Rampart One', sans-serif;
+  text-underline-offset: 2px;
+  text-decoration: none;
+  pointer-events: all;
+}
+
+.my-tag a:hover {
+  text-decoration: underline;
+}
