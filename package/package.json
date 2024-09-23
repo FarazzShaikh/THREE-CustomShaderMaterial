@@ -5,7 +5,9 @@
   "version": "6.0.0",
   "license": "MIT",
   "files": [
-    "dist/**"
+    "dist/**",
+    "README.md",
+    "LICENSE.md"
   ],
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "main": "dist/entry/cjs/react.cjs",
