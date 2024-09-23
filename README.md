@@ -10,7 +10,9 @@
 </p>
 </p>
 <p align="middle">
-  <i>These demos are real, you can click them! They contains full code, too. 📦</i>
+  <i>These demos are real, you can click them! They contains full code, too.
+  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/caustics">More demos here! 📦</a>
+  </i>
 </p>
 <br />
 <p align="center">
@@ -29,10 +31,6 @@
     <img src="https://img.shields.io/twitter/follow/CantBeFaraz?style=for-the-badge&logo=x" alt="Chat on Twitter">
   </a>
 </p>
-<p align="middle">
-  [More Demos here!](https://farazzshaikh.github.io/THREE-CustomShaderMaterial/caustics)
-</p>
-<br>
 
 Custom Shader Material (CSM) lets you extend Three.js' material library with your own Vertex and Fragment shaders. **_It Supports both Vanilla and React!_**
 
