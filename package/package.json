@@ -10,19 +10,19 @@
     "LICENSE.md"
   ],
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
-  "main": "dist/entry/cjs/react.cjs",
-  "module": "dist/entry/es/react.js",
-  "types": "dist/React/index.d.ts",
+  "main": "dist/react.cjs.js",
+  "module": "dist/react.es.js",
+  "types": "dist/react.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/entry/es/react.js",
-      "require": "./dist/entry/cjs/react.cjs",
-      "types": "./dist/React/index.d.ts"
+      "import": "./dist/react.es.js",
+      "require": "./dist/react.cjs.js",
+      "types": "./dist/react.d.ts"
     },
     "./vanilla": {
-      "import": "./dist/entry/es/vanilla.js",
-      "require": "./dist/entry/cjs/vanilla.cjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/vanilla.es.js",
+      "require": "./dist/vanilla.cjs.js",
+      "types": "./dist/vanilla.d.ts"
     }
   },
   "scripts": {

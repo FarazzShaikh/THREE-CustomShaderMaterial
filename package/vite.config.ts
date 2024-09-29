@@ -25,22 +25,20 @@ export default defineConfig({
         react: path.resolve(__dirname, "src/React/index.tsx"),
       },
       name: "custom-shader-material",
+      formats: ["es", "cjs"],
+      fileName: (format, entryName) => `${entryName}.${format}.js`,
     },
     rollupOptions: {
       external: ["react", "react-dom", "@react-three/fiber", "three"],
-      output: [
-        {
-          format: "es",
-          entryFileNames: `entry/es/[name].js`,
-        },
-        {
-          format: "cjs",
-          entryFileNames: `entry/cjs/[name].cjs`,
-        },
-      ],
     },
     sourcemap: true,
     emptyOutDir: true,
   },
-  plugins: [react(), dts(), copyLicensePlugin()],
+  plugins: [
+    react(),
+    dts({
+      rollupTypes: true,
+    }),
+    copyLicensePlugin(),
+  ],
 });
