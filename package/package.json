@@ -2,12 +2,10 @@
   "name": "three-custom-shader-material",
   "description": "Extend Three.js standard materials with your own shaders!",
   "private": false,
-  "version": "6.0.4",
+  "version": "6.0.10",
   "license": "MIT",
   "files": [
-    "dist/**",
-    "README.md",
-    "LICENSE.md"
+    "./**/*"
   ],
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
   "main": "three-custom-shader-material.cjs.js",
@@ -27,7 +25,7 @@
   },
   "scripts": {
     "build": "tsc && vite build",
-    "postversion": "cp package.json dist/package.json"
+    "release": "yarn build && cp ./package.json ./dist/package.json && cd ./dist && npm publish"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",

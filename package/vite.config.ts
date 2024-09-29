@@ -4,10 +4,7 @@ import path from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-/**
- * Copies LICENSE.md to the dist folder
- */
-function copyLicensePlugin() {
+function copyFiles() {
   return {
     name: "copy-license",
     closeBundle: async () => {
@@ -58,6 +55,6 @@ export default defineConfig({
     dts({
       rollupTypes: true,
     }),
-    copyLicensePlugin(),
+    copyFiles(),
   ],
 });
