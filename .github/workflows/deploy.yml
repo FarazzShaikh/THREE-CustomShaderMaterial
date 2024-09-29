@@ -20,6 +20,7 @@ jobs:
       - name: Build
         run: |
           yarn
+          yarn build:package
           yarn build
 
       - name: Upload production-ready build files

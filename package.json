@@ -12,7 +12,7 @@
     "examples"
   ],
   "scripts": {
-    "prebuild": "yarn --cwd package build",
+    "build:package": "yarn --cwd package build",
     "build": "yarn --cwd examples build",
     "preview": "yarn --cwd examples preview",
     "dev": "yarn --cwd examples dev",
