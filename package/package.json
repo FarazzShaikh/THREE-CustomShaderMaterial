@@ -2,7 +2,7 @@
   "name": "three-custom-shader-material",
   "description": "Extend Three.js standard materials with your own shaders!",
   "private": false,
-  "version": "6.0.3",
+  "version": "6.0.4",
   "license": "MIT",
   "files": [
     "dist/**",
@@ -10,23 +10,24 @@
     "LICENSE.md"
   ],
   "homepage": "https://github.com/FarazzShaikh/THREE-CustomShaderMaterial",
-  "main": "dist/react.cjs.js",
-  "module": "dist/react.es.js",
-  "types": "dist/react.d.ts",
+  "main": "three-custom-shader-material.cjs.js",
+  "module": "three-custom-shader-material.es.js",
+  "types": "react.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react.es.js",
-      "require": "./dist/react.cjs.js",
-      "types": "./dist/react.d.ts"
+      "import": "./three-custom-shader-material.es.js",
+      "require": "./three-custom-shader-material.cjs.js",
+      "types": "./react.d.ts"
     },
     "./vanilla": {
-      "import": "./dist/vanilla.es.js",
-      "require": "./dist/vanilla.cjs.js",
-      "types": "./dist/vanilla.d.ts"
+      "import": "./vanilla/three-custom-shader-material.es.js",
+      "require": "./vanilla/three-custom-shader-material.cjs.js",
+      "types": "./vanilla.d.ts"
     }
   },
   "scripts": {
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "postversion": "cp package.json dist/package.json"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",

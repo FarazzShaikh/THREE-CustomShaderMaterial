@@ -11,8 +11,18 @@ function copyLicensePlugin() {
   return {
     name: "copy-license",
     closeBundle: async () => {
-      await fs.copyFile("../LICENSE.md", "./LICENSE.md");
-      await fs.copyFile("../README.md", "./README.md");
+      await fs.copyFile("../LICENSE.md", "./dist/LICENSE.md");
+      await fs.copyFile("../README.md", "./dist/README.md");
+
+      // Write vanilla package.json
+      const vanillaJson = {
+        main: "three-custom-shader-material.cjs.js",
+        module: "three-custom-shader-material.es.js",
+      };
+      await fs.writeFile(
+        "./dist/vanilla/package.json",
+        JSON.stringify(vanillaJson, null, 2)
+      );
     },
   };
 }
@@ -24,12 +34,21 @@ export default defineConfig({
         vanilla: path.resolve(__dirname, "src/index.ts"),
         react: path.resolve(__dirname, "src/React/index.tsx"),
       },
-      name: "custom-shader-material",
+      name: "three-custom-shader-material",
       formats: ["es", "cjs"],
-      fileName: (format, entryName) => `${entryName}.${format}.js`,
+      fileName: (format, entry) => {
+        switch (entry) {
+          case "vanilla":
+            return `vanilla/three-custom-shader-material.${format}.js`;
+          case "react":
+            return `three-custom-shader-material.${format}.js`;
+          default:
+            return `${entry}.${format}.js`;
+        }
+      },
     },
     rollupOptions: {
-      external: ["react", "react-dom", "@react-three/fiber", "three"],
+      external: ["react", "three", "@react-three/fiber"],
     },
     sourcemap: true,
     emptyOutDir: true,
