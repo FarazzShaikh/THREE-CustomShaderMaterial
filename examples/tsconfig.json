@@ -13,7 +13,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "allowJs": true
+    "allowJs": true,
+    "paths": {
+      "three-custom-shader-material": ["../package/src/React/index.tsx"],
+      "three-custom-shader-material/vanilla": ["../package/src/index.ts"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
