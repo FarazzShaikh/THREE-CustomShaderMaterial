@@ -9,11 +9,11 @@ import { Stage } from "./Stage";
 
 import psrd from "./psrd.glsl?raw";
 
-class PreviousCSM extends CSM {
+class PreviousCSM extends CSM<typeof MeshPhysicalMaterial> {
   constructor() {
     super({
-      // roughness: 0,
-      // metalness: 1,
+      roughness: 0,
+      metalness: 1,
       baseMaterial: MeshPhysicalMaterial,
       vertexShader: /* glsl */ `
         varying vec2 vUv1;
@@ -31,7 +31,7 @@ class PreviousCSM extends CSM {
   }
 }
 
-class CustomMaterial extends CSM {
+class CustomMaterial extends CSM<typeof PreviousCSM> {
   constructor() {
     super({
       baseMaterial: PreviousCSM,
@@ -74,8 +74,9 @@ class CustomMaterial extends CSM {
           mat3 tbn = getTangentFrame( - vViewPosition, csm_FragNormal, vUv );
           vec3 customNormal = normalize( tbn * -gradient );
 
-          csm_FragNormal = customNormal;
-          csm_DiffuseColor = vec4(vec3(psrdN), 1.0);
+          // csm_FragNormal = customNormal;
+          // csm_DiffuseColor = vec4(vec3(psrdN), 1.0);
+          csm_DiffuseColor.rgb *= 0.5;
         }
       `,
       uniforms: {
@@ -83,25 +84,36 @@ class CustomMaterial extends CSM {
       },
     });
 
-    Object.defineProperties(this, {
-      uniformColor: {
-        get: () => {
-          return this.uniforms.uCsmColor.value.getHex();
-        },
-        set: (v: string) => {
-          this.uniforms.uCsmColor.value.set(v);
-        },
-      },
-    });
+    // Object.defineProperties(this, {
+    //   uniformColor: {
+    //     get: () => {
+    //       return this.uniforms.uCsmColor.value.getHex();
+    //     },
+    //     set: (v: string) => {
+    //       this.uniforms.uCsmColor.value.set(v);
+    //     },
+    //   },
+    // });
   }
 
-  declare uniformColor: string;
+  get uniformColor() {
+    return this.uniforms.uCsmColor.value.getHex();
+  }
+
+  set uniformColor(v: string) {
+    this.uniforms.uCsmColor.value.set(v);
+  }
+
+  init() {
+    console.log("init");
+  }
 }
 
 export function Scene() {
   const { vs, fs } = useShader();
 
   const mat = useMemo(() => new CustomMaterial(), []);
+  console.log(mat);
 
   const { flatShading } = useControls({
     color: {
