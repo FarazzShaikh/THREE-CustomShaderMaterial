@@ -146,47 +146,21 @@ CSM provides the following output variables, all of them are optional but you MU
 | csm_DepthAlpha                    | `vec3`  | Custom alpha for `MeshDepthMaterial`.                      | Fragment Shader                                 | Useful for controlling `customDepthMaterial` with same shader as the shader material.                                                                          |
 | csm_UnlitFac                      | `vec3`  | Custom mix between `csm_DiffuseColor` and `csm_FragColor`. | Fragment Shader                                 | Can be used to mix lit and unlit materials. Set to `1.0` by default if `csm_FragColor` is found in shader string.                                              |
 
-## Typing getters and setters
+## Typing
 
-You may want to add Getters and Setters as sort hands to uniforms to a vanilla class that extends CSM. This is useful for setting uniforms in React as props will directly call setters. To do so, the Getter and Setters need to be defined via Object.defineProperties and typed via declare.
+CSM infers prop types based on the `baseMaterial` prop. However, if this does not work for what ever reason, you can pass your base material type as a generic to `CustomShaderMaterial<T>`.
 
 ```ts
-class Foo extends CSM {
-  // Define the getter/setter to keep typescript happy
-  define bar: string | number | any
+// Vanilla
+const material = new CustomShaderMaterial<THREE.MeshPhysicalMaterial>({
+  baseMaterial: THREE.MeshPhysicalMaterial,
+  //...Any props
+});
 
-  constructor() {
-    super({
-      baseMaterial: ...,
-      vertexShader: `...`,
-      fragmentShader: `...`,
-      uniforms: {
-        bar: {...},
-      },
-    });
-
-    // Make Getters and setters
-    Object.defineProperties(this, {
-      bar: { // getter/setter name
-        get: () => {
-          return this.uniforms.bar.value
-        },
-        set: (v: string) => {
-          this.uniforms.bar.value = v;
-        },
-      },
-    });
-  }
-}
-
-// Usage vanilla
-const foo = new Foo()
-foo.bar = baz; // Will git the setter and set the uniform
-
-// Usage React (Pseudocode after extenstion with r3f "extend"
-<Foo
-  bar={baz} //Will git the setter and set the uniform
-/>
+// React
+<CustomShaderMaterial<THREE.MeshPhysicalMaterial>
+  baseMaterial={THREE.MeshPhysicalMaterial}
+  //...Any props
 ```
 
 ## Custom overrides
