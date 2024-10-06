@@ -4912,7 +4912,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       material.thickness = ${zt.thickness};
     `},[`${zt.iridescence}`]:{"material.iridescence = iridescence;":`
       material.iridescence = ${zt.iridescence};
-    `}},GBe={clearcoat:[zt.clearcoat,zt.clearcoatNormal,zt.clearcoatRoughness],transmission:[zt.transmission],iridescence:[zt.iridescence]};function VBe(t){let e=0;for(let i=0;i<t.length;i++)e=t.charCodeAt(i)+(e<<6)+(e<<16)-e;const n=e>>>0;return String(n)}function WBe(t){try{new t}catch(e){if(e.message.indexOf("is not a constructor")>=0)return!1}return!0}function o7(t){return t.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,"")}let ey=class extends si{constructor({baseMaterial:e,vertexShader:n,fragmentShader:r,uniforms:i,patchMap:a,cacheKey:s,...o}){if(!e)throw new Error("CustomShaderMaterial: baseMaterial is required.");let l;if(WBe(e)){const g=Object.keys(o).length===0;l=new e(g?void 0:o)}else l=e,Object.assign(l,o);if(["ShaderMaterial","RawShaderMaterial"].includes(l.type))throw new Error(`CustomShaderMaterial does not support ${l.type} as a base material.`);super(),this.uniforms={},this.vertexShader="",this.fragmentShader="";const c=l;c.name=`CustomShaderMaterial<${l.name||l.type}>`,c.update=this.update.bind(c),c.__csm={prevOnBeforeCompile:l.onBeforeCompile};const p={...c.uniforms||{},...i||{}};return c.uniforms=this.uniforms=p,c.vertexShader=this.vertexShader=n||"",c.fragmentShader=this.fragmentShader=r||"",c.update({fragmentShader:c.fragmentShader,vertexShader:c.vertexShader,uniforms:c.uniforms,patchMap:a,cacheKey:s}),Object.assign(this,c),this}update({fragmentShader:e,vertexShader:n,uniforms:r,cacheKey:i,patchMap:a}){const s=o7(n||""),o=o7(e||""),l=this;r&&(l.uniforms=r),n&&(l.vertexShader=n),e&&(l.fragmentShader=e),Object.entries(GBe).forEach(([f,p])=>{for(const g in p){const y=p[g];(o&&o.includes(y)||s&&s.includes(y))&&(l[f]||(l[f]=1))}});const u=l.__csm.prevOnBeforeCompile,c=(f,p,g)=>{var E;let y,b="";if(p){const _=/void\s+main\s*\(\s*\)[^{]*{((?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*})*})*})/gm;y=(E=p.matchAll(_).next().value)==null?void 0:E[1],y&&(y=y.slice(0,-1));const w=p.indexOf("void main() {");b=p.slice(0,w)}if(g&&(p&&p.includes(zt.fragColor))&&y&&(y=`csm_UnlitFac = 1.0;
+    `}},GBe={clearcoat:[zt.clearcoat,zt.clearcoatNormal,zt.clearcoatRoughness],transmission:[zt.transmission],iridescence:[zt.iridescence]};function VBe(t){let e=0;for(let i=0;i<t.length;i++)e=t.charCodeAt(i)+(e<<6)+(e<<16)-e;const n=e>>>0;return String(n)}function WBe(t){try{new t}catch(e){if(e.message.indexOf("is not a constructor")>=0)return!1}return!0}function o7(t){return t.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,"")}let ey=class extends si{constructor({baseMaterial:e,vertexShader:n,fragmentShader:r,uniforms:i,patchMap:a,cacheKey:s,...o}){if(!e)throw new Error("CustomShaderMaterial: baseMaterial is required.");let l;if(WBe(e)){const g=Object.keys(o).length===0;l=new e(g?void 0:o)}else l=e,Object.assign(l,o);if(["ShaderMaterial","RawShaderMaterial"].includes(l.type))throw new Error(`CustomShaderMaterial does not support ${l.type} as a base material.`);super(),this.uniforms={},this.vertexShader="",this.fragmentShader="";const c=l;c.name=`CustomShaderMaterial<${l.name||l.type}>`,c.update=this.update.bind(c),c.__csm={prevOnBeforeCompile:l.onBeforeCompile};const p={...c.uniforms||{},...i||{}};return c.uniforms=this.uniforms=p,c.vertexShader=this.vertexShader=n||"",c.fragmentShader=this.fragmentShader=r||"",c.update({fragmentShader:c.fragmentShader,vertexShader:c.vertexShader,uniforms:c.uniforms,patchMap:a,cacheKey:s}),Object.assign(this,c),this}update({fragmentShader:e,vertexShader:n,uniforms:r,cacheKey:i,patchMap:a}){const s=o7(n||""),o=o7(e||""),l=this;r&&(l.uniforms=r),n&&(l.vertexShader=n),e&&(l.fragmentShader=e),Object.entries(GBe).forEach(([f,p])=>{for(const g in p){const y=p[g];(o&&o.includes(y)||s&&s.includes(y))&&(l[f]||(l[f]=1))}});const u=l.__csm.prevOnBeforeCompile,c=(f,p,g)=>{var E;let y,b="";if(p){const _=/void\s+main\s*\(\s*\)[^{]*{((?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*})*})*})/gm;y=(E=p.matchAll(_).next().value)==null?void 0:E[1],y&&(y=y.slice(0,-1));const w=/void\s+main\s*\(\s*\)\s*{/gm,T=p.search(w);b=p.slice(0,T)}if(g&&(p&&p.includes(zt.fragColor))&&y&&(y=`csm_UnlitFac = 1.0;
 `+y),f.includes("//~CSM_DEFAULTS")){f=f.replace("void main() {",`
           // THREE-CustomShaderMaterial by Faraz Shaikh: https://github.com/FarazzShaikh/THREE-CustomShaderMaterial
   
@@ -5042,13 +5042,13 @@ return 39.5 * n;\r
         }`,fragmentShader:`
         varying vec2 vUv1;
 
-        void main() {
+        void main () {
           csm_DiffuseColor = vec4(vUv1, 0.0, 1.0);
         }`})}}class Aze extends ey{constructor(){super({baseMaterial:Sze,vertexShader:`
         varying vec2 vUv;
         varying vec3 vPosition;
 
-        void main() {
+        void main(){
           vPosition = position;
           vUv = uv;
         }
