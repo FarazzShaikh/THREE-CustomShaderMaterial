@@ -142,7 +142,8 @@ export default class CustomShaderMaterial<
         mainBody = mainBodyMatches.next().value?.[1];
         if (mainBody) mainBody = mainBody.slice(0, -1);
 
-        const mainIndex = newShader.indexOf("void main() {");
+        const mainDefRegex = /void\s+main\s*\(\s*\)\s*{/gm;
+        const mainIndex = newShader.search(mainDefRegex);
         beforeMain = newShader.slice(0, mainIndex);
       }
 

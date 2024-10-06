@@ -24,7 +24,7 @@ class PreviousCSM extends CSM<typeof MeshPhysicalMaterial> {
       fragmentShader: /* glsl */ `
         varying vec2 vUv1;
 
-        void main() {
+        void main () {
           csm_DiffuseColor = vec4(vUv1, 0.0, 1.0);
         }`,
     });
@@ -39,7 +39,7 @@ class CustomMaterial extends CSM<typeof PreviousCSM> {
         varying vec2 vUv;
         varying vec3 vPosition;
 
-        void main() {
+        void main(){
           vPosition = position;
           vUv = uv;
         }
