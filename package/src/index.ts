@@ -82,6 +82,18 @@ export default class CustomShaderMaterial<
     // Merge "this" with the extended base
     Object.assign(this, extendedBase);
 
+    // Copy getters and setters from the base material
+    const gettersAndSetters = Object.getOwnPropertyDescriptors(
+      Object.getPrototypeOf(extendedBase)
+    );
+
+    for (const key in gettersAndSetters) {
+      const descriptor = gettersAndSetters[key];
+      if (descriptor.get || descriptor.set) {
+        Object.defineProperty(this, key, descriptor);
+      }
+    }
+
     return this;
   }
 
@@ -223,7 +235,7 @@ export default class CustomShaderMaterial<
       prevOnBeforeCompile?.(shader, renderer);
 
       const userPatchMap = patchMap || {};
-      const mergedPatchMap = { ...defaultPatchMap, ...userPatchMap };
+      // const mergedPatchMap = { ...defaultPatchMap, ...userPatchMap };
 
       // Append some defines
       const type = self.type;
@@ -236,61 +248,67 @@ export default class CustomShaderMaterial<
         typeDefine + "#define IS_FRAGMENT\n" + shader.fragmentShader;
 
       // Check if the keyword is available in the current material type
-      for (const keyword in mergedPatchMap) {
-        const doesIncludeInVert =
-          keyword === "*" || (vertexShader && vertexShader.includes(keyword));
-        const doesIncludeInFrag =
-          keyword === "*" ||
-          (fragmentShader && fragmentShader.includes(keyword));
+      const runPatchMap = (_patchMap: TYPES.CSMPatchMap) => {
+        for (const keyword in _patchMap) {
+          const doesIncludeInVert =
+            keyword === "*" || (vertexShader && vertexShader.includes(keyword));
+          const doesIncludeInFrag =
+            keyword === "*" ||
+            (fragmentShader && fragmentShader.includes(keyword));
 
-        if (doesIncludeInFrag || doesIncludeInVert) {
-          const availableIn = availabilityMap[keyword];
+          if (doesIncludeInFrag || doesIncludeInVert) {
+            const availableIn = availabilityMap[keyword];
 
-          if (
-            availableIn &&
-            availableIn !== "*" &&
-            (Array.isArray(availableIn)
-              ? !availableIn.includes(type)
-              : availableIn !== type)
-          ) {
-            console.error(
-              `CustomShaderMaterial: ${keyword} is not available in ${type}. Shader cannot compile.`
-            );
-            return;
-          }
+            if (
+              availableIn &&
+              availableIn !== "*" &&
+              (Array.isArray(availableIn)
+                ? !availableIn.includes(type)
+                : availableIn !== type)
+            ) {
+              console.error(
+                `CustomShaderMaterial: ${keyword} is not available in ${type}. Shader cannot compile.`
+              );
+              return;
+            }
 
-          const patchMap = mergedPatchMap[keyword];
+            const patchMap = _patchMap[keyword];
 
-          for (const toReplace in patchMap) {
-            const replaceWith = patchMap[toReplace];
-            if (typeof replaceWith === "object") {
-              const type = replaceWith.type;
-              const value = replaceWith.value;
+            for (const toReplace in patchMap) {
+              const replaceWith = patchMap[toReplace];
 
-              if (type === "fs") {
-                shader.fragmentShader = shader.fragmentShader.replace(
-                  toReplace,
-                  value
-                );
-              } else if (type === "vs") {
+              if (typeof replaceWith === "object") {
+                const type = replaceWith.type;
+                const value = replaceWith.value;
+
+                if (type === "fs") {
+                  shader.fragmentShader = shader.fragmentShader.replace(
+                    toReplace,
+                    value
+                  );
+                } else if (type === "vs") {
+                  shader.vertexShader = shader.vertexShader.replace(
+                    toReplace,
+                    value
+                  );
+                }
+              } else if (replaceWith) {
                 shader.vertexShader = shader.vertexShader.replace(
                   toReplace,
-                  value
+                  replaceWith
+                );
+                shader.fragmentShader = shader.fragmentShader.replace(
+                  toReplace,
+                  replaceWith
                 );
               }
-            } else if (replaceWith) {
-              shader.vertexShader = shader.vertexShader.replace(
-                toReplace,
-                replaceWith
-              );
-              shader.fragmentShader = shader.fragmentShader.replace(
-                toReplace,
-                replaceWith
-              );
             }
           }
         }
-      }
+      };
+
+      runPatchMap(defaultPatchMap);
+      runPatchMap(userPatchMap);
 
       // Extend the shaders
       shader.vertexShader = extendShader(
