@@ -16,7 +16,7 @@ export function Root() {
   const slug = location.pathname.replace("/", "");
   const shader =
     Object.values(SHADERS).find((shader) => shader.slug === slug) ||
-    SHADERS.DEFAULT;
+    SHADERS.WAVES;
 
   const [[vs, fs], setShader] = useState([shader.vs, shader.fs]);
 

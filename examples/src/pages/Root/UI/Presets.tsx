@@ -7,15 +7,15 @@ export function Presets() {
   const slug = location.pathname.replace("/", "");
   const currentShader =
     Object.values(SHADERS).find((shader) => shader.slug === slug) ||
-    SHADERS.DEFAULT;
+    SHADERS.WAVES;
 
   const groupedShaders = Object.values(SHADERS).reduce((acc, shader) => {
     if (!acc[shader.category]) {
       acc[shader.category] = [];
     }
-    acc[shader.category].push(shader as typeof SHADERS.DEFAULT);
+    acc[shader.category].push(shader as typeof SHADERS.WAVES);
     return acc;
-  }, {} as Record<string, (typeof SHADERS.DEFAULT)[]>);
+  }, {} as Record<string, (typeof SHADERS.WAVES)[]>);
 
   return (
     <Stack w="100%">

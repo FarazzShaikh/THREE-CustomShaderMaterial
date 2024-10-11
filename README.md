@@ -11,7 +11,7 @@
 </p>
 <p align="middle">
   <i>These demos are real, you can click them! They contains full code, too.
-  <a href="https://farazzshaikh.github.io/THREE-CustomShaderMaterial/caustics">More demos here! 📦</a>
+  <a href="https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/tree/main/examples/src/Examples">More demos here! 📦</a>
   </i>
 </p>
 <br />

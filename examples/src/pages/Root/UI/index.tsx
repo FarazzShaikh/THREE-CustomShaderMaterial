@@ -26,7 +26,7 @@ interface UIProps {
 }
 
 export function UI({ vs, fs, setShader }: UIProps) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   const breakpoint = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });

@@ -16,7 +16,7 @@ const router = createHashRouter([
       })),
       {
         path: "/",
-        element: <SHADERS.DEFAULT.Component />,
+        element: <SHADERS.WAVES.Component />,
       },
     ],
   },
