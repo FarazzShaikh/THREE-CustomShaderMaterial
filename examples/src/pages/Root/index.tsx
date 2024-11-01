@@ -1,5 +1,4 @@
 import { Canvas } from "@react-three/fiber";
-import { Perf } from "r3f-perf";
 import { useLayoutEffect, useState } from "react";
 import { Outlet, useLocation, useOutletContext } from "react-router-dom";
 import { SHADERS } from "../../Examples";
@@ -30,7 +29,7 @@ export function Root() {
       <Canvas shadows>
         <Outlet context={{ vs, fs, setShader } satisfies ContextType} />
 
-        <Perf position="bottom-right r3f-perf" />
+        {/* <Perf position="bottom-right r3f-perf" /> */}
       </Canvas>
     </main>
   );
