@@ -94,6 +94,16 @@ export default class CustomShaderMaterial<
       }
     }
 
+    // Override type setter because of this BS: https://github.com/mrdoob/three.js/blob/841ca14e89f3ec925e071a321958e49a883343c0/src/materials/Material.js#L22
+    Object.defineProperty(this, "type", {
+      get() {
+        return base.type;
+      },
+      set(value) {
+        base.type = value;
+      },
+    });
+
     return this;
   }
 
