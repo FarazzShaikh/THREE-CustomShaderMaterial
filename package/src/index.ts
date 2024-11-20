@@ -158,15 +158,33 @@ export default class CustomShaderMaterial<
 
       // Prepare the main body and beforeMain
       if (newShader) {
-        const mainBodyRegex =
-          /void\s+main\s*\(\s*\)[^{]*{((?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*})*})*})/gm;
-        const mainBodyMatches = newShader.matchAll(mainBodyRegex);
-        mainBody = mainBodyMatches.next().value?.[1];
-        if (mainBody) mainBody = mainBody.slice(0, -1);
+        // Simpler approach to extract main function body
+        const mainStartIndex = newShader.search(/void\s+main\s*\(\s*\)\s*{/);
+        if (mainStartIndex !== -1) {
+          // Get everything before main function
+          beforeMain = newShader.slice(0, mainStartIndex);
 
-        const mainDefRegex = /void\s+main\s*\(\s*\)\s*{/gm;
-        const mainIndex = newShader.search(mainDefRegex);
-        beforeMain = newShader.slice(0, mainIndex);
+          // Find the matching closing brace using brace counting
+          let braceCount = 0;
+          let mainEndIndex = -1;
+
+          for (let i = mainStartIndex; i < newShader.length; i++) {
+            if (newShader[i] === '{') braceCount++;
+            if (newShader[i] === '}') {
+              braceCount--;
+              if (braceCount === 0) {
+                mainEndIndex = i;
+                break;
+              }
+            }
+          }
+
+          if (mainEndIndex !== -1) {
+            // Extract main body without the outer braces
+            const fullMain = newShader.slice(mainStartIndex, mainEndIndex + 1);
+            mainBody = fullMain.slice(fullMain.indexOf('{') + 1, -1);
+          }
+        }
       }
 
       // Set csm_UnlitFac if csm_FragColor is used to preserve
