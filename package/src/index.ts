@@ -169,8 +169,8 @@ export default class CustomShaderMaterial<
           let mainEndIndex = -1;
 
           for (let i = mainStartIndex; i < newShader.length; i++) {
-            if (newShader[i] === '{') braceCount++;
-            if (newShader[i] === '}') {
+            if (newShader[i] === "{") braceCount++;
+            if (newShader[i] === "}") {
               braceCount--;
               if (braceCount === 0) {
                 mainEndIndex = i;
@@ -182,8 +182,10 @@ export default class CustomShaderMaterial<
           if (mainEndIndex !== -1) {
             // Extract main body without the outer braces
             const fullMain = newShader.slice(mainStartIndex, mainEndIndex + 1);
-            mainBody = fullMain.slice(fullMain.indexOf('{') + 1, -1);
+            mainBody = fullMain.slice(fullMain.indexOf("{") + 1, -1);
           }
+        } else {
+          beforeMain = newShader;
         }
       }
 
