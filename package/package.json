@@ -24,8 +24,7 @@
     }
   },
   "scripts": {
-    "build": "tsc && vite build",
-    "release": "yarn build && cp ./package.json ./dist/package.json && cd ./dist && npm publish"
+    "build": "tsc && vite build && cp ./package.json ./dist/package.json"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
