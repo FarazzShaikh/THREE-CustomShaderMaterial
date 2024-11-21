@@ -41,7 +41,8 @@ export type CSMProxy<T extends MaterialConstructor> = InstanceType<T> & {
     opts: Omit<CustomShaderMaterialBaseParameters<T>, "baseMaterial">
   ) => void;
 
-  __csm: {
+  __csm: Omit<CustomShaderMaterialBaseParameters<T>, "baseMaterial"> & {
     prevOnBeforeCompile: THREE.Material["onBeforeCompile"];
+    baseMaterial: THREE.Material;
   };
 };

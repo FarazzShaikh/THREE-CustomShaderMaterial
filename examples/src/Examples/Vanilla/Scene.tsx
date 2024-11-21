@@ -18,7 +18,7 @@ export function Scene() {
       transmission: 1,
       roughness: 0.2,
       thickness: 2,
-    }) as CSMProxy<typeof THREE.MeshPhysicalMaterial>;
+    }).clone() as CSMProxy<typeof THREE.MeshPhysicalMaterial>;
 
     return mat;
   }, [vs, fs]);

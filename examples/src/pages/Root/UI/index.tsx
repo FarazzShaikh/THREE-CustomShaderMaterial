@@ -70,7 +70,7 @@ export function UI({ vs, fs, setShader }: UIProps) {
       w={breakpoint === "sm" ? "100%" : "50%"}
       height="100%"
       maxW={breakpoint === "sm" ? "unset" : "400px"}
-      background={"#ffffff80"}
+      background={"#0e0e0e80"}
       transform={`translateX(${open ? 0 : "-100%"})`}
       transition="transform 0.3s"
     >

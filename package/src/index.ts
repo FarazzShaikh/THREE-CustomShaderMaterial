@@ -60,7 +60,15 @@ export default class CustomShaderMaterial<
     const extendedBase = base as typeof base & TYPES.CSMProxy<T>;
     extendedBase.name = `CustomShaderMaterial<${base.name || base.type}>`;
     extendedBase.update = this.update.bind(extendedBase);
-    extendedBase.__csm = { prevOnBeforeCompile: base.onBeforeCompile };
+    extendedBase.__csm = {
+      prevOnBeforeCompile: base.onBeforeCompile,
+      baseMaterial: base,
+      vertexShader,
+      fragmentShader,
+      uniforms,
+      patchMap,
+      cacheKey,
+    };
 
     const prevUniforms = extendedBase.uniforms || {};
     const newUniforms = uniforms || {};
@@ -370,6 +378,23 @@ export default class CustomShaderMaterial<
     };
 
     self.needsUpdate = true;
+  }
+
+  clone() {
+    // Get typed `this` for the proxy
+    const self = this as typeof this & TYPES.CSMProxy<T>;
+
+    // @ts-ignore
+    const newObj = new self.constructor({
+      baseMaterial: self.__csm.baseMaterial.clone(),
+      vertexShader: self.__csm.vertexShader,
+      fragmentShader: self.__csm.fragmentShader,
+      uniforms: self.__csm.uniforms,
+      patchMap: self.__csm.patchMap,
+      cacheKey: self.__csm.cacheKey,
+    });
+
+    return newObj;
   }
 }
 
