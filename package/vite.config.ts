@@ -45,7 +45,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ["react", "three", "@react-three/fiber"],
+      external: ["react", "react/jsx-runtime", "react-dom", "react-dom/client", "three", "@react-three/fiber"],
     },
     sourcemap: true,
     emptyOutDir: true,
