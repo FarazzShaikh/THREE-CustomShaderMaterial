@@ -144,7 +144,7 @@ CSM provides the following output variables, all of them are optional but you MU
 | csm_FragNormal                    | `float` | Custom fragment normal.                                    | Only available in materials with a `normalMap`. |
 | <h3>Fragmet Shader (Special)</h3> | -       | -                                                          | -                                               | -                                                                                                                                                              |
 | csm_DepthAlpha                    | `float` | Custom alpha for `MeshDepthMaterial`.                      | Fragment Shader                                 | Useful for controlling `customDepthMaterial` with same shader as the shader material.                                                                          |
-| csm_UnlitFac                      | `vec3`  | Custom mix between `csm_DiffuseColor` and `csm_FragColor`. | Fragment Shader                                 | Can be used to mix lit and unlit materials. Set to `1.0` by default if `csm_FragColor` is found in shader string.                                              |
+| csm_UnlitFac                      | `float` | Custom mix between `csm_DiffuseColor` and `csm_FragColor`. | Fragment Shader                                 | Can be used to mix lit and unlit materials. Set to `1.0` by default if `csm_FragColor` is found in shader string.                                              |
 
 ## Typing
 
