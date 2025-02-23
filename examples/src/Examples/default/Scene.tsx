@@ -1,22 +1,29 @@
 import { OrbitControls, Sphere } from "@react-three/drei";
 
+import { useEffect, useMemo } from "react";
 import { MeshPhysicalMaterial } from "three";
 import CSM from "three-custom-shader-material/vanilla";
+import { useShader } from "../../pages/Root";
 import { Stage } from "./Stage";
 
 class Mat extends CSM {
-  constructor() {
+  constructor(fs, vs) {
     super({
       baseMaterial: MeshPhysicalMaterial,
       metalness: 1,
       roughness: 0,
       anisotropy: 1,
+      fragmentShader: fs,
+      vertexShader: vs,
     });
   }
 }
 
 export function Scene() {
-  const m = new Mat();
+  const { fs, vs } = useShader();
+  const m = useMemo(() => new Mat(fs, vs), [fs, vs]);
+
+  useEffect(() => () => m.dispose(), [m]);
 
   return (
     <>
