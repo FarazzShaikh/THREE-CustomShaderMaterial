@@ -15,6 +15,7 @@ function copyFiles() {
       const vanillaJson = {
         main: "three-custom-shader-material.cjs.js",
         module: "three-custom-shader-material.es.js",
+        type: "module",
       };
       await fs.writeFile(
         "./dist/vanilla/package.json",
@@ -45,7 +46,14 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ["react", "react/jsx-runtime", "react-dom", "react-dom/client", "three", "@react-three/fiber"],
+      external: [
+        "react",
+        "react/jsx-runtime",
+        "react-dom",
+        "react-dom/client",
+        "three",
+        "@react-three/fiber",
+      ],
     },
     sourcemap: true,
     emptyOutDir: true,
