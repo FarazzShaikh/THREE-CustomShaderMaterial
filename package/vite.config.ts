@@ -10,12 +10,15 @@ function copyFiles() {
     closeBundle: async () => {
       await fs.copyFile("../LICENSE.md", "./dist/LICENSE.md");
       await fs.copyFile("../README.md", "./dist/README.md");
+      await fs.copyFile("./dist/vanilla.d.ts", "./dist/vanilla/vanilla.d.ts");
+      await fs.rm("./dist/vanilla.d.ts");
 
       // Write vanilla package.json
       const vanillaJson = {
         main: "three-custom-shader-material.cjs.js",
         module: "three-custom-shader-material.es.js",
         type: "module",
+        types: "vanilla.d.ts",
       };
       await fs.writeFile(
         "./dist/vanilla/package.json",
