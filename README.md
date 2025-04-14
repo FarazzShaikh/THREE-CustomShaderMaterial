@@ -152,13 +152,13 @@ CSM infers prop types based on the `baseMaterial` prop. However, if this does no
 
 ```ts
 // Vanilla
-const material = new CustomShaderMaterial<THREE.MeshPhysicalMaterial>({
+const material = new CustomShaderMaterial<typeof THREE.MeshPhysicalMaterial>({
   baseMaterial: THREE.MeshPhysicalMaterial,
   //...Any props
 });
 
 // React
-<CustomShaderMaterial<THREE.MeshPhysicalMaterial>
+<CustomShaderMaterial<typeof THREE.MeshPhysicalMaterial>
   baseMaterial={THREE.MeshPhysicalMaterial}
   //...Any props
 ```
