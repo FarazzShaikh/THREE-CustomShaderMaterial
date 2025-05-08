@@ -64,7 +64,7 @@ function Thing() {
   return (
     <group>
       <instancedMesh ref={ref} args={[null, null, amount]}>
-        <sphereGeometry args={[1, 64, 64]} />
+        <sphereGeometry args={[1, 8, 8]} />
         <CustomShaderMaterial
           baseMaterial={MeshPhysicalMaterial}
           vertexShader={patchShaders(vs)}
@@ -87,6 +87,8 @@ export function Scene() {
 
       <PerspectiveCamera makeDefault position={[10, 10, 10]} />
       <OrbitControls makeDefault enablePan={false} />
+
+      <axesHelper args={[10]} />
     </>
   );
 }

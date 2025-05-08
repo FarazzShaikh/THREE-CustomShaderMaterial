@@ -24,14 +24,9 @@ export const defaultPatchMap: CSMPatchMap = {
   `,
   },
   [`${keywordMap.positionRaw}`]: {
-    "#include <begin_vertex>": `
-    vec4 csm_internal_positionUnprojected = ${keywordMap.positionRaw};
-    mat4x4 csm_internal_unprojectMatrix = projectionMatrix * modelViewMatrix;
-    #ifdef USE_INSTANCING
-      csm_internal_unprojectMatrix = csm_internal_unprojectMatrix * instanceMatrix;
-    #endif
-    csm_internal_positionUnprojected = inverse(csm_internal_unprojectMatrix) * csm_internal_positionUnprojected;
-    vec3 transformed = csm_internal_positionUnprojected.xyz;
+    "#include <project_vertex>": `
+    #include <project_vertex>
+    gl_Position = ${keywordMap.positionRaw};
   `,
   },
   [`${keywordMap.pointSize}`]: {
