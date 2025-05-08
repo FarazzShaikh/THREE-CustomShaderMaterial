@@ -2,7 +2,7 @@
   "name": "three-custom-shader-material",
   "description": "Extend Three.js standard materials with your own shaders!",
   "private": false,
-  "version": "6.3.5",
+  "version": "6.3.6",
   "type": "module",
   "license": "MIT",
   "files": [
