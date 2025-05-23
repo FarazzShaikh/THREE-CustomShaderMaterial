@@ -59,7 +59,7 @@ export default class CustomShaderMaterial<
     // Return a proxy to the base material with CSM types and methods
     const extendedBase = base as typeof base & TYPES.CSMProxy<T>;
     extendedBase.name = `CustomShaderMaterial<${base.name || base.type}>`;
-    extendedBase.update = this.update.bind(extendedBase);
+    extendedBase.update = this.update;
     extendedBase.__csm = {
       prevOnBeforeCompile: base.onBeforeCompile,
       baseMaterial: base,

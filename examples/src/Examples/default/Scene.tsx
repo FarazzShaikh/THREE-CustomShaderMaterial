@@ -1,53 +1,73 @@
-import { OrbitControls, Sphere } from "@react-three/drei";
+import { Box, OrbitControls, Sphere } from "@react-three/drei";
 
-import { useEffect, useMemo } from "react";
-import { MeshPhysicalMaterial } from "three";
-import CSM from "three-custom-shader-material/vanilla";
-import { useShader } from "../../pages/Root";
-import { Stage } from "./Stage";
+import { useEffect, useState } from "react";
+import { MeshBasicMaterial } from "three";
+import CSM from "three-custom-shader-material";
 
-class Mat extends CSM {
-  constructor(fs, vs) {
-    super({
-      baseMaterial: MeshPhysicalMaterial,
-      metalness: 1,
-      roughness: 0,
-      anisotropy: 1,
-      fragmentShader: fs,
-      vertexShader: vs,
-    });
-  }
-}
+import { Perf } from "r3f-perf";
+
+export const SceneTestX = ({ ...props }) => {
+  const [fragmentShader, setFragmentShader] = useState(/*glsl*/ `
+    void main() {
+      csm_DiffuseColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }
+  `);
+
+  useEffect(() => {
+    setFragmentShader(/*glsl*/ `
+      void main() {
+        csm_DiffuseColor = vec4(0.0, 1.0, 0.0, 1.0);
+      }
+    `);
+  }, []);
+
+  return (
+    <>
+      <Sphere {...props}>
+        <CSM baseMaterial={MeshBasicMaterial} fragmentShader={fragmentShader} />
+      </Sphere>
+    </>
+  );
+};
 
 export function Scene() {
-  const { fs, vs } = useShader();
-  const m = useMemo(() => new Mat(fs, vs), [fs, vs]);
+  const [visible, setVisible] = useState(true);
+  const [fragmentShader, setFragmentShader] = useState(/*glsl*/ `
+    void main() {
+      csm_DiffuseColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }
+  `);
 
-  useEffect(() => () => m.dispose(), [m]);
+  useEffect(() => {
+    setInterval(() => {
+      setFragmentShader(/*glsl*/ `
+        void main() {
+          csm_DiffuseColor = vec4(${Math.random()}, ${Math.random()}, ${Math.random()}, 1.0);
+        }
+      `);
+    }, 1000);
+  }, []);
 
   return (
     <>
       <OrbitControls />
 
-      <Stage
-        adjustCamera={1.5}
-        environment={{
-          preset: "sunset",
-          background: true,
-          blur: 4,
-        }}
-        preset="upfront"
-        shadows={{
-          type: "accumulative",
-          //   color: "#fac9ed",
-          colorBlend: 2,
-          alphaTest: 0.3,
-          opacity: 0.6,
-          radius: 3,
-        }}
-      >
-        <Sphere castShadow args={[1, 32, 32]} material={m}></Sphere>
-      </Stage>
+      <SceneTestX position={[-2, 0, 0]} />
+
+      {visible && (
+        <Sphere position={[2, 0, 0]}>
+          <CSM
+            baseMaterial={MeshBasicMaterial}
+            fragmentShader={fragmentShader}
+          />
+        </Sphere>
+      )}
+
+      <Box onClick={() => setVisible(!visible)}>
+        <meshBasicMaterial attach="material" color="hotpink" />
+      </Box>
+
+      <Perf />
     </>
   );
 }

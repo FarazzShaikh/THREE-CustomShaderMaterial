@@ -44,6 +44,7 @@ function CustomShaderMaterial<T extends MaterialConstructor>(
   }, [baseMaterial]);
 
   useDidUpdateEffect(() => {
+    material.dispose();
     material.update({
       vertexShader,
       fragmentShader,
